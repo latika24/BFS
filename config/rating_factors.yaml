@@ -7,17 +7,6 @@
 # =============================================================================
 
 meta:
-<<<<<<< HEAD
-  version: "1.0"
-  plan_reference: "Usage-Based Insurance for India's Gig Workers, August 2026"
-
-# -----------------------------------------------------------------------------
-# BASE RATE  (§5.3)
-# Expected claim cost per EEU per Rs 1 lakh of sum insured.
-#
-# CALIBRATION: set so that the reference rider below prices at Rs 2.50 per
-# active hour, matching the published Suraksha Plus tier price in §4.4.
-=======
   version: "2.0"
   plan_reference: "Usage-Based Insurance for India's Gig Workers, August 2026"
   product_name: "Suraksha"
@@ -51,20 +40,13 @@ sections:
 #
 # CALIBRATION: set so that the reference rider below prices at Rs 2.50 per
 # active hour, matching the published Suraksha Plus tier price in §3.3.
->>>>>>> 03dbdc9 (Initial commit)
 #
 # NOTE ON A RECONCILIATION IN THE PLAN. Two figures in the report do not
 # multiply together directly, and the dashboard surfaces this rather than
 # hiding it:
-<<<<<<< HEAD
-#   §4.4 prices Suraksha Plus at Rs 2.50 per active hour, and describes a
-#        full-time rider as ~208 active hours/month. That is Rs 6,240/year.
-#   §6.2 uses Rs 5,400 of GWP per active worker per year for the book.
-=======
 #   §3.3 prices Suraksha Plus at Rs 2.50 per active hour, and describes a
 #        full-time rider as ~208 active hours/month. That is Rs 6,240/year.
 #   §4 uses Rs 5,400 of GWP per active worker per year for the book.
->>>>>>> 03dbdc9 (Initial commit)
 # Both can be true. Rs 5,400 is the BLENDED average across a book that
 # includes part-time and occasional riders, and implies an average of about
 # 180 active hours/month rather than 208. The Rider Quote page prices an
@@ -72,11 +54,7 @@ sections:
 # -----------------------------------------------------------------------------
 base_rate: 0.1785
 
-<<<<<<< HEAD
-# The rider used to calibrate base_rate. Shown on the Rider Quote page so the
-=======
 # The rider used to calibrate base_rate. Shown on the Home page so the
->>>>>>> 03dbdc9 (Initial commit)
 # calibration is auditable rather than asserted.
 reference_rider:
   age: 27
@@ -96,17 +74,6 @@ loadings:
   expense: 0.30          # Load_expense
   margin: 0.08           # Load_margin
 
-<<<<<<< HEAD
-# Total multiplier is capped in this band (§5.3 governance constraint).
-# Outside the band we decline or mandate a safety intervention rather than
-# pricing the worker out.
-multiplier_cap:
-  floor: 0.6
-  ceiling: 2.2
-
-# -----------------------------------------------------------------------------
-# LAYER A — EXPOSURE MULTIPLIERS (§5.2, §5.3)
-=======
 # GOVERNANCE BAND (§3.3)
 #
 # The plan states: "What a worker pays is the base multiplied by the risk of
@@ -125,7 +92,6 @@ multiplier_cap:
 
 # -----------------------------------------------------------------------------
 # LAYER A — EXPOSURE MULTIPLIERS (§1.2, §3.3)
->>>>>>> 03dbdc9 (Initial commit)
 # Applied per 15-minute block to build the Effective Exposure Unit.
 # -----------------------------------------------------------------------------
 time_of_day:
@@ -148,11 +114,7 @@ city:
   "Tier-2/3": 0.85
 
 # -----------------------------------------------------------------------------
-<<<<<<< HEAD
-# LAYER B — BEHAVIOUR (§5.2)
-=======
 # LAYER B — BEHAVIOUR (§1.2)
->>>>>>> 03dbdc9 (Initial commit)
 # Weights used to build the Rider Safety Score (0-100). Each input is scored
 # 0-100 on its own scale, then combined with these weights.
 # -----------------------------------------------------------------------------
@@ -174,11 +136,7 @@ safety_score_bands:
   "Below 50": 1.50
 
 # -----------------------------------------------------------------------------
-<<<<<<< HEAD
-# LAYER C — STATIC AND SEMI-STATIC (§5.2, §5.3)
-=======
 # LAYER C — STATIC AND SEMI-STATIC (§1.2, §3.3)
->>>>>>> 03dbdc9 (Initial commit)
 # -----------------------------------------------------------------------------
 age:
   "18-21": 1.30
@@ -211,11 +169,7 @@ loyalty_discount:
   24: 0.08
 
 # -----------------------------------------------------------------------------
-<<<<<<< HEAD
-# SUM INSURED PARAMETERS (§5.4)
-=======
 # SUM INSURED PARAMETERS (§1.2)
->>>>>>> 03dbdc9 (Initial commit)
 # -----------------------------------------------------------------------------
 sum_insured:
   # Accidental death / PTD: human life value approach
@@ -309,11 +263,7 @@ benefits:
     control: "Never cash; theft requires FIR"
 
 # -----------------------------------------------------------------------------
-<<<<<<< HEAD
-# PACKAGING (§4.4)
-=======
 # PACKAGING (§3.3 — Price)
->>>>>>> 03dbdc9 (Initial commit)
 # -----------------------------------------------------------------------------
 tiers:
   Suraksha Basic:
@@ -334,11 +284,7 @@ shift_pass:
   hours: 6
 
 # -----------------------------------------------------------------------------
-<<<<<<< HEAD
-# BURNING COST (§6.1) — per 1,000 full-time active riders per year
-=======
 # BURNING COST (§4) — per 1,000 full-time active riders per year
->>>>>>> 03dbdc9 (Initial commit)
 # -----------------------------------------------------------------------------
 burning_cost:
   - head: Accidental death
@@ -358,11 +304,7 @@ burning_cost:
     average_claim: 1500
 
 # -----------------------------------------------------------------------------
-<<<<<<< HEAD
-# PORTFOLIO MODEL (§6.2, §6.4, §6.6)
-=======
 # PORTFOLIO MODEL (§4, §4.1, §2.1)
->>>>>>> 03dbdc9 (Initial commit)
 # -----------------------------------------------------------------------------
 portfolio:
   gwp_per_worker: 5400
@@ -373,11 +315,7 @@ portfolio:
 
   # Share of operating expenses that does NOT scale down with premium: the
   # statutory key management team, actuarial, audit, compliance, core tech.
-<<<<<<< HEAD
-  # Used to derive the expense ratio when growth differs from plan (§6.7).
-=======
   # Used to derive the expense ratio when growth differs from plan (§4.1).
->>>>>>> 03dbdc9 (Initial commit)
   fixed_expense_share: 0.65
 
   # Year 1 is the first full year of writing (project month 21 onward)
@@ -411,11 +349,7 @@ portfolio:
       loss_ratio: 0.64
       expense_ratio: 0.21
 
-<<<<<<< HEAD
-  # Solvency (§6.6)
-=======
   # Solvency (§2.1)
->>>>>>> 03dbdc9 (Initial commit)
   solvency:
     rsm_floor_cr: 50
     rsm_pct_nwp: 0.20
@@ -423,18 +357,6 @@ portfolio:
     target_ratio: 2.00
     internal_throttle_ratio: 1.80
 
-<<<<<<< HEAD
-  funding_rounds:
-    - name: "Pre-licence (Seed / Series A)"
-      year: 0
-      amount_cr: 300
-    - name: "Series B"
-      year: 3
-      amount_cr: 150
-    - name: "Series C"
-      year: 5
-      amount_cr: 100
-=======
   # §5. NOTE: the plan's investor table gives the pre-licence round as Rs 250 cr,
   # while the narrative in §2.1 and §5 twice says Rs 300 cr. The dashboard uses
   # the table figure and surfaces the discrepancy rather than silently choosing.
@@ -459,13 +381,10 @@ portfolio:
     The plan's narrative says Rs 300 crore pre-launch; the investor table says
     Rs 250 crore. Worth reconciling before submission - the solvency model here
     uses the table figure, which is the tighter of the two.
->>>>>>> 03dbdc9 (Initial commit)
 
   pre_launch_build_cost_cr: 60
 
 # -----------------------------------------------------------------------------
-<<<<<<< HEAD
-=======
 # MARKET SEGMENTATION (§3.1)
 # -----------------------------------------------------------------------------
 segments:
@@ -516,7 +435,6 @@ positioning_map:
     note: "Alone in this quadrant. Our strongest product is one our largest competitor cannot build."
 
 # -----------------------------------------------------------------------------
->>>>>>> 03dbdc9 (Initial commit)
 # SYNTHETIC DATA GENERATION
 # Distributions chosen to match the report: ~25% of workers ride >8 hrs/day,
 # ~33% work purely in free time, monthly attrition 30-40%.

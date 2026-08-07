@@ -1,11 +1,7 @@
 """
 Rider Safety Score (0-100) from smartphone telematics.
 
-<<<<<<< HEAD
-Business plan reference: section 5.2, Layer B.
-=======
 Business plan reference: section 1.2.
->>>>>>> 03dbdc9 (Initial commit)
 
 Each behavioural input is normalised to a 0-100 sub-score where 100 is safest,
 then combined using the weights in rating_factors.yaml. The worker sees this

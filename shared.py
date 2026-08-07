@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-"""Shared helpers: formatting, cached data loading, and page furniture."""
-from __future__ import annotations
-=======
 """Design system, formatting helpers and cached data loading."""
 from __future__ import annotations
 
->>>>>>> 03dbdc9 (Initial commit)
 import sys
 from pathlib import Path
 
@@ -18,14 +13,6 @@ if str(ROOT) not in sys.path:
 from engine.config import CFG  # noqa: E402
 from engine import data_gen  # noqa: E402
 
-<<<<<<< HEAD
-PLAN = "Usage-Based Insurance for India's Gig Workers"
-
-
-# ---------------------------------------------------------------- formatting
-def inr(x, decimals=0):
-    """Indian-format a rupee amount with thousands/lakh/crore separators."""
-=======
 BRAND = CFG["meta"]["product_name"]
 TAGLINE = CFG["meta"]["tagline"]
 SEC = CFG["sections"]
@@ -150,26 +137,10 @@ CSS = f"""
 # ------------------------------------------------------------------ formatting
 def inr(x, decimals=0):
     """Indian-grouped rupee amount."""
->>>>>>> 03dbdc9 (Initial commit)
     try:
         x = float(x)
     except (TypeError, ValueError):
         return str(x)
-<<<<<<< HEAD
-    neg = x < 0
-    x = abs(x)
-    s = f"{x:,.{decimals}f}"
-    # convert western grouping to Indian grouping
-    if "." in s:
-        whole, frac = s.split(".")
-        frac = "." + frac
-    else:
-        whole, frac = s, ""
-    whole = whole.replace(",", "")
-    if len(whole) > 3:
-        last3 = whole[-3:]
-        rest = whole[:-3]
-=======
     neg, x = x < 0, abs(x)
     s = f"{x:,.{decimals}f}"
     whole, frac = (s.split(".") + [""])[:2]
@@ -177,7 +148,6 @@ def inr(x, decimals=0):
     whole = whole.replace(",", "")
     if len(whole) > 3:
         last3, rest = whole[-3:], whole[:-3]
->>>>>>> 03dbdc9 (Initial commit)
         parts = []
         while len(rest) > 2:
             parts.insert(0, rest[-2:])
@@ -186,11 +156,7 @@ def inr(x, decimals=0):
             parts.insert(0, rest)
         whole = ",".join(parts) + "," + last3
     out = f"₹{whole}{frac}"
-<<<<<<< HEAD
-    return ("-" + out) if neg else out
-=======
     return ("−" + out) if neg else out
->>>>>>> 03dbdc9 (Initial commit)
 
 
 def crore(x, decimals=0):
@@ -201,15 +167,7 @@ def lakh(x, decimals=1):
     return f"₹{x / 1e5:,.{decimals}f} lakh"
 
 
-<<<<<<< HEAD
-def pct(x, decimals=1):
-    return f"{x * 100:.{decimals}f}%"
-
-
-# ---------------------------------------------------------------- data
-=======
 # ------------------------------------------------------------------ data
->>>>>>> 03dbdc9 (Initial commit)
 @st.cache_data(show_spinner=False)
 def riders(n=None):
     return data_gen.generate_riders(n=n)
@@ -225,29 +183,6 @@ def claims():
     return data_gen.simulate_claims(riders())
 
 
-<<<<<<< HEAD
-# ---------------------------------------------------------------- furniture
-def page_setup(title, icon="•"):
-    st.set_page_config(page_title=f"{title} — UBI Gig", page_icon="🛵",
-                       layout="wide", initial_sidebar_state="expanded")
-    st.markdown(
-        """
-        <style>
-          .block-container {padding-top: 2.2rem; max-width: 1400px;}
-          [data-testid="stMetricValue"] {font-size: 1.6rem;}
-          .formula {background:#f4f4f6; border-left:3px solid #999;
-                    padding:0.6rem 0.9rem; font-family: ui-monospace, monospace;
-                    font-size:0.86rem; border-radius:3px; margin:0.4rem 0 0.8rem 0;}
-          .ref {color:#666; font-size:0.82rem;}
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-def section_ref(text):
-    """Small grey pointer back to the business plan."""
-=======
 # ------------------------------------------------------------------ components
 def page_setup(title):
     st.set_page_config(page_title=f"{BRAND} · {title}", page_icon="🛵",
@@ -292,7 +227,6 @@ def card(col, num, title, body):
 
 
 def ref(text):
->>>>>>> 03dbdc9 (Initial commit)
     st.markdown(f"<div class='ref'>{text}</div>", unsafe_allow_html=True)
 
 
@@ -300,11 +234,6 @@ def formula(text):
     st.markdown(f"<div class='formula'>{text}</div>", unsafe_allow_html=True)
 
 
-<<<<<<< HEAD
-def how_it_works(title, body):
-    with st.expander(f"How this works — {title}"):
-        st.markdown(body)
-=======
 def note(text):
     st.markdown(f"<div class='note'>{text}</div>", unsafe_allow_html=True)
 
@@ -322,4 +251,3 @@ def steps(items):
 def note_ref(text):
     """Small section pointer back to the business plan."""
     st.markdown(f"<div class='ref'>{text}</div>", unsafe_allow_html=True)
->>>>>>> 03dbdc9 (Initial commit)

@@ -1,11 +1,7 @@
 """
 The premium function.
 
-<<<<<<< HEAD
-Business plan reference: section 5.3.
-=======
 Business plan reference: section 3.3.
->>>>>>> 03dbdc9 (Initial commit)
 
     P_day = BaseRate x (SI / 100000) x EEU_day
             x M_behaviour x M_age x M_vehicle x M_platform x M_fatigue
@@ -73,15 +69,6 @@ def quote(rider: RiderProfile, shift: ShiftContext, cfg: dict | None = None) -> 
                         rider.city, cfg)
 
     mults = rating_multipliers(rider, shift, cfg)
-<<<<<<< HEAD
-    raw_product = 1.0
-    for m in mults.values():
-        raw_product *= m["value"]
-
-    cap = cfg["multiplier_cap"]
-    capped_product = max(cap["floor"], min(cap["ceiling"], raw_product))
-    was_capped = abs(capped_product - raw_product) > 1e-9
-=======
     rating_product = 1.0
     for m in mults.values():
         rating_product *= m["value"]
@@ -110,37 +97,22 @@ def quote(rider: RiderProfile, shift: ShiftContext, cfg: dict | None = None) -> 
         eeu_for_pricing = exp["eeu"]
 
     was_capped = abs(capped_total - raw_product) > 1e-9
->>>>>>> 03dbdc9 (Initial commit)
 
     disc = loyalty_discount(rider.tenure_months, cfg)
     load_exp = cfg["loadings"]["expense"]
     load_mar = cfg["loadings"]["margin"]
 
-<<<<<<< HEAD
-    risk_premium = (cfg["base_rate"]
-                    * (rider.sum_insured / 100000.0)
-                    * exp["eeu"]
-                    * capped_product)
-=======
     # Premium is base x SI x hours x (capped total multiplier)
     risk_premium = (cfg["base_rate"]
                     * (rider.sum_insured / 100000.0)
                     * priced_hours
                     * capped_total)
->>>>>>> 03dbdc9 (Initial commit)
 
     premium_shift = risk_premium * (1 - disc) * (1 + load_exp) * (1 + load_mar)
     premium_per_hour = premium_shift / shift.hours if shift.hours else 0.0
     premium_month = premium_shift * shift.days_per_month
     premium_year = premium_month * 12
 
-<<<<<<< HEAD
-    return {
-        "exposure": exp,
-        "multipliers": mults,
-        "raw_multiplier_product": raw_product,
-        "capped_multiplier_product": capped_product,
-=======
     band = price_band(rider, cfg)
 
     return {
@@ -153,16 +125,12 @@ def quote(rider: RiderProfile, shift: ShiftContext, cfg: dict | None = None) -> 
         "capped_total_multiplier": capped_total,
         "eeu_for_pricing": eeu_for_pricing,
         "band": band,
->>>>>>> 03dbdc9 (Initial commit)
         "was_capped": was_capped,
         "loyalty_discount": disc,
         "load_expense": load_exp,
         "load_margin": load_mar,
         "base_rate": cfg["base_rate"],
-<<<<<<< HEAD
-=======
         "sum_insured": rider.sum_insured,
->>>>>>> 03dbdc9 (Initial commit)
         "risk_premium_shift": risk_premium,
         "premium_shift": premium_shift,
         "premium_per_hour": premium_per_hour,
@@ -174,8 +142,6 @@ def quote(rider: RiderProfile, shift: ShiftContext, cfg: dict | None = None) -> 
     }
 
 
-<<<<<<< HEAD
-=======
 def price_band(rider: RiderProfile, cfg: dict | None = None) -> dict:
     """
     The floor and ceiling hourly price for this rider's tier under the
@@ -195,53 +161,12 @@ def price_band(rider: RiderProfile, cfg: dict | None = None) -> dict:
     }
 
 
->>>>>>> 03dbdc9 (Initial commit)
 def waterfall(q: dict) -> list[dict]:
     """
     Build the step-by-step derivation for the waterfall chart on the quote page.
     Each step shows the running premium after applying one factor.
     """
     steps: list[dict] = []
-<<<<<<< HEAD
-    running = q["base_rate"] * (q["exposure"]["raw_hours"])  # notional start
-
-    # Rebuild from the base so the chart matches the formula exactly.
-    si_factor = q["risk_premium_shift"] / (
-        q["base_rate"] * q["exposure"]["eeu"] * q["capped_multiplier_product"]
-    ) if q["exposure"]["eeu"] else 0.0
-
-    base = q["base_rate"] * si_factor * q["exposure"]["raw_hours"]
-    steps.append({"label": "Base rate x SI x hours", "value": base})
-
-    after_time = base * q["exposure"]["m_time"]
-    steps.append({"label": f"Time of day (x{q['exposure']['m_time']:.2f})",
-                  "value": after_time})
-
-    after_weather = after_time * q["exposure"]["m_weather"]
-    steps.append({"label": f"Weather (x{q['exposure']['m_weather']:.2f})",
-                  "value": after_weather})
-
-    after_geo = after_weather * q["exposure"]["m_geo"]
-    steps.append({"label": f"City (x{q['exposure']['m_geo']:.2f})",
-                  "value": after_geo})
-
-    running = after_geo
-    for name, m in q["multipliers"].items():
-        running *= m["value"]
-        pretty = name.replace("M_", "").replace("_", " ").title()
-        steps.append({"label": f"{pretty} (x{m['value']:.2f})", "value": running})
-
-    if q["loyalty_discount"]:
-        running *= (1 - q["loyalty_discount"])
-        steps.append({"label": f"Loyalty (-{q['loyalty_discount']:.0%})",
-                      "value": running})
-
-    running *= (1 + q["load_expense"])
-    steps.append({"label": f"Expense load (+{q['load_expense']:.0%})", "value": running})
-
-    running *= (1 + q["load_margin"])
-    steps.append({"label": f"Margin load (+{q['load_margin']:.0%})", "value": running})
-=======
 
     # Base: what this shift would cost at multiplier 1.0, before loadings.
     base = (q["base_rate"] * (q["sum_insured"] / 100000.0)
@@ -280,6 +205,5 @@ def waterfall(q: dict) -> list[dict]:
     running *= (1 + q["load_margin"])
     steps.append({"label": f"Margin load (+{q['load_margin']:.0%})",
                   "value": running})
->>>>>>> 03dbdc9 (Initial commit)
 
     return steps
