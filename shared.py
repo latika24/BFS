@@ -34,7 +34,7 @@ BAD_SOFT = "#FAEBE8"
 
 CSS = f"""
 <style>
-  .block-container {{ padding-top: 1.5rem; padding-bottom: 3rem; max-width: 1440px; }}
+ .block-container {{ padding-bottom: 3rem; max-width: 1440px; }}
   h1,h2,h3,h4 {{ color:{INK}; letter-spacing:-0.015em; }}
   hr {{ border-color:{LINE}; }}
 
