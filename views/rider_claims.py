@@ -7,7 +7,7 @@ from datetime import datetime
 import pandas as pd
 import streamlit as st
 
-from shared import (topbar, h, kpi, inr, rows, badge, tracker, MUTED, PRIMARY,
+from shared import (html, topbar, h, kpi, inr, rows, badge, tracker, MUTED, PRIMARY,
                     OK, BAD, CLAIM_BADGE, empty, note)
 from engine import store
 
@@ -79,11 +79,11 @@ with tab_new:
                                help="A real crash reads as a deceleration spike "
                                     "followed by the phone going still")
             st.markdown(
-                f"<div style='color:{MUTED};font-size:.85rem;line-height:1.6;"
+                html(f"<div style='color:{MUTED};font-size:.85rem;line-height:1.6;"
                 f"margin-top:.5rem'>We hold the last five minutes of movement "
                 "data from your phone, your GPS trail and whether a shift was "
                 "declared. That is what lets us pay in seconds instead of "
-                "asking you for documents.</div>", unsafe_allow_html=True)
+                "asking you for documents.</div>"), unsafe_allow_html=True)
 
         st.write("")
         if st.button("Submit claim", type="primary", width="stretch"):
@@ -133,14 +133,14 @@ with tab_track:
         stage = {"Submitted": 0, "Verifying": 1, "Investigating": 1,
                  "Approved": 2, "Paid": 3, "Declined": 1}.get(c_.status, 0)
         when = datetime.fromisoformat(c_.submitted).strftime("%d %b, %H:%M")
-        st.markdown(f"""<div class='pol' style='margin-bottom:.4rem'>
+        st.markdown(html(f"""<div class='pol' style='margin-bottom:.4rem'>
           <div class='h'><div><div class='t'>{c_.incident}</div>
             <div class='n'>{c_.claim_id} · raised {when}</div></div>
             <div style='text-align:right'>
               {badge(c_.status, CLAIM_BADGE.get(c_.status, 'mute'))}
               <div style='font-weight:800;font-size:1.05rem;margin-top:.2rem'>
               {inr(c_.amount_approved or c_.amount_claimed)}</div></div>
-          </div><div class='b'></div></div>""", unsafe_allow_html=True)
+          </div><div class='b'></div></div>"""), unsafe_allow_html=True)
         tracker(stage, declined=(c_.status == "Declined"))
         if c_.status == "Declined":
             st.caption(f"Reason given: {c_.decline_reason}")

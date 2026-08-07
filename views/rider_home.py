@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from shared import (topbar, kpi, inr, rows, badge, MUTED, PRIMARY, ACCENT,
+from shared import (html, topbar, kpi, inr, rows, badge, MUTED, PRIMARY, ACCENT,
                     OK, CLAIM_BADGE, LINE)
 from engine import store
 from engine.config import CFG
@@ -46,7 +46,7 @@ left, right = st.columns([1.25, 1])
 
 with left:
     if on and pols:
-        st.markdown(f"""
+        st.markdown(html(f"""
         <div class='cover'>
           <div class='st'><span class='live'></span>You are covered</div>
           <div class='mt'>Riding for {r.platform.split(' (')[0]} ·
@@ -55,24 +55,24 @@ with left:
                font-weight:600'> /hour</span></div>
           <div class='rl'>Charged only while you are riding.
                Today so far: ₹{cost_today:.0f} for {hrs:.1f} hours.</div>
-        </div>""", unsafe_allow_html=True)
+        </div>"""), unsafe_allow_html=True)
     elif not pols:
-        st.markdown("""
+        st.markdown(html("""
         <div class='cover off'>
           <div class='st'>No active cover</div>
           <div class='mt'>You do not have a policy yet.</div>
           <div class='rate' style='font-size:1.4rem'>Buy cover to get protected</div>
           <div class='rl'>From ₹8 for a single shift.</div>
-        </div>""", unsafe_allow_html=True)
+        </div>"""), unsafe_allow_html=True)
     else:
-        st.markdown(f"""
+        st.markdown(html(f"""
         <div class='cover off'>
           <div class='st'>Cover is off</div>
           <div class='mt'>You are not on duty. You are not being charged.</div>
           <div class='rate' style='font-size:1.5rem'>₹0.00
                <span style='font-size:1rem;font-weight:600'>/hour</span></div>
           <div class='rl'>Go on duty and cover starts within seconds.</div>
-        </div>""", unsafe_allow_html=True)
+        </div>"""), unsafe_allow_html=True)
 
     st.write("")
     k = st.columns(4)
@@ -119,8 +119,8 @@ with w1:
     st.markdown("**Why you are paying ₹%.2f an hour right now**" % rate)
     exp = q["exposure"]
     drivers = [
-        (f"Base rate — {pols[0].tier if pols else 'Suraksha Plus'}",
-         CFG["tiers"][pols[0].tier if pols else "Suraksha Plus"]["price_per_hour"], True),
+        (f"Base rate — {pols[0].tier if pols else 'GigSure Plus'}",
+         CFG["tiers"][pols[0].tier if pols else "GigSure Plus"]["price_per_hour"], True),
         (f"Time — {band}", exp["m_time"], False),
         (f"Weather — {wx}", exp["m_weather"], False),
         (f"City — {r.city.split(' (')[0]}", exp["m_geo"], False),
@@ -193,11 +193,11 @@ with a2:
         when = datetime.fromisoformat(c_.submitted).strftime("%d %b")
         amt = inr(c_.amount_approved if c_.amount_approved else c_.amount_claimed)
         st.markdown(
-            f"<div class='card' style='margin-bottom:.5rem;padding:.75rem .95rem'>"
+            html(f"<div class='card' style='margin-bottom:.5rem;padding:.75rem .95rem'>"
             f"<div style='display:flex;justify-content:space-between;"
             f"align-items:center'><div><b style='font-size:.92rem'>{c_.incident}</b>"
             f"<div style='color:{MUTED};font-size:.78rem'>{c_.claim_id} · {when}"
             f"</div></div><div style='text-align:right'>"
             f"<div style='font-weight:800'>{amt}</div>"
             f"{badge(c_.status, CLAIM_BADGE.get(c_.status, 'mute'))}</div>"
-            f"</div></div>", unsafe_allow_html=True)
+            f"</div></div>"), unsafe_allow_html=True)

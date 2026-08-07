@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from shared import (topbar, h, kpi, inr, lakh, rows, badge, MUTED, PRIMARY,
+from shared import (html, topbar, h, kpi, inr, lakh, rows, badge, MUTED, PRIMARY,
                     ACCENT, OK, LINE, note)
 from engine import store, pricing, sum_insured as si_engine
 from engine.config import CFG
@@ -21,15 +21,15 @@ h("Buy cover",
 
 TIERS = CFG["tiers"]
 FEATURES = [
-    ("Death & permanent disability", ["Suraksha Basic", "Suraksha Plus", "Suraksha Pro"]),
-    ("Ambulance & first response", ["Suraksha Basic", "Suraksha Plus", "Suraksha Pro"]),
-    ("Broken bone benefit", ["Suraksha Basic", "Suraksha Plus", "Suraksha Pro"]),
-    ("Daily income while you cannot ride", ["Suraksha Plus", "Suraksha Pro"]),
-    ("Hospital daily cash", ["Suraksha Plus", "Suraksha Pro"]),
-    ("Legal help after an FIR", ["Suraksha Plus", "Suraksha Pro"]),
-    ("Your bike, damaged on shift", ["Suraksha Pro"]),
-    ("Orders you get charged for", ["Suraksha Pro"]),
-    ("Phone screen", ["Suraksha Pro"]),
+    ("Death & permanent disability", ["GigSure Basic", "GigSure Plus", "GigSure Pro"]),
+    ("Ambulance & first response", ["GigSure Basic", "GigSure Plus", "GigSure Pro"]),
+    ("Broken bone benefit", ["GigSure Basic", "GigSure Plus", "GigSure Pro"]),
+    ("Daily income while you cannot ride", ["GigSure Plus", "GigSure Pro"]),
+    ("Hospital daily cash", ["GigSure Plus", "GigSure Pro"]),
+    ("Legal help after an FIR", ["GigSure Plus", "GigSure Pro"]),
+    ("Your bike, damaged on shift", ["GigSure Pro"]),
+    ("Orders you get charged for", ["GigSure Pro"]),
+    ("Phone screen", ["GigSure Pro"]),
 ]
 
 # ------------------------------------------------------------- calculator
@@ -62,7 +62,7 @@ st.write("")
 cols = st.columns(len(TIERS) + 1)
 choice_key = "buy_tier"
 if choice_key not in st.session_state:
-    st.session_state[choice_key] = "Suraksha Plus"
+    st.session_state[choice_key] = "GigSure Plus"
 
 for i, (tier, meta) in enumerate(TIERS.items()):
     q = quotes[tier]
@@ -74,15 +74,15 @@ for i, (tier, meta) in enumerate(TIERS.items()):
                   f"{'✓' if has else '—'} {label}</li>")
     with cols[i]:
         st.markdown(
-            f"""<div class='plan {'sel' if sel else ''}'>
-                  <div class='nm'>{tier.replace('Suraksha ', '')}</div>
+            html(f"""<div class='plan {'sel' if sel else ''}'>
+                  <div class='nm'>{tier.replace('GigSure ', '')}</div>
                   <div class='pr'>₹{q['premium_per_hour']:.2f}</div>
                   <div class='pu'>per hour you ride · about
                        <b>{inr(q['premium_month'])}</b>/month at {hours_pm} hrs</div>
                   <div style='margin-top:.5rem;font-size:.8rem;color:{MUTED}'>
                        Cover up to {lakh(meta['sum_insured_reference'])}</div>
                   <ul>{feats}</ul>
-                </div>""", unsafe_allow_html=True)
+                </div>"""), unsafe_allow_html=True)
         if st.button("Selected" if sel else "Choose", key=f"pick{tier}",
                      width="stretch", type="primary" if sel else "secondary"):
             st.session_state[choice_key] = tier
@@ -91,17 +91,17 @@ for i, (tier, meta) in enumerate(TIERS.items()):
 with cols[-1]:
     sp = CFG["shift_pass"]
     st.markdown(
-        f"""<div class='plan'>
+        html(f"""<div class='plan'>
               <div class='nm'>Shift Pass</div>
               <div class='pr'>₹{sp['price']}</div>
               <div class='pu'>for one {sp['hours']}-hour shift · no commitment</div>
               <div style='margin-top:.5rem;font-size:.8rem;color:{MUTED}'>
-                   Cover up to {lakh(TIERS['Suraksha Basic']['sum_insured_reference'])}</div>
+                   Cover up to {lakh(TIERS['GigSure Basic']['sum_insured_reference'])}</div>
               <ul><li>✓ Death & disability</li><li>✓ Ambulance</li>
                   <li>✓ Broken bone benefit</li>
                   <li class='no'>— Income cover</li>
                   <li class='no'>— Bike & orders</li></ul>
-            </div>""", unsafe_allow_html=True)
+            </div>"""), unsafe_allow_html=True)
     st.button("Buy a single shift", key="shiftpass", width="stretch")
 
 tier = st.session_state[choice_key]
@@ -183,13 +183,13 @@ if a[0].checkbox("Family top-up — extend hospital cash and life cover to your 
                  "spouse and children (+₹0.40/hr)"):
     addons.append("Family top-up")
 if a[1].checkbox("Phone screen & theft (+₹0.25/hr)",
-                 value=(tier == "Suraksha Pro")):
+                 value=(tier == "GigSure Pro")):
     addons.append("Phone screen")
 if a[2].checkbox("EV battery cover (+₹0.35/hr)"):
     addons.append("EV battery")
 
 addon_rate = 0.40 * ("Family top-up" in addons) + \
-             0.25 * ("Phone screen" in addons and tier != "Suraksha Pro") + \
+             0.25 * ("Phone screen" in addons and tier != "GigSure Pro") + \
              0.35 * ("EV battery" in addons)
 final_hr = q["premium_per_hour"] + addon_rate
 final_month = final_hr * hours_pm
@@ -212,8 +212,8 @@ with ch1:
         ("Billed", "Daily by UPI Autopay, only for hours you ride"),
         ("Lock-in", "None — cancel any time"),
     ])
-    st.markdown("<div class='card'><h4 style='margin-bottom:.6rem'>Your order"
-                "</h4>%s</div>" % _order, unsafe_allow_html=True)
+    st.markdown(html("<div class='card'><h4 style='margin-bottom:.6rem'>Your order"
+                "</h4>%s</div>" % _order), unsafe_allow_html=True)
 
 with ch2:
     st.markdown("**Three steps, about ninety seconds**")

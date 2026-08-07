@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from shared import (topbar, h, kpi, inr, lakh, rows, badge, MUTED, PRIMARY,
+from shared import (html, topbar, h, kpi, inr, lakh, rows, badge, MUTED, PRIMARY,
                     OK, LINE, empty)
 from engine import store
 from engine.config import CFG
@@ -43,7 +43,7 @@ for p in pols:
         ("Claims made", str(p.claims_made)),
     ])
 
-    st.markdown(f"""
+    st.markdown(html(f"""
     <div class='pol'>
       <div class='h'>
         <div><div class='t'>{p.tier}</div>
@@ -53,7 +53,7 @@ for p in pols:
              since {started.strftime('%d %b %Y')}</div></div>
       </div>
       <div class='b'>{_rows1}</div>
-    </div>""", unsafe_allow_html=True)
+    </div>"""), unsafe_allow_html=True)
 
     a, b, c = st.columns(3)
     if a.button("Download certificate", key=f"cert{p.policy_id}",
@@ -66,7 +66,7 @@ for p in pols:
         st.rerun()
 
     if st.session_state.get("show_cert") == p.policy_id:
-        cert = f"""SURAKSHA GENERAL INSURANCE
+        cert = f"""GIGSURE GENERAL INSURANCE
 CERTIFICATE OF INSURANCE
 
 Policy number      {p.policy_id}
@@ -133,13 +133,13 @@ with b1:
 with b2:
     st.markdown("**How your income cover was worked out**")
     st.markdown(
-        f"<div style='color:{MUTED};font-size:.87rem;line-height:1.6'>"
+        html(f"<div style='color:{MUTED};font-size:.87rem;line-height:1.6'>"
         f"You earn about <b>{inr(r.monthly_net_earnings)}</b> a month, which is "
         f"<b>{inr(r.daily_net_earnings)}</b> on a working day.<br><br>"
         f"We pay <b>75%</b> of that — {inr(dib['gross'])} — capped at ₹1,200. "
         f"So your benefit is <b>{inr(dib['value'])} a day</b>.<br><br>"
         "It is deliberately less than you earn riding. It has to be: nobody "
-        "should be better off staying at home than working.</div>",
+        "should be better off staying at home than working.</div>"),
         unsafe_allow_html=True)
 
     st.write("")

@@ -1,4 +1,4 @@
-"""Design system, formatting and cached data for the Suraksha platform."""
+"""Design system, formatting and cached data for the GigSure platform."""
 from __future__ import annotations
 
 import sys
@@ -41,15 +41,21 @@ CSS = f"""
   /* ---------- top bar ---------- */
   .topbar {{
     display:flex; align-items:center; justify-content:space-between;
+    gap:1rem; flex-wrap:wrap; box-sizing:border-box; min-height:62px;
     background:{PRIMARY}; color:#fff; border-radius:12px;
-    padding:.75rem 1.15rem; margin-bottom:1.1rem;
+    padding:.8rem 1.15rem; margin-bottom:1.1rem;
   }}
-  .topbar .left {{ display:flex; align-items:center; gap:.7rem; }}
-  .topbar .logo {{ font-weight:800; font-size:1.05rem; letter-spacing:-.02em; }}
+  .topbar > * {{ min-width:0; }}
+  .topbar .left {{ display:flex; align-items:center; gap:.7rem;
+                   flex:0 1 auto; }}
+  .topbar .logo {{ font-weight:800; font-size:1.05rem; letter-spacing:-.02em;
+                   white-space:nowrap; }}
   .topbar .mode {{ background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.3);
                    padding:.16rem .6rem; border-radius:999px; font-size:.72rem;
-                   text-transform:uppercase; letter-spacing:.1em; }}
-  .topbar .right {{ font-size:.84rem; opacity:.92; text-align:right; line-height:1.35; }}
+                   text-transform:uppercase; letter-spacing:.1em;
+                   white-space:nowrap; }}
+  .topbar .right {{ font-size:.82rem; opacity:.92; text-align:right;
+                    line-height:1.45; flex:0 1 auto; }}
 
   /* ---------- generic surfaces ---------- */
   .card {{ background:#fff; border:1px solid {LINE}; border-radius:14px;
@@ -198,17 +204,33 @@ def book_claims():
 
 
 # ------------------------------------------------------------------ chrome
+def html(markup: str) -> str:
+    """
+    Collapse a multi-line HTML string onto one line.
+
+    Streamlit runs everything through a Markdown parser first, and Markdown
+    treats a line indented by four or more spaces as a code block. Multi-line
+    HTML written with normal Python indentation therefore gets shredded before
+    it ever reaches the browser. Collapsing runs of whitespace to a single
+    space fixes it, and is harmless because HTML collapses whitespace anyway.
+    """
+    return " ".join(markup.split())
+
+
+def md(markup: str):
+    """st.markdown for raw HTML, indentation-safe."""
+    st.markdown(html(markup), unsafe_allow_html=True)
+
+
 def boot(title):
     st.markdown(CSS, unsafe_allow_html=True)
 
 
 def topbar(mode, right_html=""):
-    st.markdown(
-        f"""<div class='topbar'><div class='left'>
-              <span class='logo'>🛵 {BRAND}</span>
-              <span class='mode'>{mode}</span></div>
-            <div class='right'>{right_html}</div></div>""",
-        unsafe_allow_html=True)
+    md(f"<div class='topbar'>"
+       f"<div class='left'><span class='logo'>🛵 {BRAND}</span>"
+       f"<span class='mode'>{mode}</span></div>"
+       f"<div class='right'>{right_html}</div></div>")
 
 
 def h(title, sub=""):
@@ -220,14 +242,16 @@ def h(title, sub=""):
 
 
 def kpi(col, label, value, delta=""):
-    col.markdown(f"""<div class='kpi'><div class='k'>{label}</div>
-                 <div class='v'>{value}</div><div class='d'>{delta}</div></div>""",
+    col.markdown(html(f"<div class='kpi'><div class='k'>{label}</div>"
+                      f"<div class='v'>{value}</div>"
+                      f"<div class='d'>{delta}</div></div>"),
                  unsafe_allow_html=True)
 
 
 def card(col, num, title, body):
-    col.markdown(f"""<div class='card'><div class='num'>{num}</div>
-                 <h4>{title}</h4><p>{body}</p></div>""", unsafe_allow_html=True)
+    col.markdown(html(f"<div class='card'><div class='num'>{num}</div>"
+                      f"<h4>{title}</h4><p>{body}</p></div>"),
+                 unsafe_allow_html=True)
 
 
 def badge(text, kind="info"):
@@ -260,18 +284,18 @@ def tracker(stage: int, declined=False, labels=None):
     """Claim progress bar. stage 0..3."""
     labels = labels or ["Submitted", "Verifying", "Approved", "Paid"]
     n = len(labels)
-    html = "<div class='track'>"
+    out = "<div class='track'>"
     for i in range(n):
         on = i <= stage
         cls = "bad" if (declined and i == stage) else ("on" if on else "")
         mark = "✕" if (declined and i == stage) else ("✓" if i < stage or (on and i == stage) else str(i + 1))
-        html += f"<div class='n {cls}'>{mark}</div>"
+        out += f"<div class='n {cls}'>{mark}</div>"
         if i < n - 1:
-            html += f"<div class='ln {'on' if i < stage else ''}'></div>"
-    html += "</div><div class='tlab'>"
-    html += "".join(f"<span>{l}</span>" for l in labels)
-    html += "</div>"
-    st.markdown(html, unsafe_allow_html=True)
+            out += f"<div class='ln {'on' if i < stage else ''}'></div>"
+    out += "</div><div class='tlab'>"
+    out += "".join(f"<span>{l}</span>" for l in labels)
+    out += "</div>"
+    st.markdown(" ".join(out.split()), unsafe_allow_html=True)
 
 
 CLAIM_BADGE = {

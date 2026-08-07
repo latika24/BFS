@@ -8,7 +8,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from shared import (topbar, h, kpi, inr, rows, badge, MUTED, PRIMARY, ACCENT,
+from shared import (html, topbar, h, kpi, inr, rows, badge, MUTED, PRIMARY, ACCENT,
                     OK, BAD, WARN, CLAIM_BADGE, empty, note, riders)
 from engine import store
 
@@ -52,18 +52,19 @@ else:
             top = st.columns([2.3, 1, 1, 1.2])
             top[0].markdown(
                 f"**{c_.incident}**  \n"
-                f"<span style='color:{MUTED};font-size:.8rem'>{c_.claim_id} · "
-                f"{c_.rider_name} ({c_.rider_id}) · policy {c_.policy_id}</span>",
+                + html(f"<span style='color:{MUTED};font-size:.8rem'>"
+                       f"{c_.claim_id} · {c_.rider_name} ({c_.rider_id}) · "
+                       f"policy {c_.policy_id}</span>"),
                 unsafe_allow_html=True)
-            top[1].markdown(f"**{inr(c_.amount_claimed)}**  \n"
+            top[1].markdown(html(f"**{inr(c_.amount_claimed)}**  \n"
                             f"<span style='color:{MUTED};font-size:.8rem'>"
-                            f"{c_.basis}</span>", unsafe_allow_html=True)
-            top[2].markdown(f"**Tier {c_.tier}**  \n"
+                            f"{c_.basis}</span>"), unsafe_allow_html=True)
+            top[2].markdown(html(f"**Tier {c_.tier}**  \n"
                             f"<span style='color:{MUTED};font-size:.8rem'>"
-                            f"raised {age_min:.0f} min ago</span>",
+                            f"raised {age_min:.0f} min ago</span>"),
                             unsafe_allow_html=True)
-            top[3].markdown(badge(c_.status, CLAIM_BADGE.get(c_.status, "mute"))
-                            + " " + flag_html, unsafe_allow_html=True)
+            top[3].markdown(html(badge(c_.status, CLAIM_BADGE.get(c_.status, "mute"))
+                            + " " + flag_html), unsafe_allow_html=True)
 
             ev = st.columns([1.5, 1])
             with ev[0]:
@@ -155,11 +156,11 @@ h("Fraud controls",
 f = st.columns(3)
 with f[0]:
     st.markdown("**Telematics contradiction check**")
-    st.markdown(f"<div style='color:{MUTED};font-size:.87rem;line-height:1.6'>"
+    st.markdown(html(f"<div style='color:{MUTED};font-size:.87rem;line-height:1.6'>"
                 "Runs daily on every open income-benefit claim. A rider drawing "
                 "the benefit while the SDK shows them riding for another app is "
                 "a provable, automatic denial. No conventional insurer can do "
-                "this.</div>", unsafe_allow_html=True)
+                "this.</div>"), unsafe_allow_html=True)
     R = riders()
     flagged = int(len(R) * 0.006)
     st.metric("Open contradictions", flagged, "0.6% of active income claims")

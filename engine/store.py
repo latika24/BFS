@@ -143,7 +143,7 @@ def _new():
 
     pol = Policy(
         policy_id="SUR-2026-004821", rider_id=rider.rider_id,
-        tier="Suraksha Plus", started=(now - timedelta(days=247)).isoformat(),
+        tier="GigSure Plus", started=(now - timedelta(days=247)).isoformat(),
         addons=["Phone screen"], hours_covered=1642.0,
         premium_collected=4180.0, wallet=386.0, claims_made=2)
 
@@ -234,7 +234,7 @@ def current_rate(hours: float | None = None, time_band: str = "19:00-23:00",
     """Price the rider's current hour under live conditions."""
     r = rider()
     pols = active_policies()
-    tier = pols[0].tier if pols else "Suraksha Plus"
+    tier = pols[0].tier if pols else "GigSure Plus"
     si = CFG["tiers"][tier]["sum_insured_reference"]
     prof = pricing.RiderProfile(
         age=r.age, city=r.city, vehicle=r.vehicle, platform=r.platform,

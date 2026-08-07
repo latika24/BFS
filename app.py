@@ -1,5 +1,5 @@
 """
-Suraksha — usage-based insurance for India's gig workers.
+GigSure — usage-based insurance for India's gig workers.
 
 Two products in one prototype:
   · the Rider App, which a gig worker uses to hold cover and claim on it
@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-st.set_page_config(page_title="Suraksha", page_icon="🛵", layout="wide",
+st.set_page_config(page_title="GigSure", page_icon="🛵", layout="wide",
                    initial_sidebar_state="expanded")
 
 from shared import CSS, PRIMARY, MUTED  # noqa: E402
@@ -26,7 +26,7 @@ st.markdown(CSS, unsafe_allow_html=True)
 with st.sidebar:
     st.markdown(
         f"<div style='font-size:1.25rem;font-weight:800;color:{PRIMARY};"
-        f"margin-bottom:.1rem'>🛵 Suraksha</div>"
+        f"margin-bottom:.1rem'>🛵 GigSure</div>"
         f"<div style='font-size:.78rem;color:{MUTED};margin-bottom:.9rem'>"
         "Pay-as-you-work cover</div>", unsafe_allow_html=True)
 

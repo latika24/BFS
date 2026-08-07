@@ -1,4 +1,4 @@
-# Suraksha — usage-based insurance for India's gig workers
+# GigSure — usage-based insurance for India's gig workers
 
 A working prototype of the platform, not a slide deck. Two products share one
 live state:
@@ -74,7 +74,7 @@ Demo state (the rider, their policy, claims and ledger) is seeded in
 
 | Figure | Plan | Engine |
 |---|---|---|
-| Suraksha Plus base rate | ₹2.50/hr (§3.3) | ₹2.50 |
+| GigSure Plus base rate | ₹2.50/hr (§3.3) | ₹2.50 |
 | Price band under the governance cap | ₹1.50–₹5.50 (§3.3) | ₹1.50–₹5.51 |
 | Full-time rider, monthly premium | ₹520 | ₹520 |
 | Book-average premium per worker | ₹5,400/yr (§4) | ₹5,400 |

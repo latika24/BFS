@@ -27,7 +27,7 @@ class RiderProfile:
     tenure_months: int = 0
     safety_score: float = 72.0
     sum_insured: int = 1000000
-    tier: str = "Suraksha Plus"
+    tier: str = "GigSure Plus"
 
 
 @dataclass
@@ -78,7 +78,7 @@ def quote(rider: RiderProfile, shift: ShiftContext, cfg: dict | None = None) -> 
     # The governance band (§3.3) covers "time of day, weather, traffic, city
     # and behaviour score" - so the cap applies to the exposure and rating
     # factors combined, not to the rating factors alone. That is what makes a
-    # Suraksha Plus rider pay between about Rs 1.50 and Rs 5.50 an hour rather
+    # GigSure Plus rider pay between about Rs 1.50 and Rs 5.50 an hour rather
     # than an unbounded amount on a bad night.
     cap = cfg["multiplier_cap"]
     if cap.get("applies_to", "total") == "total":
@@ -145,7 +145,7 @@ def quote(rider: RiderProfile, shift: ShiftContext, cfg: dict | None = None) -> 
 def price_band(rider: RiderProfile, cfg: dict | None = None) -> dict:
     """
     The floor and ceiling hourly price for this rider's tier under the
-    governance band (§3.3). For Suraksha Plus this should be about
+    governance band (§3.3). For GigSure Plus this should be about
     Rs 1.50 to Rs 5.50 an hour.
     """
     cfg = cfg or CFG

@@ -96,7 +96,7 @@ new_tel.update(harsh_braking=st.session_state["t_brake"],
                night_riding_share=st.session_state["t_night"])
 new_score = ss.compute(new_tel)
 
-tier = pols[0].tier if pols else "Suraksha Plus"
+tier = pols[0].tier if pols else "GigSure Plus"
 si = CFG["tiers"][tier]["sum_insured_reference"]
 
 

@@ -9,7 +9,7 @@
 meta:
   version: "2.0"
   plan_reference: "Usage-Based Insurance for India's Gig Workers, August 2026"
-  product_name: "Suraksha"
+  product_name: "GigSure"
   tagline: "Insurance that belongs to you, not to the app you ride for."
   positioning: >
     For the gig rider earning across more than one app, the only insurer whose
@@ -39,12 +39,12 @@ sections:
 # Expected claim cost per EEU per Rs 1 lakh of sum insured.
 #
 # CALIBRATION: set so that the reference rider below prices at Rs 2.50 per
-# active hour, matching the published Suraksha Plus tier price in §3.3.
+# active hour, matching the published GigSure Plus tier price in §3.3.
 #
 # NOTE ON A RECONCILIATION IN THE PLAN. Two figures in the report do not
 # multiply together directly, and the dashboard surfaces this rather than
 # hiding it:
-#   §3.3 prices Suraksha Plus at Rs 2.50 per active hour, and describes a
+#   §3.3 prices GigSure Plus at Rs 2.50 per active hour, and describes a
 #        full-time rider as ~208 active hours/month. That is Rs 6,240/year.
 #   §4 uses Rs 5,400 of GWP per active worker per year for the book.
 # Both can be true. Rs 5,400 is the BLENDED average across a book that
@@ -78,7 +78,7 @@ loadings:
 #
 # The plan states: "What a worker pays is the base multiplied by the risk of
 # that particular hour - time of day, weather, traffic, city and behaviour
-# score - inside a governance band of roughly 0.6x to 2.2x, so a Suraksha Plus
+# score - inside a governance band of roughly 0.6x to 2.2x, so a GigSure Plus
 # rider pays between about Rs 1.50 and Rs 5.50 an hour."
 #
 # The cap therefore applies to the TOTAL multiplier, exposure factors included,
@@ -266,15 +266,15 @@ benefits:
 # PACKAGING (§3.3 — Price)
 # -----------------------------------------------------------------------------
 tiers:
-  Suraksha Basic:
+  GigSure Basic:
     price_per_hour: 1.50
     sum_insured_reference: 500000
     contents: "Death, PTD, ambulance, fracture benefit"
-  Suraksha Plus:
+  GigSure Plus:
     price_per_hour: 2.50
     sum_insured_reference: 1000000
     contents: "Basic + daily income benefit + hospital cash + legal aid"
-  Suraksha Pro:
+  GigSure Pro:
     price_per_hour: 4.00
     sum_insured_reference: 1500000
     contents: "Plus + on-duty vehicle benefit + consignment + phone"
