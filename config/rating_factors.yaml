@@ -1,0 +1,373 @@
+# =============================================================================
+# Rating factors and model parameters
+# Usage-Based Insurance for India's Gig Workers
+#
+# EVERY number the model uses lives in this file. Change it here and the whole
+# dashboard follows. Section references (§) point to the business plan.
+# =============================================================================
+
+meta:
+  version: "1.0"
+  plan_reference: "Usage-Based Insurance for India's Gig Workers, August 2026"
+
+# -----------------------------------------------------------------------------
+# BASE RATE  (§5.3)
+# Expected claim cost per EEU per Rs 1 lakh of sum insured.
+#
+# CALIBRATION: set so that the reference rider below prices at Rs 2.50 per
+# active hour, matching the published Suraksha Plus tier price in §4.4.
+#
+# NOTE ON A RECONCILIATION IN THE PLAN. Two figures in the report do not
+# multiply together directly, and the dashboard surfaces this rather than
+# hiding it:
+#   §4.4 prices Suraksha Plus at Rs 2.50 per active hour, and describes a
+#        full-time rider as ~208 active hours/month. That is Rs 6,240/year.
+#   §6.2 uses Rs 5,400 of GWP per active worker per year for the book.
+# Both can be true. Rs 5,400 is the BLENDED average across a book that
+# includes part-time and occasional riders, and implies an average of about
+# 180 active hours/month rather than 208. The Rider Quote page prices an
+# individual at the tier rate; the Portfolio page uses the book average.
+# -----------------------------------------------------------------------------
+base_rate: 0.1785
+
+# The rider used to calibrate base_rate. Shown on the Rider Quote page so the
+# calibration is auditable rather than asserted.
+reference_rider:
+  age: 27
+  city: "Tier-1"
+  vehicle: "<=110cc petrol"
+  platform: "Food delivery"
+  safety_score: 78
+  sum_insured: 1000000
+  hours_per_shift: 8
+  time_band: "11:00-16:00"
+  weather: "Clear"
+  days_per_month: 26
+  expected_price_per_hour: 2.50
+  blended_book_hours_per_month: 180
+
+loadings:
+  expense: 0.30          # Load_expense
+  margin: 0.08           # Load_margin
+
+# Total multiplier is capped in this band (§5.3 governance constraint).
+# Outside the band we decline or mandate a safety intervention rather than
+# pricing the worker out.
+multiplier_cap:
+  floor: 0.6
+  ceiling: 2.2
+
+# -----------------------------------------------------------------------------
+# LAYER A — EXPOSURE MULTIPLIERS (§5.2, §5.3)
+# Applied per 15-minute block to build the Effective Exposure Unit.
+# -----------------------------------------------------------------------------
+time_of_day:
+  "05:00-11:00": 0.85
+  "11:00-16:00": 1.00
+  "16:00-19:00": 1.15
+  "19:00-23:00": 1.35
+  "23:00-05:00": 1.60
+
+weather:
+  Clear: 1.00
+  Light rain: 1.25
+  Heavy rain: 1.60
+  Fog / low visibility: 1.50
+  Heat index > 42C: 1.20
+
+city:
+  "Metro (Mumbai, Delhi, Bengaluru)": 1.20
+  "Tier-1": 1.00
+  "Tier-2/3": 0.85
+
+# -----------------------------------------------------------------------------
+# LAYER B — BEHAVIOUR (§5.2)
+# Weights used to build the Rider Safety Score (0-100). Each input is scored
+# 0-100 on its own scale, then combined with these weights.
+# -----------------------------------------------------------------------------
+safety_score_weights:
+  harsh_braking: 0.22          # best single predictor in 2W telematics
+  harsh_acceleration: 0.12
+  cornering_severity: 0.14
+  over_speeding: 0.16
+  screen_on_while_moving: 0.18  # unique to gig work, very high risk
+  night_riding_share: 0.08
+  fatigue_events: 0.06
+  deliveries_per_hour: 0.04
+
+# Premium multiplier by resulting score band
+safety_score_bands:
+  "90-100": 0.80
+  "70-89": 0.95
+  "50-69": 1.15
+  "Below 50": 1.50
+
+# -----------------------------------------------------------------------------
+# LAYER C — STATIC AND SEMI-STATIC (§5.2, §5.3)
+# -----------------------------------------------------------------------------
+age:
+  "18-21": 1.30
+  "22-30": 1.05
+  "31-45": 0.95
+  "46+": 1.10
+
+vehicle:
+  "Electric 2W": 0.95
+  "<=110cc petrol": 1.00
+  "111-150cc petrol": 1.08
+  ">150cc petrol": 1.20
+
+platform:
+  "Food delivery": 1.00
+  "Quick commerce (10-min)": 1.25
+  "Parcel / e-commerce": 0.90
+  "Bike taxi": 1.15
+
+fatigue:
+  "Under 8 continuous hours": 1.00
+  "Over 8 continuous hours": 1.20
+  "Over 10 continuous hours": 1.40
+
+# Loyalty discount by tenure with us, in months
+loyalty_discount:
+  0: 0.00
+  6: 0.02
+  12: 0.05
+  24: 0.08
+
+# -----------------------------------------------------------------------------
+# SUM INSURED PARAMETERS (§5.4)
+# -----------------------------------------------------------------------------
+sum_insured:
+  # Accidental death / PTD: human life value approach
+  ad_earnings_multiple: 8
+  ad_floor: 500000
+  ad_ceiling: 2500000
+
+  # Daily income benefit
+  dib_earnings_factor: 0.75      # must never be more profitable to stay off the road
+  dib_daily_cap: 1200
+  dib_waiting_days: 3
+  dib_max_days: 90
+
+  # On-duty vehicle benefit
+  vehicle_idv_cap: 80000
+  vehicle_per_event_pct: 0.40
+  vehicle_annual_aggregate_pct: 1.00
+
+  # Consignment / deduction protection
+  consignment_per_event_cap: 25000
+  consignment_aggregate_multiple: 10
+
+  # Fixed tiers
+  hospital_daily_cash: 1000
+  hospital_cash_max_days: 30
+  fracture_min: 5000
+  fracture_max: 25000
+  ambulance_network_cap: 5000
+  ambulance_out_of_network_fixed: 2000
+
+# -----------------------------------------------------------------------------
+# BENEFIT SCHEDULE — settlement basis
+# Fixed benefit vs indemnity, and the control that applies to each.
+# -----------------------------------------------------------------------------
+benefits:
+  - name: Accidental death
+    product: Rider Shield
+    basis: Fixed benefit
+    control: "SI formula-driven on observed earnings; Tier 3 investigation"
+  - name: Permanent total disability
+    product: Rider Shield
+    basis: Fixed benefit
+    control: "Mandatory independent medical examination by panel"
+  - name: Permanent partial disability
+    product: Rider Shield
+    basis: Fixed benefit (scheduled)
+    control: "Conservative schedule; same body part cannot be claimed twice"
+  - name: Daily income benefit
+    product: Rider Shield
+    basis: Fixed benefit, engineered as partial indemnity
+    control: "75% of observed earnings; 3-day wait; objective injury evidence; telematics contradiction check"
+  - name: Hospital daily cash
+    product: Rider Shield
+    basis: Fixed benefit
+    control: "Minimum 24-hour admission; 30-day annual cap"
+  - name: Fracture benefit
+    product: Rider Shield
+    basis: Fixed benefit (scheduled)
+    control: "X-ray evidence required"
+  - name: OPD benefit
+    product: Rider Shield
+    basis: Fixed benefit
+    control: "Payable only against a telematics-corroborated incident"
+  - name: Ambulance
+    product: Rider Shield
+    basis: Indemnity, paid direct to network
+    control: "No cash to claimant; fixed Rs 2,000 if out-of-network"
+  - name: Legal assistance
+    product: Rider Shield
+    basis: Service (no payout)
+    control: "Provide the lawyer; never reimburse fees"
+  - name: On-duty vehicle damage
+    product: Ride Shield
+    basis: Fixed benefit (scheduled)
+    control: "Baseline photos at inception; telematics-corroborated impact; paid to network garage"
+  - name: EV battery
+    product: Ride Shield
+    basis: Indemnity, paid direct to OEM/network
+    control: "Never cash to rider"
+  - name: Consignment & deduction protection
+    product: Ride Shield
+    basis: Indemnity
+    control: "Reimburse actual deduction on platform statement; frequency flag on outliers"
+  - name: Goods in transit / spillage
+    product: Ride Shield
+    basis: Indemnity
+    control: "Capped at P95 of trailing order value"
+  - name: Phone screen & theft
+    product: Ride Shield
+    basis: Indemnity, paid direct to repair network
+    control: "Never cash; theft requires FIR"
+
+# -----------------------------------------------------------------------------
+# PACKAGING (§4.4)
+# -----------------------------------------------------------------------------
+tiers:
+  Suraksha Basic:
+    price_per_hour: 1.50
+    sum_insured_reference: 500000
+    contents: "Death, PTD, ambulance, fracture benefit"
+  Suraksha Plus:
+    price_per_hour: 2.50
+    sum_insured_reference: 1000000
+    contents: "Basic + daily income benefit + hospital cash + legal aid"
+  Suraksha Pro:
+    price_per_hour: 4.00
+    sum_insured_reference: 1500000
+    contents: "Plus + on-duty vehicle benefit + consignment + phone"
+
+shift_pass:
+  price: 8
+  hours: 6
+
+# -----------------------------------------------------------------------------
+# BURNING COST (§6.1) — per 1,000 full-time active riders per year
+# -----------------------------------------------------------------------------
+burning_cost:
+  - head: Accidental death
+    frequency_per_1000: 0.8
+    average_claim: 1000000
+  - head: Permanent total / partial disability
+    frequency_per_1000: 2.0
+    average_claim: 400000
+  - head: Temporary disability - income benefit
+    frequency_per_1000: 60
+    average_claim: 10800
+  - head: Hospital cash, fracture, OPD
+    frequency_per_1000: 90
+    average_claim: 8000
+  - head: Ambulance & first response
+    frequency_per_1000: 120
+    average_claim: 1500
+
+# -----------------------------------------------------------------------------
+# PORTFOLIO MODEL (§6.2, §6.4, §6.6)
+# -----------------------------------------------------------------------------
+portfolio:
+  gwp_per_worker: 5400
+  investment_income_pct_gwp: 0.05
+  reinsurance_pct_gwp: 0.06
+  no_claim_wallet_pct_gwp: 0.04
+  quota_share_cession: 0.30
+
+  # Share of operating expenses that does NOT scale down with premium: the
+  # statutory key management team, actuarial, audit, compliance, core tech.
+  # Used to derive the expense ratio when growth differs from plan (§6.7).
+  fixed_expense_share: 0.65
+
+  # Year 1 is the first full year of writing (project month 21 onward)
+  trajectory:
+    - year: 1
+      workers: 20000
+      loss_ratio: 1.25
+      expense_ratio: 0.55
+    - year: 2
+      workers: 90000
+      loss_ratio: 0.94
+      expense_ratio: 0.36
+    - year: 3
+      workers: 240000
+      loss_ratio: 0.83
+      expense_ratio: 0.25
+    - year: 4
+      workers: 450000
+      loss_ratio: 0.76
+      expense_ratio: 0.22
+    - year: 5
+      workers: 700000
+      loss_ratio: 0.72
+      expense_ratio: 0.22
+    - year: 6
+      workers: 950000
+      loss_ratio: 0.69
+      expense_ratio: 0.23
+    - year: 7
+      workers: 1200000
+      loss_ratio: 0.64
+      expense_ratio: 0.21
+
+  # Solvency (§6.6)
+  solvency:
+    rsm_floor_cr: 50
+    rsm_pct_nwp: 0.20
+    statutory_ratio: 1.50
+    target_ratio: 2.00
+    internal_throttle_ratio: 1.80
+
+  funding_rounds:
+    - name: "Pre-licence (Seed / Series A)"
+      year: 0
+      amount_cr: 300
+    - name: "Series B"
+      year: 3
+      amount_cr: 150
+    - name: "Series C"
+      year: 5
+      amount_cr: 100
+
+  pre_launch_build_cost_cr: 60
+
+# -----------------------------------------------------------------------------
+# SYNTHETIC DATA GENERATION
+# Distributions chosen to match the report: ~25% of workers ride >8 hrs/day,
+# ~33% work purely in free time, monthly attrition 30-40%.
+# -----------------------------------------------------------------------------
+synthetic:
+  n_riders: 5000
+  seed: 42
+  segment_mix:
+    Occasional: 0.33      # free-time riders
+    Part-time: 0.42
+    Full-time: 0.25       # >8 hrs/day
+  hours_per_month:
+    Occasional: [20, 70]
+    Part-time: [70, 160]
+    Full-time: [160, 260]
+  monthly_earnings:
+    Occasional: [4000, 12000]
+    Part-time: [12000, 22000]
+    Full-time: [20000, 32000]
+  city_mix:
+    "Metro (Mumbai, Delhi, Bengaluru)": 0.40
+    "Tier-1": 0.35
+    "Tier-2/3": 0.25
+  platform_mix:
+    "Food delivery": 0.40
+    "Quick commerce (10-min)": 0.25
+    "Parcel / e-commerce": 0.20
+    "Bike taxi": 0.15
+  vehicle_mix:
+    "Electric 2W": 0.22
+    "<=110cc petrol": 0.55
+    "111-150cc petrol": 0.18
+    ">150cc petrol": 0.05
