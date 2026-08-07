@@ -1,7 +1,11 @@
 """
 Effective Exposure Unit (EEU) - the exposure base for the whole pricing model.
 
+<<<<<<< HEAD
 Business plan reference: section 5.1.
+=======
+Business plan reference: section 1.2.
+>>>>>>> 03dbdc9 (Initial commit)
 
     EEU_b = (active_minutes_b / 60) x M_time(b) x M_weather(b) x M_geo(b)
     EEU_total = sum over blocks b

@@ -1,13 +1,21 @@
 """
 Book-level economics: the year 1-7 trajectory, solvency, and capital.
 
+<<<<<<< HEAD
 Business plan references: sections 6.1, 6.2, 6.4, 6.6, 6.7.
+=======
+Business plan references: sections 4, 4.1 and 2.1.
+>>>>>>> 03dbdc9 (Initial commit)
 
 Year 1 is the first full year of writing business (project month 21 onward).
 The important point this model is built to show: what moves the combined ratio
 from 190% to 95% is the EXPENSE ratio collapsing as premium grows against a
 largely fixed regulatory cost base - not the loss ratio, which is respectable
+<<<<<<< HEAD
 by year four. That is the lesson from the international benchmark in section 3.5.
+=======
+by year four. That is the lesson from the international benchmark in section 2.1.
+>>>>>>> 03dbdc9 (Initial commit)
 """
 from __future__ import annotations
 import pandas as pd
@@ -18,7 +26,11 @@ CR = 1e7  # one crore
 
 
 def burning_cost(cfg: dict | None = None) -> dict:
+<<<<<<< HEAD
     """Expected claim cost per rider-year, built up head by head (section 6.1)."""
+=======
+    """Expected claim cost per rider-year, built up head by head (section 4)."""
+>>>>>>> 03dbdc9 (Initial commit)
     cfg = cfg or CFG
     rows, total = [], 0.0
     for head in cfg["burning_cost"]:
@@ -41,7 +53,11 @@ def trajectory(cfg: dict | None = None,
     Build the year 1-7 P&L.
 
     growth_factor scales the worker count in every year - use it to model the
+<<<<<<< HEAD
     section 6.7 stress case where growth stalls.
+=======
+    section 4.1 stress case where growth stalls.
+>>>>>>> 03dbdc9 (Initial commit)
     loss_ratio_override replaces the planned loss ratio path.
     """
     cfg = cfg or CFG
@@ -76,7 +92,11 @@ def trajectory(cfg: dict | None = None,
         # variable part (acquisition, claims handling) that scales with premium.
         # Then, if growth differs from plan, only the variable part moves.
         #
+<<<<<<< HEAD
         # This is the whole point of section 6.7's second failure mode: if the
+=======
+        # This is the whole point of section 4.1's second failure mode: if the
+>>>>>>> 03dbdc9 (Initial commit)
         # book never reaches scale, the expense ratio never falls, because the
         # cost base of a licensed insurer does not shrink to match. Holding the
         # expense ratio fixed while shrinking premium would hide exactly the
@@ -133,7 +153,11 @@ def solvency_position(df: pd.DataFrame, cfg: dict | None = None) -> pd.DataFrame
     """
     Track available solvency margin against requirement, given the funding
     rounds and accumulated losses. Flags the year the internal throttle
+<<<<<<< HEAD
     (section 12.6) would fire.
+=======
+    (section 2.1) would fire.
+>>>>>>> 03dbdc9 (Initial commit)
     """
     cfg = cfg or CFG
     p = cfg["portfolio"]
@@ -173,7 +197,11 @@ def breakeven_year(df: pd.DataFrame) -> int | None:
 
 
 def per_rider_pnl(cfg: dict | None = None) -> pd.DataFrame:
+<<<<<<< HEAD
     """The steady-state per-rider P&L (section 6.2)."""
+=======
+    """The steady-state per-rider P&L (section 4)."""
+>>>>>>> 03dbdc9 (Initial commit)
     cfg = cfg or CFG
     p = cfg["portfolio"]
     gwp = p["gwp_per_worker"]

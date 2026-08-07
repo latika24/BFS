@@ -7,7 +7,11 @@ simulated data. Distributions are drawn to match the report:
   - about a quarter of platform workers ride more than eight hours a day
   - about a third work purely in their free time
   - net monthly earnings of Rs 22,000-23,000 for a full-time delivery rider
+<<<<<<< HEAD
   - claim frequencies from the burning cost table in section 6.1
+=======
+  - claim frequencies from the burning cost table in section 4
+>>>>>>> 03dbdc9 (Initial commit)
 
 The generator is deliberately visible so the assumptions can be inspected
 and challenged rather than taken on trust.

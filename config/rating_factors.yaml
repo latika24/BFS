@@ -7,6 +7,7 @@
 # =============================================================================
 
 meta:
+<<<<<<< HEAD
   version: "1.0"
   plan_reference: "Usage-Based Insurance for India's Gig Workers, August 2026"
 
@@ -16,13 +17,54 @@ meta:
 #
 # CALIBRATION: set so that the reference rider below prices at Rs 2.50 per
 # active hour, matching the published Suraksha Plus tier price in §4.4.
+=======
+  version: "2.0"
+  plan_reference: "Usage-Based Insurance for India's Gig Workers, August 2026"
+  product_name: "Suraksha"
+  tagline: "Insurance that belongs to you, not to the app you ride for."
+  positioning: >
+    For the gig rider earning across more than one app, the only insurer whose
+    cover belongs to the worker rather than a platform, is priced by the hour
+    actually ridden, and pays within a day.
+  vision: >
+    Every gig worker in India owns insurance that moves as flexibly as their
+    work does.
+
+# Where each dashboard page maps back to the business plan.
+sections:
+  gap: "§1.1"
+  what_we_sell: "§1.2"
+  app_as_instrument: "§1.3"
+  licence: "§2.1"
+  differentiators: "§2.2"
+  segmentation: "§3.1"
+  value_prop: "§3.2"
+  marketing_mix: "§3.3"
+  monetization: "§4"
+  breakeven: "§4.1"
+  secondary_revenue: "§4.2"
+  investors: "§5"
+
+# -----------------------------------------------------------------------------
+# BASE RATE  (§3.3)
+# Expected claim cost per EEU per Rs 1 lakh of sum insured.
+#
+# CALIBRATION: set so that the reference rider below prices at Rs 2.50 per
+# active hour, matching the published Suraksha Plus tier price in §3.3.
+>>>>>>> 03dbdc9 (Initial commit)
 #
 # NOTE ON A RECONCILIATION IN THE PLAN. Two figures in the report do not
 # multiply together directly, and the dashboard surfaces this rather than
 # hiding it:
+<<<<<<< HEAD
 #   §4.4 prices Suraksha Plus at Rs 2.50 per active hour, and describes a
 #        full-time rider as ~208 active hours/month. That is Rs 6,240/year.
 #   §6.2 uses Rs 5,400 of GWP per active worker per year for the book.
+=======
+#   §3.3 prices Suraksha Plus at Rs 2.50 per active hour, and describes a
+#        full-time rider as ~208 active hours/month. That is Rs 6,240/year.
+#   §4 uses Rs 5,400 of GWP per active worker per year for the book.
+>>>>>>> 03dbdc9 (Initial commit)
 # Both can be true. Rs 5,400 is the BLENDED average across a book that
 # includes part-time and occasional riders, and implies an average of about
 # 180 active hours/month rather than 208. The Rider Quote page prices an
@@ -30,7 +72,11 @@ meta:
 # -----------------------------------------------------------------------------
 base_rate: 0.1785
 
+<<<<<<< HEAD
 # The rider used to calibrate base_rate. Shown on the Rider Quote page so the
+=======
+# The rider used to calibrate base_rate. Shown on the Home page so the
+>>>>>>> 03dbdc9 (Initial commit)
 # calibration is auditable rather than asserted.
 reference_rider:
   age: 27
@@ -50,6 +96,7 @@ loadings:
   expense: 0.30          # Load_expense
   margin: 0.08           # Load_margin
 
+<<<<<<< HEAD
 # Total multiplier is capped in this band (§5.3 governance constraint).
 # Outside the band we decline or mandate a safety intervention rather than
 # pricing the worker out.
@@ -59,6 +106,26 @@ multiplier_cap:
 
 # -----------------------------------------------------------------------------
 # LAYER A — EXPOSURE MULTIPLIERS (§5.2, §5.3)
+=======
+# GOVERNANCE BAND (§3.3)
+#
+# The plan states: "What a worker pays is the base multiplied by the risk of
+# that particular hour - time of day, weather, traffic, city and behaviour
+# score - inside a governance band of roughly 0.6x to 2.2x, so a Suraksha Plus
+# rider pays between about Rs 1.50 and Rs 5.50 an hour."
+#
+# The cap therefore applies to the TOTAL multiplier, exposure factors included,
+# not just the rating factors. Rs 2.50 base x 0.6 = Rs 1.50; x 2.2 = Rs 5.50.
+# Outside the band we decline or mandate a safety intervention rather than
+# pricing the worker out of cover.
+multiplier_cap:
+  floor: 0.6
+  ceiling: 2.2
+  applies_to: total          # "total" (exposure + rating) or "rating" only
+
+# -----------------------------------------------------------------------------
+# LAYER A — EXPOSURE MULTIPLIERS (§1.2, §3.3)
+>>>>>>> 03dbdc9 (Initial commit)
 # Applied per 15-minute block to build the Effective Exposure Unit.
 # -----------------------------------------------------------------------------
 time_of_day:
@@ -81,7 +148,11 @@ city:
   "Tier-2/3": 0.85
 
 # -----------------------------------------------------------------------------
+<<<<<<< HEAD
 # LAYER B — BEHAVIOUR (§5.2)
+=======
+# LAYER B — BEHAVIOUR (§1.2)
+>>>>>>> 03dbdc9 (Initial commit)
 # Weights used to build the Rider Safety Score (0-100). Each input is scored
 # 0-100 on its own scale, then combined with these weights.
 # -----------------------------------------------------------------------------
@@ -103,7 +174,11 @@ safety_score_bands:
   "Below 50": 1.50
 
 # -----------------------------------------------------------------------------
+<<<<<<< HEAD
 # LAYER C — STATIC AND SEMI-STATIC (§5.2, §5.3)
+=======
+# LAYER C — STATIC AND SEMI-STATIC (§1.2, §3.3)
+>>>>>>> 03dbdc9 (Initial commit)
 # -----------------------------------------------------------------------------
 age:
   "18-21": 1.30
@@ -136,7 +211,11 @@ loyalty_discount:
   24: 0.08
 
 # -----------------------------------------------------------------------------
+<<<<<<< HEAD
 # SUM INSURED PARAMETERS (§5.4)
+=======
+# SUM INSURED PARAMETERS (§1.2)
+>>>>>>> 03dbdc9 (Initial commit)
 # -----------------------------------------------------------------------------
 sum_insured:
   # Accidental death / PTD: human life value approach
@@ -230,7 +309,11 @@ benefits:
     control: "Never cash; theft requires FIR"
 
 # -----------------------------------------------------------------------------
+<<<<<<< HEAD
 # PACKAGING (§4.4)
+=======
+# PACKAGING (§3.3 — Price)
+>>>>>>> 03dbdc9 (Initial commit)
 # -----------------------------------------------------------------------------
 tiers:
   Suraksha Basic:
@@ -251,7 +334,11 @@ shift_pass:
   hours: 6
 
 # -----------------------------------------------------------------------------
+<<<<<<< HEAD
 # BURNING COST (§6.1) — per 1,000 full-time active riders per year
+=======
+# BURNING COST (§4) — per 1,000 full-time active riders per year
+>>>>>>> 03dbdc9 (Initial commit)
 # -----------------------------------------------------------------------------
 burning_cost:
   - head: Accidental death
@@ -271,7 +358,11 @@ burning_cost:
     average_claim: 1500
 
 # -----------------------------------------------------------------------------
+<<<<<<< HEAD
 # PORTFOLIO MODEL (§6.2, §6.4, §6.6)
+=======
+# PORTFOLIO MODEL (§4, §4.1, §2.1)
+>>>>>>> 03dbdc9 (Initial commit)
 # -----------------------------------------------------------------------------
 portfolio:
   gwp_per_worker: 5400
@@ -282,7 +373,11 @@ portfolio:
 
   # Share of operating expenses that does NOT scale down with premium: the
   # statutory key management team, actuarial, audit, compliance, core tech.
+<<<<<<< HEAD
   # Used to derive the expense ratio when growth differs from plan (§6.7).
+=======
+  # Used to derive the expense ratio when growth differs from plan (§4.1).
+>>>>>>> 03dbdc9 (Initial commit)
   fixed_expense_share: 0.65
 
   # Year 1 is the first full year of writing (project month 21 onward)
@@ -316,7 +411,11 @@ portfolio:
       loss_ratio: 0.64
       expense_ratio: 0.21
 
+<<<<<<< HEAD
   # Solvency (§6.6)
+=======
+  # Solvency (§2.1)
+>>>>>>> 03dbdc9 (Initial commit)
   solvency:
     rsm_floor_cr: 50
     rsm_pct_nwp: 0.20
@@ -324,6 +423,7 @@ portfolio:
     target_ratio: 2.00
     internal_throttle_ratio: 1.80
 
+<<<<<<< HEAD
   funding_rounds:
     - name: "Pre-licence (Seed / Series A)"
       year: 0
@@ -334,10 +434,89 @@ portfolio:
     - name: "Series C"
       year: 5
       amount_cr: 100
+=======
+  # §5. NOTE: the plan's investor table gives the pre-licence round as Rs 250 cr,
+  # while the narrative in §2.1 and §5 twice says Rs 300 cr. The dashboard uses
+  # the table figure and surfaces the discrepancy rather than silently choosing.
+  funding_rounds:
+    - name: "Pre-licence (Seed / Series A)"
+      year: 0
+      amount_cr: 250
+      investors: "Impact insurance specialists (LeapFrog, Elevar, Accion, Aavishkaar); DFIs (IFC, BII, FMO); permanent-capital family offices"
+      underwriting: "Team, thesis, regulatory path, willingness to be named on the R1"
+    - name: "Series B"
+      year: 3
+      amount_cr: 150
+      investors: "Elevation, Chiratae, Nexus, Accel India, Lightspeed India, Quona"
+      underwriting: "Expense ratio trajectory, retention against churn, CAC payback, solvency headroom"
+    - name: "Series C"
+      year: 5
+      amount_cr: 100
+      investors: "General Atlantic, Multiples, TPG Rise, CPPIB, sovereign funds"
+      underwriting: "Path to underwriting break-even and scale of covered population"
+
+  funding_note: >
+    The plan's narrative says Rs 300 crore pre-launch; the investor table says
+    Rs 250 crore. Worth reconciling before submission - the solvency model here
+    uses the table figure, which is the tighter of the two.
+>>>>>>> 03dbdc9 (Initial commit)
 
   pre_launch_build_cost_cr: 60
 
 # -----------------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+# MARKET SEGMENTATION (§3.1)
+# -----------------------------------------------------------------------------
+segments:
+  - name: "Full-time delivery & quick-commerce riders"
+    detail: "Metro and Tier-1 cities"
+    size_lakh: 18
+    decision: "Primary"
+    rationale: "Highest exposure and rate of multi-homing; own their two-wheeler; the vehicle-cover gap bites hardest here."
+    target_year: 1
+  - name: "Part-time and free-time riders"
+    detail: "Reached via the Shift Pass"
+    size_lakh: 24
+    decision: "Secondary"
+    rationale: "Excluded from state cover by the 90/120-day rule and unreachable by a monthly subscription."
+    target_year: 2
+  - name: "Bike-taxi and ride-hailing drivers"
+    detail: "Higher earnings, similar road exposure"
+    size_lakh: 55
+    decision: "Year 4 onward"
+    rationale: "Different acquisition motion; the natural expansion if growth in the core segment stalls."
+    target_year: 4
+  - name: "Home services and white-collar freelancers"
+    detail: "Little road exposure"
+    size_lakh: 23
+    decision: "Out of scope"
+    rationale: "The risk we price does not apply to them."
+    target_year: null
+
+# -----------------------------------------------------------------------------
+# COMPETITIVE POSITIONING (§2.2) — who owns the cover vs what it protects
+# -----------------------------------------------------------------------------
+positioning_map:
+  - player: "Zomato / Swiggy / Zepto group cover"
+    owner: "Platform"
+    protects: "The event"
+    note: "Written by ICICI Lombard, Reliance General, Acko, Bajaj Allianz. Free, thin, tethered, slow."
+  - player: "PMSBY / PMJJBY / retail PA"
+    owner: "Worker"
+    protects: "The event"
+    note: "Very cheap, very basic; excludes anyone under the 90/120-day threshold."
+  - player: "(structurally empty)"
+    owner: "Platform"
+    protects: "The livelihood"
+    note: "A platform insuring income loss concedes responsibility for income continuity - the argument being run against it in the Karnataka High Court."
+  - player: "Us"
+    owner: "Worker"
+    protects: "The livelihood"
+    note: "Alone in this quadrant. Our strongest product is one our largest competitor cannot build."
+
+# -----------------------------------------------------------------------------
+>>>>>>> 03dbdc9 (Initial commit)
 # SYNTHETIC DATA GENERATION
 # Distributions chosen to match the report: ~25% of workers ride >8 hrs/day,
 # ~33% work purely in free time, monthly attrition 30-40%.

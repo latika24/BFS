@@ -1,7 +1,11 @@
 """
 Sum insured determination.
 
+<<<<<<< HEAD
 Business plan reference: section 5.4.
+=======
+Business plan reference: section 1.2.
+>>>>>>> 03dbdc9 (Initial commit)
 
 Formula-driven rather than menu-driven, because gig workers do not have the
 information to choose a sum insured well. Earnings are observed through the
