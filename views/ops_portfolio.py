@@ -15,8 +15,7 @@ from engine import store, portfolio
 from engine.config import CFG
 
 topbar("Insurer console",
-       f"Book as at {datetime.now().strftime('%d %b %Y, %H:%M')}<br>"
-       "Live production data")
+       f"Book as at {datetime.now().strftime('%d %b %Y, %H:%M')} · live production data")
 
 R = riders()
 live_pols = store.active_policies()

@@ -46,11 +46,11 @@ for p in pols:
     st.markdown(html(f"""
     <div class='pol'>
       <div class='h'>
-        <div><div class='t'>{p.tier}</div>
-             <div class='n'>{p.policy_id}</div></div>
-        <div style='text-align:right'>{badge('Active', 'ok')}
-             <div style='font-size:.76rem;color:{MUTED};margin-top:.25rem'>
-             since {started.strftime('%d %b %Y')}</div></div>
+        <span class='hl'><span class='t'>{p.tier}</span><br>
+              <span class='n'>{p.policy_id}</span></span>
+        <span class='hr'>{badge('Active', 'ok')}<br>
+              <span style='font-size:.76rem;color:{MUTED}'>
+              since {started.strftime('%d %b %Y')}</span></span>
       </div>
       <div class='b'>{_rows1}</div>
     </div>"""), unsafe_allow_html=True)

@@ -39,23 +39,27 @@ CSS = f"""
   hr {{ border-color:{LINE}; }}
 
   /* ---------- top bar ---------- */
+  /* ---------- top bar ----------
+     One block element, inline children, floats instead of flex.
+     Flex + nested <div>s did not survive Streamlit's markdown pipeline:
+     the right-hand block escaped the bar and rendered above it. Floats with
+     a clearfix need no height negotiation and cannot do that. */
   .topbar {{
-    display:flex; align-items:center; justify-content:space-between;
-    gap:1rem; flex-wrap:wrap; box-sizing:border-box; min-height:62px;
     background:{PRIMARY}; color:#fff; border-radius:12px;
-    padding:.8rem 1.15rem; margin-bottom:1.1rem;
+    padding:.85rem 1.2rem; margin:0 0 1.1rem 0;
+    line-height:1.6; font-size:.85rem;
   }}
-  .topbar > * {{ min-width:0; }}
-  .topbar .left {{ display:flex; align-items:center; gap:.7rem;
-                   flex:0 1 auto; }}
-  .topbar .logo {{ font-weight:800; font-size:1.05rem; letter-spacing:-.02em;
-                   white-space:nowrap; }}
-  .topbar .mode {{ background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.3);
-                   padding:.16rem .6rem; border-radius:999px; font-size:.72rem;
+  .topbar::after {{ content:""; display:table; clear:both; }}
+  .topbar .logo {{ float:left; font-weight:800; font-size:1.05rem;
+                   letter-spacing:-.02em; white-space:nowrap;
+                   margin-right:.6rem; line-height:1.6; }}
+  .topbar .mode {{ float:left; background:rgba(255,255,255,.16);
+                   border:1px solid rgba(255,255,255,.3);
+                   padding:.1rem .6rem; border-radius:999px; font-size:.7rem;
                    text-transform:uppercase; letter-spacing:.1em;
-                   white-space:nowrap; }}
-  .topbar .right {{ font-size:.82rem; opacity:.92; text-align:right;
-                    line-height:1.45; flex:0 1 auto; }}
+                   white-space:nowrap; margin-top:.22rem; }}
+  .topbar .tb-right {{ float:right; text-align:right; opacity:.93;
+                       white-space:nowrap; }}
 
   /* ---------- generic surfaces ---------- */
   .card {{ background:#fff; border:1px solid {LINE}; border-radius:14px;
@@ -97,18 +101,27 @@ CSS = f"""
   .cover .rate {{ font-size:2.6rem; font-weight:800; line-height:1; margin-top:.7rem; }}
   .cover .rl {{ font-size:.8rem; opacity:.85; }}
 
-  /* ---------- policy card ---------- */
-  .pol {{ border:1px solid {LINE}; border-radius:14px; overflow:hidden; background:#fff; }}
+  /* ---------- policy card ----------
+     Header uses floats, not flex, for the same reason as the top bar. */
+  .pol {{ border:1px solid {LINE}; border-radius:14px; background:#fff; }}
   .pol .h {{ background:{PRIMARY_SOFT}; padding:.85rem 1.1rem;
-             display:flex; justify-content:space-between; align-items:center; }}
-  .pol .h .t {{ font-weight:800; color:{INK}; font-size:1.02rem; }}
-  .pol .h .n {{ font-size:.76rem; color:{MUTED}; font-family:ui-monospace,monospace; }}
+             border-radius:14px 14px 0 0; }}
+  .pol .h::after {{ content:""; display:table; clear:both; }}
+  .pol .h .hl {{ float:left; }}
+  .pol .h .hr {{ float:right; text-align:right; }}
+  .pol .h .t {{ font-weight:800; color:{INK}; font-size:1.02rem;
+                line-height:1.35; }}
+  .pol .h .n {{ font-size:.76rem; color:{MUTED};
+                font-family:ui-monospace,monospace; line-height:1.35; }}
   .pol .b {{ padding:.5rem 1.1rem .95rem; }}
-  .row {{ display:flex; justify-content:space-between; padding:.45rem 0;
+  /* Rows: table layout, so label and value can never separate. */
+  .row {{ display:table; width:100%; padding:.45rem 0;
           border-bottom:1px solid #EDF2F1; }}
   .row:last-child {{ border-bottom:none; }}
-  .row .l {{ font-size:.85rem; color:{MUTED}; }}
-  .row .r {{ font-size:.9rem; font-weight:700; color:{INK}; }}
+  .row .l {{ display:table-cell; font-size:.85rem; color:{MUTED};
+             text-align:left; padding-right:1rem; }}
+  .row .r {{ display:table-cell; font-size:.9rem; font-weight:700;
+             color:{INK}; text-align:right; white-space:nowrap; }}
 
   /* ---------- product / plan card ---------- */
   .plan {{ border:1px solid {LINE}; border-radius:14px; background:#fff;
@@ -122,17 +135,21 @@ CSS = f"""
   .plan li {{ font-size:.85rem; color:{INK}; margin-bottom:.28rem; line-height:1.4; }}
   .plan li.no {{ color:#AEB9B7; }}
 
-  /* ---------- claim tracker ---------- */
-  .track {{ display:flex; align-items:center; margin:.6rem 0 1rem; }}
-  .track .n {{ width:30px; height:30px; border-radius:50%; display:flex;
-               align-items:center; justify-content:center; font-size:.8rem;
-               font-weight:800; background:#E8EDEC; color:#93A2A0; flex:0 0 auto; }}
+  /* ---------- claim tracker ----------
+     Table layout: each step is a cell, so the steps cannot separate from
+     their connectors however the markup is reflowed. */
+  .track {{ display:table; width:100%; margin:.6rem 0 .2rem;
+            table-layout:fixed; }}
+  .track .cell {{ display:table-cell; text-align:center; vertical-align:top;
+                  position:relative; }}
+  .track .n {{ display:inline-block; width:28px; height:28px; line-height:28px;
+               border-radius:50%; font-size:.78rem; font-weight:800;
+               background:#E8EDEC; color:#93A2A0; text-align:center; }}
   .track .n.on {{ background:{PRIMARY}; color:#fff; }}
   .track .n.bad {{ background:{BAD}; color:#fff; }}
-  .track .ln {{ flex:1; height:3px; background:#E8EDEC; }}
-  .track .ln.on {{ background:{PRIMARY}; }}
-  .tlab {{ display:flex; justify-content:space-between; font-size:.74rem;
-           color:{MUTED}; margin-top:-.6rem; margin-bottom:1rem; }}
+  .track .lab {{ display:block; font-size:.72rem; color:{MUTED};
+                 margin-top:.3rem; }}
+  .track .lab.on {{ color:{PRIMARY}; font-weight:700; }}
 
   /* ---------- phone ---------- */
   .phone {{ width:310px; margin:0 auto; background:{INK}; border-radius:34px;
@@ -226,11 +243,23 @@ def boot(title):
     st.markdown(CSS, unsafe_allow_html=True)
 
 
-def topbar(mode, right_html=""):
+def topbar(mode, right=""):
+    """
+    The green bar at the top of every screen.
+
+    ONE block element, inline children, floats instead of flex. Streamlit runs
+    markup through a Markdown parser that restructures nested block elements —
+    a child <div> got hoisted out of the bar and rendered above it. Floats with
+    a clearfix require no height negotiation, so nothing can escape.
+
+    `right` must be a single short line. Anything longer belongs in the sidebar,
+    which already carries the rider's identity.
+    """
     md(f"<div class='topbar'>"
-       f"<div class='left'><span class='logo'>🛵 {BRAND}</span>"
-       f"<span class='mode'>{mode}</span></div>"
-       f"<div class='right'>{right_html}</div></div>")
+       f"<span class='logo'>🛵 {BRAND}</span>"
+       f"<span class='mode'>{mode}</span>"
+       f"<span class='tb-right'>{right}</span>"
+       f"</div>")
 
 
 def h(title, sub=""):
@@ -281,21 +310,25 @@ def empty(text):
 
 
 def tracker(stage: int, declined=False, labels=None):
-    """Claim progress bar. stage 0..3."""
+    """
+    Claim progress bar, stage 0..3.
+
+    Table layout rather than flex — each step and its label live in one cell,
+    so nothing can drift apart when Streamlit reflows the markup.
+    """
     labels = labels or ["Submitted", "Verifying", "Approved", "Paid"]
-    n = len(labels)
     out = "<div class='track'>"
-    for i in range(n):
+    for i, label in enumerate(labels):
         on = i <= stage
-        cls = "bad" if (declined and i == stage) else ("on" if on else "")
-        mark = "✕" if (declined and i == stage) else ("✓" if i < stage or (on and i == stage) else str(i + 1))
-        out += f"<div class='n {cls}'>{mark}</div>"
-        if i < n - 1:
-            out += f"<div class='ln {'on' if i < stage else ''}'></div>"
-    out += "</div><div class='tlab'>"
-    out += "".join(f"<span>{l}</span>" for l in labels)
+        bad = declined and i == stage
+        cls = "bad" if bad else ("on" if on else "")
+        mark = "✕" if bad else ("✓" if on else str(i + 1))
+        out += (f"<span class='cell'>"
+                f"<span class='n {cls}'>{mark}</span>"
+                f"<span class='lab {'on' if on else ''}'>{label}</span>"
+                f"</span>")
     out += "</div>"
-    st.markdown(" ".join(out.split()), unsafe_allow_html=True)
+    md(out)
 
 
 CLAIM_BADGE = {

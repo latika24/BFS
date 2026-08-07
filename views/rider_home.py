@@ -16,9 +16,7 @@ s = store.store()
 r = store.rider()
 pols = store.active_policies()
 
-topbar("Rider app",
-       f"{r.name} · {r.rider_id}<br>{' + '.join(r.platforms_active)} · "
-       f"{r.vehicle_reg}")
+topbar("Rider app", f"{r.name} · {r.rider_id} · {r.vehicle_reg}")
 
 # ------------------------------------------------------------------ controls
 c = st.columns([1, 1, 1, 1.4])

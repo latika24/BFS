@@ -134,13 +134,14 @@ with tab_track:
                  "Approved": 2, "Paid": 3, "Declined": 1}.get(c_.status, 0)
         when = datetime.fromisoformat(c_.submitted).strftime("%d %b, %H:%M")
         st.markdown(html(f"""<div class='pol' style='margin-bottom:.4rem'>
-          <div class='h'><div><div class='t'>{c_.incident}</div>
-            <div class='n'>{c_.claim_id} · raised {when}</div></div>
-            <div style='text-align:right'>
-              {badge(c_.status, CLAIM_BADGE.get(c_.status, 'mute'))}
-              <div style='font-weight:800;font-size:1.05rem;margin-top:.2rem'>
-              {inr(c_.amount_approved or c_.amount_claimed)}</div></div>
-          </div><div class='b'></div></div>"""), unsafe_allow_html=True)
+          <div class='h'>
+            <span class='hl'><span class='t'>{c_.incident}</span><br>
+              <span class='n'>{c_.claim_id} · raised {when}</span></span>
+            <span class='hr'>
+              {badge(c_.status, CLAIM_BADGE.get(c_.status, 'mute'))}<br>
+              <span style='font-weight:800;font-size:1.05rem'>
+              {inr(c_.amount_approved or c_.amount_claimed)}</span></span>
+          </div></div>"""), unsafe_allow_html=True)
         tracker(stage, declined=(c_.status == "Declined"))
         if c_.status == "Declined":
             st.caption(f"Reason given: {c_.decline_reason}")
