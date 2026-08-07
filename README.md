@@ -1,8 +1,16 @@
-# Suraksha — Usage-Based Insurance for India's Gig Workers
+# Suraksha — usage-based insurance for India's gig workers
 
-Proof-of-concept product site and pricing engine, built as a companion to the
-business plan. Every number it produces reconciles to a published figure in the
-report.
+A working prototype of the platform, not a slide deck. Two products share one
+live state:
+
+* **Rider app** — what a gig worker sees: cover live right now, what it costs
+  by the hour, their policy, buying more cover, and raising a claim.
+* **Insurer console** — what we see: the in-force book, the rating engine, the
+  claims queue, accumulation risk, solvency and capital.
+
+They are wired to the same store, so **buying a policy or raising a claim in
+the rider app appears immediately in the insurer console.** That is the point
+of the demo.
 
 ## Run it
 
@@ -12,109 +20,91 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Opens at `http://localhost:8501`. Stop it with Ctrl+C.
+Python 3.9 or newer. Opens at http://localhost:8501.
 
-If `pip` isn't found, try `pip3`. If the port is busy, add
-`--server.port 8502`.
+## The demo worth showing
 
-**Python 3.9 or newer.** Check with `python3 --version`. Every module starts
-with `from __future__ import annotations` so the code runs on 3.9 as well as
-newer versions — keep that import at the top if you add type hints, or 3.9 will
-raise `TypeError: unsupported operand type(s) for |`.
+1. **Rider app → Home.** Toggle the time to `23:00-05:00` and weather to
+   `Heavy rain`. Watch the hourly rate climb and then hit the governance cap —
+   the product refuses to price a rider out on a bad night.
+2. **Rider app → Buy cover.** Move "hours you ride a month" to 60. All three
+   plans reprice. Compare against a flat annual premium: a light rider is
+   massively overcharged by flat pricing, which is why they never buy.
+   Complete the checkout — a real policy is issued.
+3. **Rider app → Claims.** Raise "Hospital admission" and watch it settle in
+   under a minute. Then raise one with *cover was live* switched off, and watch
+   the anti-selection control decline it with a reason.
+4. **Insurer console → Portfolio.** The policy you just bought is in the book.
+5. **Insurer console → Claims desk.** The claim you flagged is sitting in the
+   queue with its telematics evidence. Settle or decline it and the rider's
+   view updates.
 
-## The pages
+## Screens
 
-| Page | What it does | Plan reference |
-|---|---|---|
-| **Home** | Product framing, the four gaps, headline numbers, calibration check | §1.1 |
-| **1 · Rider App** | The phone view a worker actually sees: cover live now, hours ridden, what it has cost, safety score and what would lower it | §1.2, §1.3, §3.2 |
-| **2 · Pricing Engine** | Price any rider under any conditions. Governance band gauge, full waterfall derivation, and the comparison against a flat premium | §1.2, §3.3 |
-| **3 · Cover & Benefits** | Sums insured derived from observed earnings, both covers, and the fixed-benefit vs indemnity schedule with the control on each | §1.2 |
-| **4 · Claims Journey** | Run a claim end to end. Six incident types, live adjudication against the telematics trace, and the settlement mix | §1.1, §3.2 |
-| **5 · Market & Strategy** | Segment sizing across the 1.2 crore workforce, the competitive quadrant, channel economics and the capital plan | §2.1, §2.2, §3.1, §3.3, §5 |
-| **6 · Portfolio Simulator** | The book years 1–7: premium, loss ratio, expense ratio, solvency, with the stress cases | §4, §4.1, §2.1 |
-| **7 · Risk Explorer** | Synthetic book of 5,000 riders: exposure distribution, anti-selection under flat pricing, risk heatmap | §3.3, §1.3 |
+**Rider app**
+
+| Screen | What it does |
+|---|---|
+| Home | Live cover status, hourly rate and why it is what it is, today's spend, benefits at a glance |
+| My cover | Policy card, certificate, full benefit schedule sized to observed earnings, premium ledger |
+| Buy cover | Plan catalogue, premium calculator on your own hours, add-ons, KYC and UPI mandate checkout |
+| Claims | Raise a claim in one tap, live status tracker, full history |
+| My riding | Safety score, what is costing points, a what-if that reprices you live, exposure by hour, consent control |
+
+**Insurer console**
+
+| Screen | What it does |
+|---|---|
+| Portfolio | In-force book, GWP run-rate, mix by segment/city/platform, exposure distribution, recently issued |
+| Underwriting | Quote-and-bind tool, the full filed rating basis, portfolio pricing monitor against the governance band |
+| Claims desk | Live queue with telematics evidence, settle/decline, SLA and fraud controls |
+| Risk & exposure | Concurrent riders by hour, accumulation, loss experience by cohort, flat-premium stress test |
+| Finance & solvency | Years 1–7 P&L, solvency against the throttle, unit economics, capital plan, scenarios |
 
 ## Changing the numbers
 
-**Everything lives in `config/rating_factors.yaml`.** No figure is hard-coded —
-multipliers, the governance band, sum insured parameters, the benefit schedule
-and its settlement basis, market segments, the year 1–7 trajectory, solvency
-assumptions and the funding rounds.
+Everything lives in `config/rating_factors.yaml` — multipliers, the governance
+band, sum insured formulas, the benefit schedule, market segments, the year 1–7
+trajectory, solvency and funding rounds. Nothing is hard-coded.
 
-Refresh the browser after editing. If a change doesn't appear, clear the cache
-from the ⋮ menu top-right → *Clear cache*.
+Demo state (the rider, their policy, claims and ledger) is seeded in
+`engine/store.py`. "Reset demo data" in the sidebar restores it.
 
 ## Calibration
 
-Checked against the report on every run, and shown on the Home page:
-
 | Figure | Plan | Engine |
 |---|---|---|
-| Suraksha Plus, base rate per active hour | ₹2.50 (§3.3) | ₹2.50 |
+| Suraksha Plus base rate | ₹2.50/hr (§3.3) | ₹2.50 |
 | Price band under the governance cap | ₹1.50–₹5.50 (§3.3) | ₹1.50–₹5.51 |
-| Full-time rider, monthly premium | ₹520 (§3.3) | ₹520 |
-| Book-average premium per worker per year | ₹5,400 (§4) | ₹5,400 |
+| Full-time rider, monthly premium | ₹520 | ₹520 |
+| Book-average premium per worker | ₹5,400/yr (§4) | ₹5,400 |
 | Expected claim cost per rider-year | ₹3,148 | ₹3,148 |
-| Year 1 / 3 / 5 / 7 combined ratio | 190 / 118 / 104 / 95% (§4.1) | 190 / 118 / 104 / 95% |
-| Year 7 gross written premium | ₹648 cr (§4.1) | ₹648 cr |
+| Year 1/3/5/7 combined ratio | 190/118/104/95% (§4.1) | 190/118/104/95% |
 | Underwriting break-even | Year 7 (§4.1) | Year 7 |
-| Total equity raised | ₹500 cr (§5 table) | ₹500 cr |
-
-### Two things the model surfaces rather than hides
-
-**The governance band applies to the total multiplier.** §3.3 says the band
-covers "time of day, weather, traffic, city and behaviour score" and produces a
-Plus price of ₹1.50–₹5.50 an hour. So the 0.6–2.2× cap is applied to the
-exposure and rating factors *combined*, not to the rating factors alone. Without
-that, a rider at 11pm in heavy metro rain would price above ₹12 an hour, far
-outside the band the plan commits to.
-
-**A discrepancy in the report worth fixing.** The narrative in §2.1 and §5 says
-₹300 crore is raised pre-launch; the investor table in §5 says ₹250 crore. The
-model uses the table figure — the tighter of the two — and flags the difference
-on the Home page and the Market & Strategy page.
-
-Separately, §3.3 prices Plus at ₹2.50 an hour with a full-time rider at ~208
-hours a month, which is ₹6,240 a year, while §4 uses ₹5,400 per active worker.
-Both hold: ₹5,400 is the blended average across a book including part-time and
-Shift Pass riders, implying about 180 active hours a month.
 
 ## Data
 
-Synthetic, generated by `engine/data_gen.py` with a fixed seed. There is no
-public gig-worker telematics dataset, and for a demonstration synthetic is the
-honest choice. Distributions match the plan — about a quarter of workers ride
-more than eight hours a day, about a third work purely in free time — and claim
-frequencies come from the burning cost table. Download the generated CSVs from
-the bottom of the Risk Explorer page.
-
-Nothing here is fitted to real loss experience. These are prior estimates for a
-pilot, to be replaced by a fitted GLM once roughly 12 months and 2,000 claims of
-real data exist.
+The 5,000-rider book is synthetic, generated by `engine/data_gen.py` with a
+fixed seed — there is no public gig-worker telematics dataset. Distributions
+match the plan. Nothing is fitted to real loss experience.
 
 ## Structure
 
 ```
-app.py                      Home page and entry point
-shared.py                   Design system, formatting, cached data loading
+app.py                      Router — st.navigation with two sections
+shared.py                   Design system, formatting, cached data
 config/rating_factors.yaml  Every number the model uses
 engine/
-  config.py                 Config loader and band lookups
-  exposure.py               Effective Exposure Unit (§1.2)
-  pricing.py                Premium function and governance band (§3.3)
-  safety_score.py           Rider Safety Score (§1.2)
-  sum_insured.py            Sum insured formulas (§1.2)
-  portfolio.py              Book P&L, solvency, capital (§4, §4.1)
-  data_gen.py               Synthetic riders, trips, claims
-pages/                      The seven pages
+  store.py                  Live state: riders, policies, claims, ledger
+  pricing.py                Premium function and governance band
+  exposure.py               Effective Exposure Unit
+  safety_score.py           Rider Safety Score
+  sum_insured.py            Benefit formulas
+  portfolio.py              Book P&L, solvency, capital
+  data_gen.py               Synthetic book
+views/                      Five rider screens, five insurer screens
 ```
 
-## Deploying a shareable link (optional)
-
-1. Create a free github.com account and a new **public** repository
-2. Upload this whole folder to it (delete any `__pycache__` folders first)
-3. Go to share.streamlit.io, sign in with GitHub, click *New app*
-4. Select the repo, set the main file to `app.py`, click *Deploy*
-
-About ten minutes, and it gives you a public URL. The free tier is sufficient.
+There is **no `pages/` folder** — navigation is driven by `app.py`. If one
+exists from an earlier version, delete it or Streamlit will show duplicate
+navigation.

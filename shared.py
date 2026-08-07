@@ -1,4 +1,4 @@
-"""Design system, formatting helpers and cached data loading."""
+"""Design system, formatting and cached data for the Suraksha platform."""
 from __future__ import annotations
 
 import sys
@@ -24,119 +24,133 @@ PRIMARY_SOFT = "#E7F1F0"
 ACCENT = "#E2653A"
 ACCENT_SOFT = "#FCEDE6"
 MUTED = "#6A7B79"
-LINE = "#DCE5E4"
+LINE = "#DDE6E5"
 OK = "#2E7D5B"
+OK_SOFT = "#E6F2EB"
 WARN = "#B8791F"
+WARN_SOFT = "#FDF3E2"
 BAD = "#B23F30"
+BAD_SOFT = "#FAEBE8"
 
 CSS = f"""
 <style>
-  .block-container {{ padding-top: 1.8rem; padding-bottom: 3rem; max-width: 1380px; }}
-  h1, h2, h3 {{ color: {INK}; letter-spacing: -0.015em; }}
+  .block-container {{ padding-top: 1.5rem; padding-bottom: 3rem; max-width: 1440px; }}
+  h1,h2,h3,h4 {{ color:{INK}; letter-spacing:-0.015em; }}
+  hr {{ border-color:{LINE}; }}
 
-  /* ---------- hero ---------- */
-  .hero {{
-    background: linear-gradient(135deg, {PRIMARY} 0%, #14746D 55%, #1C8A7E 100%);
-    color: #fff; border-radius: 18px; padding: 2.2rem 2.4rem;
-    margin-bottom: 1.4rem;
+  /* ---------- top bar ---------- */
+  .topbar {{
+    display:flex; align-items:center; justify-content:space-between;
+    background:{PRIMARY}; color:#fff; border-radius:12px;
+    padding:.75rem 1.15rem; margin-bottom:1.1rem;
   }}
-  .hero h1 {{ color:#fff; font-size: 2.15rem; margin: 0 0 .35rem 0; line-height:1.15; }}
-  .hero .tag {{ font-size: 1.12rem; opacity: .93; margin-bottom: 1.1rem; }}
-  .hero .sub {{ font-size: .95rem; opacity: .82; max-width: 66ch; line-height:1.55; }}
-  .hero .chips {{ margin-top: 1.2rem; }}
-  .chip {{
-    display:inline-block; background: rgba(255,255,255,.15);
-    border: 1px solid rgba(255,255,255,.28); color:#fff;
-    padding: .3rem .75rem; border-radius: 999px; font-size: .8rem;
-    margin-right: .45rem; margin-bottom: .4rem;
-  }}
+  .topbar .left {{ display:flex; align-items:center; gap:.7rem; }}
+  .topbar .logo {{ font-weight:800; font-size:1.05rem; letter-spacing:-.02em; }}
+  .topbar .mode {{ background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.3);
+                   padding:.16rem .6rem; border-radius:999px; font-size:.72rem;
+                   text-transform:uppercase; letter-spacing:.1em; }}
+  .topbar .right {{ font-size:.84rem; opacity:.92; text-align:right; line-height:1.35; }}
 
-  /* ---------- cards ---------- */
-  .card {{
-    background:#fff; border:1px solid {LINE}; border-radius: 14px;
-    padding: 1.15rem 1.3rem; height:100%;
-  }}
-  .card h4 {{ margin:.1rem 0 .5rem 0; font-size:1.02rem; color:{INK}; }}
-  .card p {{ margin:0; color:{MUTED}; font-size:.88rem; line-height:1.5; }}
-  .card .num {{ font-size:.78rem; color:{ACCENT}; font-weight:700;
+  /* ---------- generic surfaces ---------- */
+  .card {{ background:#fff; border:1px solid {LINE}; border-radius:14px;
+           padding:1.05rem 1.2rem; height:100%; }}
+  .card h4 {{ margin:.1rem 0 .45rem 0; font-size:1rem; }}
+  .card p {{ margin:0; color:{MUTED}; font-size:.87rem; line-height:1.5; }}
+  .card .num {{ font-size:.75rem; color:{ACCENT}; font-weight:700;
                 letter-spacing:.08em; text-transform:uppercase; }}
 
-  /* ---------- kpi tiles ---------- */
-  .kpi {{
-    background:{PRIMARY_SOFT}; border:1px solid {LINE}; border-radius: 12px;
-    padding: .9rem 1.05rem;
-  }}
-  .kpi .k {{ font-size:.74rem; color:{MUTED}; text-transform:uppercase;
-             letter-spacing:.07em; margin-bottom:.25rem; }}
-  .kpi .v {{ font-size:1.55rem; font-weight:700; color:{PRIMARY}; line-height:1.1; }}
-  .kpi .d {{ font-size:.78rem; color:{MUTED}; margin-top:.2rem; }}
+  .kpi {{ background:#fff; border:1px solid {LINE}; border-left:4px solid {PRIMARY};
+          border-radius:10px; padding:.8rem 1rem; }}
+  .kpi .k {{ font-size:.72rem; color:{MUTED}; text-transform:uppercase;
+             letter-spacing:.07em; }}
+  .kpi .v {{ font-size:1.5rem; font-weight:800; color:{INK}; line-height:1.15;
+             margin-top:.15rem; }}
+  .kpi .d {{ font-size:.76rem; color:{MUTED}; margin-top:.15rem; }}
 
-  /* ---------- pills / refs ---------- */
-  .ref {{ display:inline-block; background:{PRIMARY_SOFT}; color:{PRIMARY};
-          padding:.14rem .55rem; border-radius:6px; font-size:.75rem;
-          font-weight:600; margin-bottom:.5rem; }}
-  .pill {{ display:inline-block; padding:.16rem .6rem; border-radius:999px;
-           font-size:.75rem; font-weight:600; margin-right:.3rem; }}
-  .pill-fixed {{ background:#E8F2EC; color:{OK}; }}
-  .pill-ind {{ background:{ACCENT_SOFT}; color:#A8481F; }}
-  .pill-svc {{ background:#EEF1F6; color:#42546B; }}
+  /* ---------- status ---------- */
+  .badge {{ display:inline-block; padding:.16rem .6rem; border-radius:999px;
+            font-size:.73rem; font-weight:700; }}
+  .b-ok {{ background:{OK_SOFT}; color:{OK}; }}
+  .b-warn {{ background:{WARN_SOFT}; color:{WARN}; }}
+  .b-bad {{ background:{BAD_SOFT}; color:{BAD}; }}
+  .b-info {{ background:{PRIMARY_SOFT}; color:{PRIMARY}; }}
+  .b-mute {{ background:#EEF1F1; color:{MUTED}; }}
 
-  .formula {{
-    background:#F5F8F8; border-left:3px solid {PRIMARY}; padding:.7rem .95rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size:.83rem; border-radius:4px; margin:.5rem 0 .9rem 0; color:{INK};
-  }}
+  .live {{ display:inline-block; width:9px; height:9px; border-radius:50%;
+           background:#3FD68B; margin-right:7px;
+           box-shadow:0 0 0 0 rgba(63,214,139,.7); animation:p 1.8s infinite; }}
+  @keyframes p {{ 70% {{ box-shadow:0 0 0 9px rgba(63,214,139,0); }}
+                  100% {{ box-shadow:0 0 0 0 rgba(63,214,139,0); }} }}
 
-  /* ---------- phone mockup ---------- */
-  .phone {{
-    width: 320px; margin: 0 auto; background:{INK}; border-radius: 34px;
-    padding: 12px; box-shadow: 0 14px 40px rgba(0,0,0,.22);
-  }}
-  .phone-screen {{ background:#F7FAFA; border-radius: 25px; overflow:hidden; }}
-  .phone-top {{ background:{PRIMARY}; color:#fff; padding: 1rem 1.1rem .95rem; }}
-  .phone-top .brand {{ font-size:.72rem; letter-spacing:.16em;
-                       text-transform:uppercase; opacity:.8; }}
-  .phone-top .status {{ font-size:1.28rem; font-weight:700; margin-top:.15rem; }}
-  .phone-top .meta {{ font-size:.8rem; opacity:.88; margin-top:.15rem; }}
-  .phone-body {{ padding: .9rem 1.1rem 1.2rem; }}
-  .prow {{ display:flex; justify-content:space-between; align-items:baseline;
-           padding:.5rem 0; border-bottom:1px solid #E6EDEC; }}
-  .prow:last-child {{ border-bottom:none; }}
-  .prow .l {{ font-size:.83rem; color:{MUTED}; }}
-  .prow .r {{ font-size:.95rem; font-weight:700; color:{INK}; }}
-  .live {{ display:inline-block; width:8px; height:8px; border-radius:50%;
-           background:#4ADE80; margin-right:6px; }}
-  .phone-cta {{ background:{ACCENT}; color:#fff; text-align:center;
-                padding:.7rem; border-radius:10px; font-weight:700;
-                font-size:.9rem; margin-top:.9rem; }}
+  /* ---------- cover status banner ---------- */
+  .cover {{ border-radius:14px; padding:1.25rem 1.4rem; color:#fff;
+            background:linear-gradient(135deg,{PRIMARY} 0%,#15837A 100%); }}
+  .cover.off {{ background:linear-gradient(135deg,#5A6866 0%,#77837F 100%); }}
+  .cover .st {{ font-size:1.5rem; font-weight:800; }}
+  .cover .mt {{ font-size:.88rem; opacity:.9; margin-top:.15rem; }}
+  .cover .rate {{ font-size:2.6rem; font-weight:800; line-height:1; margin-top:.7rem; }}
+  .cover .rl {{ font-size:.8rem; opacity:.85; }}
 
-  /* ---------- steps ---------- */
-  .step {{ display:flex; gap:.9rem; padding:.8rem 0;
-           border-bottom:1px solid {LINE}; }}
-  .step:last-child {{ border-bottom:none; }}
-  .step .n {{ flex:0 0 30px; height:30px; border-radius:50%;
-              background:{PRIMARY}; color:#fff; font-weight:700;
-              display:flex; align-items:center; justify-content:center;
-              font-size:.85rem; }}
-  .step .t {{ font-weight:700; color:{INK}; font-size:.94rem; }}
-  .step .d {{ color:{MUTED}; font-size:.85rem; line-height:1.5; margin-top:.15rem; }}
-  .step .clock {{ margin-left:auto; font-size:.78rem; color:{ACCENT};
-                  font-weight:700; white-space:nowrap; }}
+  /* ---------- policy card ---------- */
+  .pol {{ border:1px solid {LINE}; border-radius:14px; overflow:hidden; background:#fff; }}
+  .pol .h {{ background:{PRIMARY_SOFT}; padding:.85rem 1.1rem;
+             display:flex; justify-content:space-between; align-items:center; }}
+  .pol .h .t {{ font-weight:800; color:{INK}; font-size:1.02rem; }}
+  .pol .h .n {{ font-size:.76rem; color:{MUTED}; font-family:ui-monospace,monospace; }}
+  .pol .b {{ padding:.5rem 1.1rem .95rem; }}
+  .row {{ display:flex; justify-content:space-between; padding:.45rem 0;
+          border-bottom:1px solid #EDF2F1; }}
+  .row:last-child {{ border-bottom:none; }}
+  .row .l {{ font-size:.85rem; color:{MUTED}; }}
+  .row .r {{ font-size:.9rem; font-weight:700; color:{INK}; }}
+
+  /* ---------- product / plan card ---------- */
+  .plan {{ border:1px solid {LINE}; border-radius:14px; background:#fff;
+           padding:1.1rem 1.2rem; height:100%; }}
+  .plan.sel {{ border:2px solid {PRIMARY}; box-shadow:0 4px 18px rgba(15,92,87,.12); }}
+  .plan .nm {{ font-weight:800; font-size:1.05rem; color:{INK}; }}
+  .plan .pr {{ font-size:1.9rem; font-weight:800; color:{PRIMARY};
+               line-height:1.1; margin:.35rem 0 .1rem; }}
+  .plan .pu {{ font-size:.78rem; color:{MUTED}; }}
+  .plan ul {{ margin:.7rem 0 0 0; padding-left:1.05rem; }}
+  .plan li {{ font-size:.85rem; color:{INK}; margin-bottom:.28rem; line-height:1.4; }}
+  .plan li.no {{ color:#AEB9B7; }}
+
+  /* ---------- claim tracker ---------- */
+  .track {{ display:flex; align-items:center; margin:.6rem 0 1rem; }}
+  .track .n {{ width:30px; height:30px; border-radius:50%; display:flex;
+               align-items:center; justify-content:center; font-size:.8rem;
+               font-weight:800; background:#E8EDEC; color:#93A2A0; flex:0 0 auto; }}
+  .track .n.on {{ background:{PRIMARY}; color:#fff; }}
+  .track .n.bad {{ background:{BAD}; color:#fff; }}
+  .track .ln {{ flex:1; height:3px; background:#E8EDEC; }}
+  .track .ln.on {{ background:{PRIMARY}; }}
+  .tlab {{ display:flex; justify-content:space-between; font-size:.74rem;
+           color:{MUTED}; margin-top:-.6rem; margin-bottom:1rem; }}
+
+  /* ---------- phone ---------- */
+  .phone {{ width:310px; margin:0 auto; background:{INK}; border-radius:34px;
+            padding:11px; box-shadow:0 14px 40px rgba(0,0,0,.2); }}
+  .screen {{ background:#F6FAFA; border-radius:25px; overflow:hidden; }}
 
   /* ---------- misc ---------- */
-  .quadrant td {{ padding:.9rem; border:1px solid {LINE}; vertical-align:top;
-                  font-size:.85rem; }}
-  .note {{ background:#FFF9EC; border-left:3px solid {WARN};
-           padding:.75rem 1rem; border-radius:6px; font-size:.87rem;
-           color:#5A4A22; margin:.6rem 0; }}
-  [data-testid="stSidebarNav"] {{ padding-top: .5rem; }}
+  .formula {{ background:#F5F8F8; border-left:3px solid {PRIMARY};
+              padding:.6rem .9rem; font-family:ui-monospace,monospace;
+              font-size:.8rem; border-radius:4px; margin:.4rem 0 .8rem; }}
+  .note {{ background:{WARN_SOFT}; border-left:3px solid {WARN}; padding:.7rem 1rem;
+           border-radius:6px; font-size:.86rem; color:#5A4A22; margin:.6rem 0; }}
+  .ref {{ display:inline-block; background:{PRIMARY_SOFT}; color:{PRIMARY};
+          padding:.12rem .5rem; border-radius:6px; font-size:.72rem;
+          font-weight:600; }}
+  .empty {{ border:1px dashed {LINE}; border-radius:12px; padding:2rem;
+            text-align:center; color:{MUTED}; font-size:.9rem; }}
+  [data-testid="stSidebarNav"] {{ padding-top:.4rem; }}
 </style>
 """
 
 
 # ------------------------------------------------------------------ formatting
 def inr(x, decimals=0):
-    """Indian-grouped rupee amount."""
     try:
         x = float(x)
     except (TypeError, ValueError):
@@ -159,12 +173,12 @@ def inr(x, decimals=0):
     return ("−" + out) if neg else out
 
 
-def crore(x, decimals=0):
-    return f"₹{x / 1e7:,.{decimals}f} cr"
+def crore(x, d=0):
+    return f"₹{x / 1e7:,.{d}f} cr"
 
 
-def lakh(x, decimals=1):
-    return f"₹{x / 1e5:,.{decimals}f} lakh"
+def lakh(x, d=1):
+    return f"₹{x / 1e5:,.{d}f} L"
 
 
 # ------------------------------------------------------------------ data
@@ -179,75 +193,88 @@ def trips(n_riders=800):
 
 
 @st.cache_data(show_spinner=False)
-def claims():
+def book_claims():
     return data_gen.simulate_claims(riders())
 
 
-# ------------------------------------------------------------------ components
-def page_setup(title):
-    st.set_page_config(page_title=f"{BRAND} · {title}", page_icon="🛵",
-                       layout="wide", initial_sidebar_state="expanded")
+# ------------------------------------------------------------------ chrome
+def boot(title):
     st.markdown(CSS, unsafe_allow_html=True)
 
 
-def hero(title, tagline, sub="", chips=()):
-    chip_html = "".join(f"<span class='chip'>{c}</span>" for c in chips)
+def topbar(mode, right_html=""):
     st.markdown(
-        f"""<div class='hero'>
-              <h1>{title}</h1>
-              <div class='tag'>{tagline}</div>
-              <div class='sub'>{sub}</div>
-              <div class='chips'>{chip_html}</div>
-            </div>""",
+        f"""<div class='topbar'><div class='left'>
+              <span class='logo'>🛵 {BRAND}</span>
+              <span class='mode'>{mode}</span></div>
+            <div class='right'>{right_html}</div></div>""",
         unsafe_allow_html=True)
 
 
-def page_header(title, ref, sub=""):
-    st.markdown(f"<div class='ref'>{ref}</div>", unsafe_allow_html=True)
-    st.markdown(f"## {title}")
+def h(title, sub=""):
+    st.markdown(f"### {title}")
     if sub:
-        st.markdown(f"<div style='color:{MUTED};font-size:.95rem;"
-                    f"margin-top:-.4rem;margin-bottom:.9rem;max-width:80ch'>"
-                    f"{sub}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div style='color:{MUTED};font-size:.9rem;margin-top:-.5rem;"
+                    f"margin-bottom:.8rem;max-width:92ch'>{sub}</div>",
+                    unsafe_allow_html=True)
 
 
 def kpi(col, label, value, delta=""):
-    col.markdown(
-        f"""<div class='kpi'><div class='k'>{label}</div>
-            <div class='v'>{value}</div>
-            <div class='d'>{delta}</div></div>""",
-        unsafe_allow_html=True)
+    col.markdown(f"""<div class='kpi'><div class='k'>{label}</div>
+                 <div class='v'>{value}</div><div class='d'>{delta}</div></div>""",
+                 unsafe_allow_html=True)
 
 
 def card(col, num, title, body):
-    col.markdown(
-        f"""<div class='card'><div class='num'>{num}</div>
-            <h4>{title}</h4><p>{body}</p></div>""",
-        unsafe_allow_html=True)
+    col.markdown(f"""<div class='card'><div class='num'>{num}</div>
+                 <h4>{title}</h4><p>{body}</p></div>""", unsafe_allow_html=True)
 
 
-def ref(text):
-    st.markdown(f"<div class='ref'>{text}</div>", unsafe_allow_html=True)
+def badge(text, kind="info"):
+    return f"<span class='badge b-{kind}'>{text}</span>"
 
 
-def formula(text):
-    st.markdown(f"<div class='formula'>{text}</div>", unsafe_allow_html=True)
+def rows(items):
+    """items: list of (label, value_html)"""
+    return "".join(f"<div class='row'><span class='l'>{a}</span>"
+                   f"<span class='r'>{b}</span></div>" for a, b in items)
 
 
 def note(text):
     st.markdown(f"<div class='note'>{text}</div>", unsafe_allow_html=True)
 
 
-def steps(items):
-    """items: list of (title, detail, timing)."""
-    html = ""
-    for i, (t, d, clock) in enumerate(items, 1):
-        html += (f"<div class='step'><div class='n'>{i}</div>"
-                 f"<div><div class='t'>{t}</div><div class='d'>{d}</div></div>"
-                 f"<div class='clock'>{clock}</div></div>")
+def formula(text):
+    st.markdown(f"<div class='formula'>{text}</div>", unsafe_allow_html=True)
+
+
+def ref(text):
+    st.markdown(f"<span class='ref'>{text}</span>", unsafe_allow_html=True)
+
+
+def empty(text):
+    st.markdown(f"<div class='empty'>{text}</div>", unsafe_allow_html=True)
+
+
+def tracker(stage: int, declined=False, labels=None):
+    """Claim progress bar. stage 0..3."""
+    labels = labels or ["Submitted", "Verifying", "Approved", "Paid"]
+    n = len(labels)
+    html = "<div class='track'>"
+    for i in range(n):
+        on = i <= stage
+        cls = "bad" if (declined and i == stage) else ("on" if on else "")
+        mark = "✕" if (declined and i == stage) else ("✓" if i < stage or (on and i == stage) else str(i + 1))
+        html += f"<div class='n {cls}'>{mark}</div>"
+        if i < n - 1:
+            html += f"<div class='ln {'on' if i < stage else ''}'></div>"
+    html += "</div><div class='tlab'>"
+    html += "".join(f"<span>{l}</span>" for l in labels)
+    html += "</div>"
     st.markdown(html, unsafe_allow_html=True)
 
 
-def note_ref(text):
-    """Small section pointer back to the business plan."""
-    st.markdown(f"<div class='ref'>{text}</div>", unsafe_allow_html=True)
+CLAIM_BADGE = {
+    "Paid": "ok", "Approved": "ok", "Submitted": "info", "Verifying": "info",
+    "Investigating": "warn", "Declined": "bad",
+}
