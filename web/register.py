@@ -265,19 +265,19 @@ T.spacer()
 
 # ------------------------------------------------------------------ reassurance
 T.cards([
-    {"icon": "🚫", "title": L("Nothing to pay today", "आज कुछ नहीं देना"),
+    {"icon": "wallet", "title": L("Nothing to pay today", "आज कुछ नहीं देना"),
      "body": L("The UPI mandate authorises a daily debit for hours ridden. If "
                "you do not ride, nothing is taken. If you cancel, the mandate "
                "goes with it.",
                "UPI मैंडेट सिर्फ़ चलाए गए घंटों की रोज़ाना कटौती की इजाज़त देता "
                "है। न चलाएँ तो कुछ नहीं कटेगा। बंद करने पर मैंडेट भी ख़त्म।")},
-    {"icon": "🩺", "title": L("No medical test", "कोई मेडिकल टेस्ट नहीं"),
+    {"icon": "hospital", "title": L("No medical test", "कोई मेडिकल टेस्ट नहीं"),
      "body": L("Benefits are sized from observed earnings rather than a "
                "declared sum insured, so there is nothing to underwrite about "
                "you personally at sign-up.",
                "रकम देखी गई कमाई से तय होती है, किसी घोषित बीमा राशि से नहीं — "
                "इसलिए साइन-अप पर आपकी निजी जाँच की ज़रूरत ही नहीं।")},
-    {"icon": "↩️", "title": L("Cancel in two taps", "दो टैप में बंद"),
+    {"icon": "check", "title": L("Cancel in two taps", "दो टैप में बंद"),
      "body": L("From the app, any time, with no exit fee and no notice period. "
                "You are charged for the hours you already rode and nothing more.",
                "ऐप से, कभी भी, न एग्ज़िट फ़ीस न नोटिस। जितने घंटे चला चुके हैं "

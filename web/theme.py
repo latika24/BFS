@@ -141,6 +141,106 @@ SITE_CSS = f"""
 .gs-flag .v small {{ font-size:1rem; font-weight:600; opacity:.8; }}
 .gs-flag .d {{ font-size:.84rem; color:rgba(255,255,255,.78); line-height:1.5; }}
 
+/* Split hero: copy on the left, illustration on the right, one colour ground. */
+.gs-hero.split {{
+  display:grid; grid-template-columns:1.02fr .98fr; gap:1.8rem;
+  align-items:center; padding:2.4rem 2.4rem 2.4rem 3rem;
+}}
+.gs-hero.split h1 {{ font-size:2.9rem; max-width:16ch; }}
+.gs-hero.split .sub {{ font-size:1rem; max-width:44ch; margin-bottom:1.1rem; }}
+.gs-hero .art {{ width:100%; }}
+.gs-hero .ticks {{ list-style:none; padding:0; margin:0 0 .2rem; }}
+.gs-hero .ticks li {{
+  display:flex; align-items:flex-start; gap:.6rem; font-size:.97rem;
+  font-weight:600; color:rgba(255,255,255,.94); margin-bottom:.55rem;
+  line-height:1.45;
+}}
+.gs-hero .ticks .tk {{
+  flex:0 0 22px; width:22px; height:22px; border-radius:50%;
+  background:{MINT}; display:flex; align-items:center; justify-content:center;
+  margin-top:.05rem;
+}}
+@media (max-width:980px) {{
+  .gs-hero.split {{ grid-template-columns:1fr; }}
+  .gs-hero.split h1 {{ font-size:2.1rem; }}
+}}
+
+/* Platform wordmark chips */
+.gs-chips {{ display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }}
+.gs-chip {{
+  display:inline-flex; align-items:center; border:1.5px solid;
+  border-radius:999px; padding:.42rem .95rem; font-size:.88rem;
+  font-weight:800; letter-spacing:-.01em; white-space:nowrap;
+}}
+
+/* Icon tile grid — the Acko-style "what we cover" board */
+.gs-tiles {{ display:grid; grid-template-columns:repeat(5,1fr); gap:.7rem; }}
+.gs-tile {{
+  background:#fff; border:1px solid var(--line); border-radius:16px;
+  padding:1.05rem .9rem; text-align:center; transition:.15s;
+}}
+.gs-tile:hover {{ border-color:var(--brand); transform:translateY(-2px); }}
+.gs-tile .ic {{
+  width:44px; height:44px; margin:0 auto .6rem; border-radius:13px;
+  background:var(--brand-soft); display:flex; align-items:center;
+  justify-content:center;
+}}
+.gs-tile .t {{ font-size:.86rem; font-weight:800; color:var(--ink);
+               line-height:1.32; margin-bottom:.2rem; }}
+.gs-tile .v {{ font-size:.92rem; font-weight:800; color:var(--brand); }}
+.gs-tile .s {{ font-size:.74rem; color:var(--muted); line-height:1.4;
+               margin-top:.15rem; }}
+.gs-tile.hot .ic {{ background:var(--accent-soft); }}
+.gs-tile.hot .v {{ color:var(--accent-deep); }}
+@media (max-width:1000px) {{ .gs-tiles {{ grid-template-columns:repeat(3,1fr); }} }}
+
+/* Product card with an illustrated header */
+.gs-product {{
+  background:#fff; border:2px solid var(--line); border-radius:22px;
+  overflow:hidden; height:100%; display:flex; flex-direction:column;
+}}
+.gs-product.a {{ border-color:{BRAND}; }}
+.gs-product.b {{ border-color:{ACCENT}; }}
+.gs-product .banner {{ line-height:0; }}
+.gs-product .body {{ padding:1.3rem 1.4rem 1.4rem; display:flex;
+                     flex-direction:column; flex:1; }}
+.gs-product .tag {{
+  display:inline-flex; align-items:center; gap:.4rem; align-self:flex-start;
+  font-size:.7rem; font-weight:800; letter-spacing:.12em;
+  text-transform:uppercase; padding:.3rem .7rem; border-radius:999px;
+  margin-bottom:.6rem;
+}}
+.gs-product.a .tag {{ background:var(--brand-soft); color:{BRAND}; }}
+.gs-product.b .tag {{ background:var(--accent-soft); color:{ACCENT_DEEP}; }}
+.gs-product h3 {{ font-size:1.32rem; font-weight:800; color:var(--ink);
+                  margin:0 0 .35rem; letter-spacing:-.022em; }}
+.gs-product .lede {{ font-size:.93rem; line-height:1.55; color:var(--body);
+                     margin:0 0 1rem; min-height:4.3rem; }}
+.gs-product .lines {{ margin-top:auto; }}
+.gs-product .line {{
+  display:flex; align-items:center; gap:.7rem; padding:.62rem 0;
+  border-top:1px solid #EEF3F2;
+}}
+.gs-product .line .ico {{ flex:0 0 34px; width:34px; height:34px;
+  border-radius:10px; background:var(--brand-soft); display:flex;
+  align-items:center; justify-content:center; }}
+.gs-product.b .line .ico {{ background:var(--accent-soft); }}
+.gs-product .line .lb {{ flex:1; font-size:.9rem; font-weight:700;
+                         color:var(--ink); line-height:1.35; }}
+.gs-product .line .lb small {{ display:block; font-size:.77rem; font-weight:500;
+                               color:var(--muted); margin-top:.1rem; }}
+.gs-product .line .vl {{ font-size:1.02rem; font-weight:800; color:{BRAND};
+                         white-space:nowrap; text-align:right; }}
+.gs-product.b .line .vl {{ color:{ACCENT_DEEP}; }}
+
+/* Media band — illustration beside copy */
+.gs-media {{
+  background:#fff; border:1px solid var(--line); border-radius:22px;
+  padding:1.6rem 1.8rem; height:100%;
+}}
+.gs-media.soft {{ background:var(--cream); border-color:#F0E4D8; }}
+.gs-media.mint {{ background:var(--brand-soft); border-color:#D3E6E3; }}
+
 /* ------------------------------------------------------------------ sections */
 .gs-kicker {{
   font-size:.75rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
@@ -415,11 +515,78 @@ def heading(kicker: str, title: str, lede: str = "", wide: bool = False):
             f"{title}</div>{l}</div>")
 
 
+def split_hero(eyebrow: str, headline: str, sub: str, ticks: list[str],
+               art: str) -> str:
+    """
+    The landing hero: copy and proof points on the left, a picture of the
+    customer on the right. A gig worker should see someone like themselves
+    before they read a word.
+    """
+    from .art import icon
+    tk = "".join(
+        f"<li><span class='tk'>{icon('check', INK, 13, 3)}</span>{t}</li>"
+        for t in ticks)
+    return (f"<div class='gs gs-hero split'>"
+            f"<div><div class='eyebrow'>{eyebrow}</div><h1>{headline}</h1>"
+            f"<div class='sub'>{sub}</div>"
+            f"<ul class='ticks'>{tk}</ul></div>"
+            f"<div class='art'>{art}</div></div>")
+
+
+def tiles(items: list[dict], cols: int = 5):
+    """items: [{icon, title, value, sub, hot?}] — the covered-events board."""
+    from .art import icon as _icon
+    out = ""
+    for it in items:
+        hot = it.get("hot")
+        col = ACCENT if hot else BRAND
+        v = f"<div class='v'>{it['value']}</div>" if it.get("value") else ""
+        s = f"<div class='s'>{it['sub']}</div>" if it.get("sub") else ""
+        out += (f"<div class='gs-tile{' hot' if hot else ''}'>"
+                f"<div class='ic'>{_icon(it['icon'], col, 22)}</div>"
+                f"<div class='t'>{it['title']}</div>{v}{s}</div>")
+    st.html(f"<div class='gs gs-tiles' style='grid-template-columns:"
+            f"repeat({cols},1fr)'>{out}</div>")
+
+
+def product(kind: str, tag: str, title: str, lede: str,
+            lines: list[tuple], banner: str) -> str:
+    """
+    One of the two product cards. Both are built from the same function with
+    the same number of lines, which is what keeps them the same height —
+    previously they were two hand-written blocks and drifted apart.
+    """
+    from .art import icon as _icon
+    col = BRAND if kind == "a" else ACCENT
+    body = ""
+    for ic, label, sub, value in lines:
+        s = f"<small>{sub}</small>" if sub else ""
+        body += (f"<div class='line'><div class='ico'>{_icon(ic, col, 18)}</div>"
+                 f"<div class='lb'>{label}{s}</div>"
+                 f"<div class='vl'>{value}</div></div>")
+    return (f"<div class='gs gs-product {kind}'>"
+            f"<div class='banner'>{banner}</div>"
+            f"<div class='body'><span class='tag'>{tag}</span>"
+            f"<h3>{title}</h3><div class='lede'>{lede}</div>"
+            f"<div class='lines'>{body}</div></div></div>")
+
+
 def cards(items: list[dict], cols: int = 3, variant: str = ""):
-    """items: [{icon, title, body, amount?, amount_note?}]"""
+    """
+    items: [{icon, title, body, amount?, amount_note?}]
+
+    `icon` is a name from the line-icon set in `art.py`. Anything not in that
+    set is passed through untouched, so a raw glyph still works.
+    """
+    from .art import icon as _icon, _ICONS
     out = []
     for it in items:
-        ic = f"<div class='ic'>{it['icon']}</div>" if it.get("icon") else ""
+        ic = ""
+        if it.get("icon"):
+            v = it.get("variant", variant)
+            col = "#fff" if v == "dark" else BRAND
+            glyph = _icon(it["icon"], col, 22) if it["icon"] in _ICONS else it["icon"]
+            ic = f"<div class='ic'>{glyph}</div>"
         amt = ""
         if it.get("amount"):
             note = (f"<small> {it['amount_note']}</small>"

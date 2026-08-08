@@ -13,7 +13,7 @@ import streamlit as st
 
 from shared import inr
 from engine.config import CFG
-from web import theme as T, chrome as C, quote as Q
+from web import theme as T, chrome as C, quote as Q, art as A
 from web.i18n import L
 from web.content import SITE, pick
 
@@ -22,25 +22,23 @@ C.utility_bar()
 si = CFG["sum_insured"]
 v = Q.visitor()
 
-st.html(T.hero(
+st.html(T.split_hero(
     L("Cover on you", "आप पर कवर"),
     L("If you cannot ride, the money still comes in.",
       "अगर आप न चला सकें, तब भी पैसा आता रहेगा।"),
-    L("Rider Shield is the half of the policy that covers you rather than your "
-      "bike. It pays a daily income benefit while an injury keeps you off the "
-      "road, hospital cash while you are admitted, a fixed amount for a broken "
-      "bone, an ambulance paid direct, a panel lawyer if there is an FIR, and a "
-      "lump sum to your family in the worst case.",
-      "Rider Shield पॉलिसी का वह हिस्सा है जो आपकी गाड़ी नहीं, आपकी सुरक्षा "
-      "करता है। चोट के कारण गाड़ी बंद रहने पर रोज़ की आमदनी, भर्ती रहने पर "
-      "अस्पताल कैश, हड्डी टूटने पर तय रकम, सीधे भुगतान वाली एम्बुलेंस, FIR होने "
-      "पर पैनल वकील, और सबसे बुरी स्थिति में परिवार के लिए एकमुश्त रकम।"),
-    badges=[
-        L("Part of every plan from Plus upward", "Plus और उससे ऊपर हर प्लान में"),
-        L("Amounts sized to what you earn", "रकम आपकी कमाई के हिसाब से"),
-        L("Nothing to declare — we observe it", "कुछ घोषित नहीं करना — हम देख लेते हैं"),
+    L("The half of the policy that covers you rather than your bike — and the "
+      "only cover on the market that replaces a gig worker's income.",
+      "पॉलिसी का वह हिस्सा जो गाड़ी नहीं, आपकी सुरक्षा करता है — और बाज़ार का "
+      "इकलौता कवर जो गिग वर्कर की कमाई की भरपाई करता है।"),
+    [
+        L("Daily income for up to 90 days off the road",
+          "गाड़ी बंद रहने पर 90 दिन तक रोज़ की कमाई"),
+        L("Hospital cash, broken bones, ambulance paid direct",
+          "अस्पताल कैश, हड्डी टूटना, सीधे भुगतान वाली एम्बुलेंस"),
+        L("A lump sum to your family in the worst case",
+          "सबसे बुरी स्थिति में परिवार को एकमुश्त रकम"),
     ],
-    compact=True))
+    A.product_banner("rider")))
 
 st.write("")
 C.cta_row(key="rs_hero")
@@ -135,7 +133,7 @@ T.heading(
 st.write("")
 
 T.cards([
-    {"icon": "⏳", "title": L(f"A {si['dib_waiting_days']}-day wait on income cover",
+    {"icon": "clock", "title": L(f"A {si['dib_waiting_days']}-day wait on income cover",
                              f"इनकम कवर पर {si['dib_waiting_days']} दिन का इंतज़ार"),
      "body": L("The daily income benefit starts from day four, not day one. A "
                "one-day sprain is not what this is for, and a shorter wait would "
@@ -143,7 +141,7 @@ T.cards([
                "रोज़ की आमदनी वाला लाभ चौथे दिन से शुरू होता है, पहले दिन से "
                "नहीं। एक दिन की मोच के लिए यह नहीं है, और कम इंतज़ार का मतलब "
                "होगा सबके लिए ज़्यादा महँगा घंटा।")},
-    {"icon": "📉", "title": L("75% of earnings, not 100%",
+    {"icon": "chart", "title": L("75% of earnings, not 100%",
                               "कमाई का 75%, 100% नहीं"),
      "body": L("It must never pay better to stay off the road than to ride. "
                "That factor is what keeps the price where it is and keeps "
@@ -151,14 +149,14 @@ T.cards([
                "ऐसा कभी नहीं होना चाहिए कि गाड़ी बंद रखना चलाने से ज़्यादा "
                "फ़ायदेमंद हो। यही अनुपात क़ीमत को क़ाबू में और सबके क्लेम को "
                "तेज़ रखता है।")},
-    {"icon": "🩺", "title": L("Injury claims need a doctor, not just a photo",
+    {"icon": "hospital", "title": L("Injury claims need a doctor, not just a photo",
                               "चोट के क्लेम पर सिर्फ़ फ़ोटो नहीं, डॉक्टर चाहिए"),
      "body": L("An X-ray or a panel-doctor certificate is required for the "
                "fracture and income benefits. That is what lets us pay the "
                "small claims instantly without the book falling over.",
                "फ्रैक्चर और इनकम बेनिफ़िट के लिए एक्स-रे या पैनल डॉक्टर का "
                "प्रमाणपत्र चाहिए। इसी वजह से हम छोटे क्लेम तुरंत चुका पाते हैं।")},
-    {"icon": "🚦", "title": L("Cover has to be live at the time",
+    {"icon": "bolt", "title": L("Cover has to be live at the time",
                               "उस समय कवर चालू होना चाहिए"),
      "body": L("You are covered for the hours you are riding on a declared "
                "shift. Turning cover off saves you money and does exactly what "

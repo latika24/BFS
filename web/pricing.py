@@ -223,7 +223,7 @@ st.write("")
 
 exp = plus["exposure"]
 T.cards([
-    {"icon": "⏱️", "title": L("1 · The hour you rode", "1 · आपने जो घंटा चलाया"),
+    {"icon": "clock", "title": L("1 · The hour you rode", "1 · आपने जो घंटा चलाया"),
      "amount": f"×{exp['combined_exposure_multiplier']:.2f}",
      "amount_note": L("on your inputs", "आपके इनपुट पर"),
      "body": L(f"Time of day ×{exp['m_time']:.2f}, weather ×{exp['m_weather']:.2f}, "
@@ -232,7 +232,7 @@ T.cards([
                f"समय ×{exp['m_time']:.2f}, मौसम ×{exp['m_weather']:.2f}, शहर "
                f"×{exp['m_geo']:.2f}। पंद्रह-पंद्रह मिनट के हिसाब से, ताकि छोटी "
                "शाम की शिफ़्ट पर लंबी का पैसा न लगे।")},
-    {"icon": "🎯", "title": L("2 · How you ride", "2 · आप कैसे चलाते हैं"),
+    {"icon": "gauge", "title": L("2 · How you ride", "2 · आप कैसे चलाते हैं"),
      "amount": f"×{plus['multipliers']['M_behaviour']['value']:.2f}",
      "amount_note": L(f"score {v['score']:.0f}", f"स्कोर {v['score']:.0f}"),
      "body": L("Harsh braking, cornering, speeding and screen-on-while-moving. "
@@ -240,7 +240,7 @@ T.cards([
                "you can move this week.",
                "तेज़ ब्रेक, मोड़, रफ़्तार और चलते समय स्क्रीन। 90 से ऊपर स्कोर "
                "पर 20% छूट। इसी एक चीज़ को आप इसी हफ़्ते बदल सकते हैं।")},
-    {"icon": "📋", "title": L("3 · Who you are", "3 · आप कौन हैं"),
+    {"icon": "doc", "title": L("3 · Who you are", "3 · आप कौन हैं"),
      "amount": f"×{plus['rating_product'] / plus['multipliers']['M_behaviour']['value']:.2f}",
      "amount_note": L("age, vehicle, work type", "उम्र, गाड़ी, काम का प्रकार"),
      "body": L("Age band, engine size, and what you deliver — ten-minute "
@@ -249,7 +249,7 @@ T.cards([
                "उम्र, इंजन का आकार, और आप क्या पहुँचाते हैं — दस-मिनट वाली "
                "ग्रॉसरी डिलीवरी में फ़ूड डिलीवरी से 25% ज़्यादा जोखिम है, और "
                "क़ीमत यही कहती है।")},
-    {"icon": "🛡️", "title": L("4 · The governance band", "4 · गवर्नेंस बैंड"),
+    {"icon": "shield", "title": L("4 · The governance band", "4 · गवर्नेंस बैंड"),
      "amount": f"{CFG['multiplier_cap']['floor']:.1f}× – {CFG['multiplier_cap']['ceiling']:.1f}×",
      "amount_note": L("a filed limit", "दर्ज सीमा"),
      "body": L("Everything above multiplies together and is then held inside "

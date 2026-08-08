@@ -137,7 +137,7 @@ with ch1:
     T.heading(L("Where riders find us", "राइडर हमें कहाँ पाते हैं"),
               L("Three places that work", "तीन जगहें जो काम करती हैं"))
     st.write("")
-    T.cards([{"icon": "💬", "title": pick(c, "name"), "body": pick(c, "note")}
+    T.cards([{"icon": "people", "title": pick(c, "name"), "body": pick(c, "note")}
              for c in r["channels"]], cols=1)
 
 with ch2:

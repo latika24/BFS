@@ -106,7 +106,7 @@ with d1:
 
 with d2:
     T.cards([
-        {"icon": "🔒", "title": L("The design rule", "बुनियादी नियम"),
+        {"icon": "lock", "title": L("The design rule", "बुनियादी नियम"),
          "body": L("Revoking telematics consent reverts you to a flat book rate "
                    "and never lapses cover. It is written into the product, not "
                    "into a support script — which is why it survives a bad "
@@ -115,7 +115,7 @@ with d2:
                    "कवर कभी बंद नहीं होता। यह प्रोडक्ट में लिखा है, किसी सपोर्ट "
                    "स्क्रिप्ट में नहीं — इसीलिए यह ख़राब तिमाही में भी टिकता है।"),
          "variant": "dark"},
-        {"icon": "🗣️", "title": L("Support in your language",
+        {"icon": "globe", "title": L("Support in your language",
                                   "आपकी भाषा में सहायता"),
          "body": L("Eight languages, voice-first, because a claim form in "
                    "English is a claim that does not get made.",
@@ -177,7 +177,7 @@ T.heading(L("Who is behind this", "इसके पीछे कौन है"),
             "एक अकादमिक प्रोटोटाइप, साफ़-साफ़।"))
 st.write("")
 T.cards([
-    {"icon": "🎓", "title": L("Built at IIM Ahmedabad",
+    {"icon": "people", "title": L("Built at IIM Ahmedabad",
                               "IIM अहमदाबाद में बना"),
      "body": L("Group 6, Banking and Financial Services, PGP-II Term IV, under "
                "Prof. Balagopal Gopalakrishnan. The business plan behind every "
@@ -185,7 +185,7 @@ T.cards([
                "ग्रुप 6, बैंकिंग एंड फ़ाइनेंशियल सर्विसेज़, PGP-II टर्म IV, "
                "प्रो. बालगोपाल गोपालकृष्णन के अंतर्गत। इस साइट के हर आँकड़े के "
                "पीछे का बिज़नेस प्लान अगस्त 2026 का कोर्स सबमिशन है।")},
-    {"icon": "🧮", "title": L("The numbers are auditable",
+    {"icon": "chart", "title": L("The numbers are auditable",
                               "आँकड़े जाँचे जा सकते हैं"),
      "body": L("Every rating factor, benefit formula and financial assumption "
                "sits in two configuration files rather than in the code. The "
@@ -193,7 +193,7 @@ T.cards([
                "हर रेटिंग फ़ैक्टर, लाभ का फ़ॉर्मूला और वित्तीय अनुमान कोड में "
                "नहीं, दो कॉन्फ़िगरेशन फ़ाइलों में है। इंश्योरर कंसोल वही बुक "
                "दिखाता है जिससे वेबसाइट बेचती है।")},
-    {"icon": "🧪", "title": L("The book is synthetic",
+    {"icon": "gauge", "title": L("The book is synthetic",
                               "बुक कृत्रिम है"),
      "body": L("There is no public gig-worker telematics dataset, so the "
                "5,000-rider book is generated from distributions that match the "

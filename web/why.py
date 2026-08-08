@@ -222,7 +222,7 @@ with wc1:
                 "सवाल पूछेगा।"))
 with wc2:
     T.cards([
-        {"icon": "🪪", "title": L("Our own licence, not a partner's paper",
+        {"icon": "doc", "title": L("Our own licence, not a partner's paper",
                                   "अपना लाइसेंस, किसी और का काग़ज़ नहीं"),
          "body": L("We are pursuing IRDAI registration in our own name rather "
                    "than broking risk onto someone else's balance sheet. It is "

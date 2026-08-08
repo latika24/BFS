@@ -13,7 +13,7 @@ import streamlit as st
 
 from shared import inr
 from engine.config import CFG
-from web import theme as T, chrome as C, quote as Q
+from web import theme as T, chrome as C, quote as Q, art as A
 from web.i18n import L
 
 C.utility_bar()
@@ -22,24 +22,24 @@ si = CFG["sum_insured"]
 v = Q.visitor()
 ben = Q.benefits(v)
 
-st.html(T.hero(
+st.html(T.split_hero(
     L("Cover on your bike and your work", "आपकी गाड़ी और काम पर कवर"),
     L("Your private bike policy will not pay when you crash <em>at work</em>.",
       "आपकी प्राइवेट बाइक पॉलिसी <em>काम के दौरान</em> हुए एक्सीडेंट पर पैसा नहीं देगी।"),
-    L("If your two-wheeler is registered privately and you use it for delivery, "
-      "you are using it commercially. Every private motor policy in India "
-      "excludes commercial use. You pay that premium every year and it is void "
-      "for exactly the ride you were on. Ride Shield is the cover that is not.",
-      "अगर आपकी गाड़ी प्राइवेट रजिस्टर्ड है और आप उससे डिलीवरी करते हैं, तो आप "
-      "उसका कमर्शियल इस्तेमाल कर रहे हैं। भारत की हर प्राइवेट मोटर पॉलिसी "
-      "कमर्शियल इस्तेमाल को बाहर रखती है। आप हर साल प्रीमियम भरते हैं और ठीक "
-      "उसी राइड पर वह बेकार है। Ride Shield वह कवर है जो बेकार नहीं है।"),
-    badges=[
-        L("Included in GigSure Pro", "GigSure Pro में शामिल"),
-        L("Paid to the garage, not argued over", "पैसा सीधे गैरेज को, बहस नहीं"),
-        L("Covers the order, not just the bike", "सिर्फ़ गाड़ी नहीं, ऑर्डर भी"),
+    L("A privately registered two-wheeler used for delivery is being used "
+      "commercially — and every private motor policy in India excludes "
+      "commercial use.",
+      "डिलीवरी में इस्तेमाल हो रही प्राइवेट रजिस्टर्ड गाड़ी कमर्शियल इस्तेमाल "
+      "में है — और भारत की हर प्राइवेट मोटर पॉलिसी उसे बाहर रखती है।"),
+    [
+        L("Your bike, damaged on shift, paid to a network garage",
+          "शिफ़्ट में गाड़ी का नुक़सान, पैसा नेटवर्क गैरेज को"),
+        L("Orders the platform deducts from your pay, refunded",
+          "प्लेटफ़ॉर्म जो ऑर्डर आपकी पे से काटे, उसकी भरपाई"),
+        L("Phone screen and EV battery, repaired at our network",
+          "फ़ोन स्क्रीन और EV बैटरी, हमारे नेटवर्क पर मरम्मत"),
     ],
-    compact=True))
+    A.product_banner("ride")))
 
 st.write("")
 C.cta_row(key="rd_hero")

@@ -68,7 +68,7 @@ T.heading(L("Our promise", "हमारा वादा"),
 st.write("")
 
 T.cards([
-    {"icon": "⚡", "title": L("Ambulance, phone, order deductions",
+    {"icon": "bolt", "title": L("Ambulance, phone, order deductions",
                              "एम्बुलेंस, फ़ोन, ऑर्डर कटौती"),
      "amount": L(f"{sp['instant_heads_minutes']} min",
                  f"{sp['instant_heads_minutes']} मिनट"),
@@ -76,7 +76,7 @@ T.cards([
                "phone call, no branch visit.",
                "आपके राइड डेटा से मशीन तय करती है। न सर्वेयर, न फ़ोन कॉल, न "
                "ब्रांच के चक्कर।")},
-    {"icon": "🕐", "title": L("Hospital cash, fractures, bike damage",
+    {"icon": "clock", "title": L("Hospital cash, fractures, bike damage",
                              "अस्पताल कैश, फ्रैक्चर, गाड़ी का नुक़सान"),
      "amount": L(f"{sp['standard_head_hours']} hrs",
                  f"{sp['standard_head_hours']} घंटे"),
@@ -84,7 +84,7 @@ T.cards([
                "moves the same working day.",
                "पैनल डॉक्टर या नेटवर्क गैरेज पुष्टि करता है, और पैसा उसी "
                "कामकाजी दिन चला जाता है।")},
-    {"icon": "🔍", "title": L("Disputed or high-value claims",
+    {"icon": "scales", "title": L("Disputed or high-value claims",
                              "विवादित या बड़ी रकम के क्लेम"),
      "amount": L(f"{sp['investigation_head_days']} days",
                  f"{sp['investigation_head_days']} दिन"),
@@ -92,7 +92,7 @@ T.cards([
                "review, by whom, and when you will hear back.",
                "इंसान जाँचता है। पहले ही दिन आपको बताया जाता है कि जाँच चल रही "
                "है, कौन कर रहा है, और जवाब कब मिलेगा।")},
-    {"icon": "🤍", "title": L("Death claims — advance to the family",
+    {"icon": "heart", "title": L("Death claims — advance to the family",
                              "मृत्यु क्लेम — परिवार को अग्रिम"),
      "amount": inr(sp["advance_on_death_claim_amount"]),
      "amount_note": L(f"within {sp['advance_on_death_claim_hours']} hours",
@@ -187,20 +187,20 @@ T.heading(L("What we need from you", "आपसे क्या चाहिए"
             "तीन चीज़ें — और दो तो कुछ गलत होने से पहले ही ले ली जाती हैं।"))
 st.write("")
 T.cards([
-    {"icon": "📸", "title": L("Four photos of your bike, at sign-up",
+    {"icon": "doc", "title": L("Four photos of your bike, at sign-up",
                               "साइन-अप पर गाड़ी की चार फ़ोटो"),
      "body": L("Taken once, when nothing is wrong. This is what removes the "
                "argument about pre-existing damage later.",
                "एक बार, जब सब ठीक हो। बाद में पुराने नुक़सान पर होने वाली बहस "
                "यही ख़त्म करती है।")},
-    {"icon": "🛰️", "title": L("Cover switched on while you ride",
+    {"icon": "globe", "title": L("Cover switched on while you ride",
                               "चलाते समय कवर चालू"),
      "body": L("One tap when you start a shift. This is the single most common "
                "reason a claim fails, so the app reminds you when it detects "
                "riding with cover off.",
                "शिफ़्ट शुरू करते समय एक टैप। क्लेम फ़ेल होने की सबसे आम वजह यही "
                "है, इसलिए बिना कवर चलते देखकर ऐप याद दिलाता है।")},
-    {"icon": "🩻", "title": L("Medical evidence, for injury claims only",
+    {"icon": "hospital", "title": L("Medical evidence, for injury claims only",
                               "सिर्फ़ चोट के क्लेम पर मेडिकल सबूत"),
      "body": L("An X-ray or a panel-doctor note. Nothing else — no FIR for a "
                "fracture, no estimate for a bike repair, no witness statement.",
@@ -227,7 +227,7 @@ with a1:
                 "हैं कि कैसे — यह भी कि हमारा फ़ैसला कहाँ कमज़ोर था।"))
 with a2:
     T.cards([
-        {"icon": "⚖️", "title": L("Ombudsman complaints last month",
+        {"icon": "scales", "title": L("Ombudsman complaints last month",
                                   "पिछले महीने लोकपाल शिकायतें"),
          "amount": f"{cr['ombudsman_complaints']}",
          "amount_note": L(f"of {cr['claims_received']:,} claims",

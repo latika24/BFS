@@ -106,6 +106,32 @@ Demo state (the rider, their policies, claims and ledger) is seeded in
 `engine/store.py`. "Reset demo" sits in the top bar of every app and console
 screen.
 
+## Artwork
+
+Every illustration is hand-built SVG in `web/art.py` — the rider on a scooter,
+the platform web, the phone mockup showing the live risk score, the hour-by-hour
+day strip, and the two product banners. Nothing is a bitmap, so it stays sharp
+and recolours from the palette.
+
+Two implementation notes, both learned the hard way:
+
+* Streamlit's HTML sanitiser strips `<svg>` elements, so every drawing is
+  encoded as a base64 data-URI `<img>`. That survives sanitisation, but it also
+  means an illustration cannot load a webfont — hence the system font stack
+  inside the SVGs.
+* XML forbids `--` inside a comment, and an SVG in an `<img>` is parsed as
+  strict XML. `_img()` therefore strips comments before encoding, so the
+  `<!-- ---- section ---- -->` rules in the source cannot silently break a
+  drawing.
+
+**To use a photograph in the hero instead of the illustration,** drop a file at
+`assets/hero.jpg` (or `.png`/`.webp`). `art.hero_visual()` picks it up
+automatically and falls back to the drawing when it is not there.
+
+Platform names on the site are set as type in each brand's colour rather than
+copied logo files — recognisable, and it keeps someone else's trademarked
+artwork out of an academic prototype.
+
 ## Calibration
 
 | Figure | Plan | Engine |
@@ -151,6 +177,7 @@ engine/
   data_gen.py               Synthetic book
 web/                        The commercial site
   theme.py                  Site design system — components render via st.html
+  art.py                    Illustrations, line icons, phone mockup, platform web
   chrome.py                 Utility bar, CTA row, footer, route constants
   i18n.py                   Language switch; copy sits next to its layout
   content.py                Loads site_content.yaml, resolves _hi fields
