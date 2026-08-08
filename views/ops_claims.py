@@ -115,7 +115,7 @@ with s1:
         textposition="inside"))
     fig.update_layout(height=280, margin=dict(l=0, r=0, t=24, b=0),
                       yaxis_title="Share of claims by count", showlegend=False)
-    st.plotly_chart(fig, width="stretch")
+    st.plotly_chart(fig, use_container_width=True)
     st.caption("Roughly 80% of premium sits in fixed benefits, so most claims "
                "need an event verified rather than a loss assessed. That is "
                "what makes machine settlement possible at all.")
@@ -179,7 +179,7 @@ with f[1]:
     fig2.update_layout(height=190, margin=dict(l=0, r=0, t=6, b=0),
                        yaxis_title="g-force", xaxis_title="seconds",
                        legend=dict(orientation="h", y=1.3))
-    st.plotly_chart(fig2, width="stretch")
+    st.plotly_chart(fig2, use_container_width=True)
     st.caption("Deceleration spike, then the device goes still.")
 
 with f[2]:

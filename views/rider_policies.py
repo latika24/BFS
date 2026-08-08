@@ -175,7 +175,7 @@ with lc1:
                       yaxis2=dict(title="hours", overlaying="y", side="right",
                                   showgrid=False),
                       legend=dict(orientation="h", y=1.16))
-    st.plotly_chart(fig, width="stretch")
+    st.plotly_chart(fig, use_container_width=True)
 
 with lc2:
     k = st.columns(2)

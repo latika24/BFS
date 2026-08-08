@@ -1,0 +1,350 @@
+# =============================================================================
+# Commercial content for GigSure.com
+#
+# rating_factors.yaml holds every number the RISK model uses. This file holds
+# every number and claim the WEBSITE makes: the published claims report, rider
+# testimonials, referral terms, distribution partners and the compliance
+# register. Same principle — nothing hard-coded in a page.
+#
+# The claims report is the primary trust instrument in the plan (§3.3,
+# "monthly published claims data ... as the primary trust instrument"). The
+# figures below are the modelled steady-state book, not live experience, and
+# the site says so on the Trust page.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# PUBLISHED CLAIMS REPORT — refreshed monthly, shown on Claims and Trust
+# -----------------------------------------------------------------------------
+claims_report:
+  period: "July 2026"
+  period_hi: "जुलाई 2026"
+  claims_received: 3184
+  claims_paid: 3049
+  settlement_ratio: 0.958
+  repudiation_rate: 0.042
+  median_turnaround_hours: 4.2
+  share_settled_same_day: 0.91
+  share_settled_instantly: 0.46      # tier-1 heads, no human touch
+  total_paid_rupees: 41870000
+  largest_single_settlement: 1000000
+  average_income_benefit_days: 11.4
+  ombudsman_complaints: 6
+
+  # We publish why we said no, not only how often. Rejection reasons are the
+  # part of a claims report that insurers normally omit.
+  rejection_reasons:
+    - reason: "Cover was not live — no shift declared at the reported time"
+      reason_hi: "कवर चालू नहीं था — बताए गए समय पर कोई शिफ्ट दर्ज नहीं थी"
+      share: 0.44
+    - reason: "Injury not consistent with a road incident on the trace"
+      reason_hi: "चोट सड़क दुर्घटना के रिकॉर्ड से मेल नहीं खाती"
+      share: 0.21
+    - reason: "Same body part already settled under the disability schedule"
+      reason_hi: "उसी अंग के लिए पहले ही भुगतान हो चुका है"
+      share: 0.14
+    - reason: "Documents not supplied within 30 days despite three reminders"
+      reason_hi: "तीन बार याद दिलाने पर भी 30 दिन में दस्तावेज़ नहीं मिले"
+      share: 0.13
+    - reason: "Benefit already at its annual cap"
+      reason_hi: "इस साल की तय सीमा पहले ही पूरी हो चुकी है"
+      share: 0.08
+
+  # What we pay out on, by head. Shown as the honest picture of what the
+  # product actually does day to day.
+  paid_by_head:
+    - head: "Daily income while you cannot ride"
+      head_hi: "काम न कर पाने पर रोज़ की आमदनी"
+      count: 191
+      amount: 15660000
+    - head: "Hospital cash, fracture and OPD"
+      head_hi: "अस्पताल कैश, हड्डी टूटना और OPD"
+      count: 287
+      amount: 8940000
+    - head: "Ambulance and first response"
+      head_hi: "एम्बुलेंस और तुरंत मदद"
+      count: 382
+      amount: 2260000
+    - head: "Bike damage on shift, orders and phone"
+      head_hi: "शिफ्ट में गाड़ी, ऑर्डर और फ़ोन का नुक़सान"
+      count: 2098
+      amount: 9010000
+    - head: "Death and permanent disability"
+      head_hi: "मृत्यु और स्थायी विकलांगता"
+      count: 9
+      amount: 6000000
+
+# -----------------------------------------------------------------------------
+# SETTLEMENT PROMISE — what we commit to publicly
+# -----------------------------------------------------------------------------
+settlement_promise:
+  instant_heads_minutes: 3
+  standard_head_hours: 24
+  investigation_head_days: 7
+  advance_on_death_claim_hours: 48
+  advance_on_death_claim_amount: 100000
+  late_payment_penalty_note: >
+    If we miss our own 24-hour promise on a straightforward claim, we credit
+    ₹500 to your UPI. It is our deadline, so it is our cost when we miss it.
+  late_payment_penalty_note_hi: >
+    अगर सीधे-सादे क्लेम पर हम अपना 24 घंटे का वादा तोड़ते हैं, तो ₹500 आपके UPI
+    में जमा होंगे। समय-सीमा हमारी है, इसलिए चूक की क़ीमत भी हमारी।
+
+# -----------------------------------------------------------------------------
+# RIDER TESTIMONIALS
+# Composite riders drawn from the segments in §3.1, not real individuals.
+# -----------------------------------------------------------------------------
+testimonials:
+  - name: "Ramesh K."
+    role: "Food delivery + quick commerce · Bengaluru · 3 years riding"
+    role_hi: "फ़ूड डिलीवरी + क्विक कॉमर्स · बेंगलुरु · 3 साल से"
+    quote: >
+      I ride for two apps. The old cover only worked on one of them, and the
+      switch between apps was exactly when I was in traffic. Now it does not
+      matter which app the order came from.
+    quote_hi: >
+      मैं दो ऐप पर चलाता हूँ। पुराना कवर सिर्फ़ एक पर काम करता था, और ऐप बदलने
+      का वही समय होता था जब मैं ट्रैफ़िक में था। अब फ़र्क़ नहीं पड़ता कि ऑर्डर
+      किस ऐप का है।
+  - name: "Sunita D."
+    role: "Parcel delivery · Pune · rides four days a week"
+    role_hi: "पार्सल डिलीवरी · पुणे · हफ़्ते में चार दिन"
+    quote: >
+      An annual policy wanted the same money from me as from someone riding
+      every day. I ride four days. Paying by the hour was the first time the
+      price made sense for the work I actually do.
+    quote_hi: >
+      सालाना पॉलिसी मुझसे उतने ही पैसे माँगती थी जितने रोज़ चलाने वाले से। मैं
+      चार दिन चलाती हूँ। घंटे के हिसाब से पैसा देना पहली बार सही लगा।
+  - name: "Imran S."
+    role: "Quick commerce · Delhi NCR · claimed in March"
+    role_hi: "क्विक कॉमर्स · दिल्ली NCR · मार्च में क्लेम किया"
+    quote: >
+      Broken wrist, six weeks off the bike. The money came every week while I
+      was not earning. That is the part nobody else was covering.
+    quote_hi: >
+      कलाई टूटी, छह हफ़्ते गाड़ी बंद। जब कमाई नहीं हो रही थी तब हर हफ़्ते पैसा
+      आता रहा। यही चीज़ और कोई नहीं दे रहा था।
+  - name: "Mahesh P."
+    role: "Bike taxi · Hyderabad · joined through his depot"
+    role_hi: "बाइक टैक्सी · हैदराबाद · डिपो से जुड़े"
+    quote: >
+      My private bike policy would not have paid for a commercial trip. I only
+      found that out when I read this site. Twelve years riding and nobody had
+      told me.
+    quote_hi: >
+      मेरी प्राइवेट बाइक पॉलिसी कमर्शियल राइड पर पैसा नहीं देती। यह मुझे इसी
+      साइट पर पता चला। बारह साल से चला रहा हूँ, किसी ने नहीं बताया।
+
+# -----------------------------------------------------------------------------
+# REFERRAL (§3.3 — Place)
+# -----------------------------------------------------------------------------
+referral:
+  reward_each_side: 100
+  currency_note: "credited to UPI"
+  currency_note_hi: "UPI में जमा"
+  qualify_after_hours: 20
+  monthly_cap_per_rider: 1000
+  blended_cac: 350
+  lifetime_value: 1080
+  channels:
+    - name: "Your hub WhatsApp group"
+      name_hi: "आपका हब वाला WhatsApp ग्रुप"
+      note: "One tap, sends your code with a voice note in your language"
+      note_hi: "एक टैप, आपकी भाषा में वॉइस नोट के साथ कोड चला जाता है"
+    - name: "Battery-swap and charging points"
+      name_hi: "बैटरी स्वैप और चार्जिंग पॉइंट"
+      note: "Scan the code on the station, both of you get credited"
+      note_hi: "स्टेशन पर लगा कोड स्कैन करें, दोनों को पैसा मिलेगा"
+    - name: "Your depot or fleet operator"
+      name_hi: "आपका डिपो या फ़्लीट ऑपरेटर"
+      note: "Depot riders get the reward plus a lower base rate"
+      note_hi: "डिपो के राइडर को इनाम के साथ कम बेस रेट भी"
+
+# -----------------------------------------------------------------------------
+# DISTRIBUTION PARTNERS (§3.3 — Place). Access to riders, never group schemes:
+# every policy issued through a partner is individually owned by the worker.
+# -----------------------------------------------------------------------------
+distribution:
+  - channel: "Fleet and rental depots"
+    channel_hi: "फ़्लीट और रेंटल डिपो"
+    examples: "Zypp, Yulu, Everest Fleet"
+    cac_low: 60
+    cac_high: 120
+    note: "Lowest cost, and their hardware telematics validates our own model"
+  - channel: "Platform onboarding slots"
+    channel_hi: "प्लेटफ़ॉर्म ऑनबोर्डिंग"
+    examples: "At sign-up, as an option — never as a group scheme"
+    cac_low: 80
+    cac_high: 150
+    note: "The platform is a place we meet you, not our customer"
+  - channel: "Delivery hubs at shift change"
+    channel_hi: "शिफ़्ट बदलते समय डिलीवरी हब पर"
+    examples: "Field teams, vernacular, voice-first"
+    cac_low: 150
+    cac_high: 260
+    note: "Where riders talk to each other about what actually paid out"
+  - channel: "Rider referral"
+    channel_hi: "राइडर रेफ़रल"
+    examples: "₹100 each side, travels through hub WhatsApp groups"
+    cac_low: 200
+    cac_high: 200
+    note: "Our fastest-compounding channel because riders trust riders"
+  - channel: "Battery-swap points"
+    channel_hi: "बैटरी स्वैप पॉइंट"
+    examples: "QR at the station, EV riders"
+    cac_low: 90
+    cac_high: 170
+    note: "High frequency, captive dwell time, EV-skewed and lower risk"
+
+# -----------------------------------------------------------------------------
+# TRUST AND COMPLIANCE REGISTER (§2.1, §1.3)
+# -----------------------------------------------------------------------------
+compliance:
+  - item: "IRDAI registration"
+    item_hi: "IRDAI पंजीकरण"
+    status: "In progress"
+    detail: >
+      Three-stage registration — Forms R1, R2 and R3 — under the Insurance Act,
+      1938. ₹100 crore of paid-up equity under Section 6 and a 150% solvency
+      ratio under Section 64VA. We write on our own paper, not a partner's.
+  - item: "Solvency"
+    item_hi: "सॉल्वेंसी"
+    status: "Targeted at 200%"
+    detail: >
+      Statutory minimum is 150%. We run an internal throttle at 180%: if the
+      ratio touches it, we slow new business rather than write beyond capital.
+  - item: "Your data, under the DPDP Act 2023"
+    item_hi: "आपका डेटा, DPDP क़ानून 2023 के तहत"
+    status: "You control it"
+    detail: >
+      Location data makes us a data fiduciary. Withdraw telematics consent at
+      any time and your cover does not lapse — you move to a flat book rate.
+      We never sell an individual risk score to any platform, ever.
+  - item: "Grievance and ombudsman"
+    item_hi: "शिकायत और लोकपाल"
+    status: "Published monthly"
+    detail: >
+      Every complaint, its age and its outcome is published with the claims
+      report. Escalation to the Insurance Ombudsman is free and we tell you how.
+  - item: "Rural and social sector obligation"
+    item_hi: "ग्रामीण और सामाजिक क्षेत्र दायित्व"
+    status: "Met by design"
+    detail: >
+      Every insurer must write a minimum share of business from the unorganised
+      sector. Our entire book qualifies naturally rather than by purchase.
+
+# -----------------------------------------------------------------------------
+# THE FOUR FAILURES WE EXIST TO FIX (§1.1) — the spine of the Why page
+# -----------------------------------------------------------------------------
+failures:
+  - title: "It belongs to the app, not to you"
+    title_hi: "कवर ऐप का है, आपका नहीं"
+    body: >
+      Platform cover is live only while you are logged in to that platform.
+      About 40% of a rider's day is spent moving between apps, and that time
+      falls into the gap between two policies.
+    body_hi: >
+      प्लेटफ़ॉर्म का कवर तभी चालू रहता है जब आप उसी ऐप पर लॉग-इन हों। राइडर का
+      लगभग 40% दिन ऐप बदलने में जाता है, और वह समय दो पॉलिसियों के बीच की खाई
+      में गिर जाता है।
+    fix: "Your policy is yours. It stays live across every app, and it comes with you when you stop riding for one of them."
+    fix_hi: "आपकी पॉलिसी आपकी है। हर ऐप पर चालू रहती है, और ऐप छोड़ने पर भी आपके साथ रहती है।"
+  - title: "Your bike cover is quietly void"
+    title_hi: "आपकी गाड़ी का बीमा चुपचाप रद्द है"
+    body: >
+      Most riders use a privately registered two-wheeler for commercial
+      delivery, and every private motor policy in India excludes commercial
+      use. The policy you pay for each year will not pay when you crash at work.
+    body_hi: >
+      ज़्यादातर राइडर प्राइवेट रजिस्टर्ड दोपहिया से कमर्शियल डिलीवरी करते हैं,
+      और भारत की हर प्राइवेट मोटर पॉलिसी कमर्शियल इस्तेमाल को बाहर रखती है।
+      जिस पॉलिसी का सालाना पैसा आप देते हैं, वह काम के दौरान हुए एक्सीडेंट पर
+      पैसा नहीं देगी।
+    fix: "Ride Shield covers on-duty damage to your two-wheeler, on a scheduled benefit paid straight to a network garage."
+    fix_hi: "Ride Shield शिफ़्ट के दौरान गाड़ी के नुक़सान को कवर करता है, पैसा सीधे नेटवर्क गैरेज को।"
+  - title: "It pays too slowly to matter"
+    title_hi: "पैसा इतनी देर से आता है कि मतलब नहीं रहता"
+    body: >
+      Worker unions in Telangana and Karnataka have documented injured delivery
+      partners waiting months for platform insurance to settle. A claim paid in
+      four months is not a claim paid.
+    body_hi: >
+      तेलंगाना और कर्नाटक की यूनियनों ने दर्ज किया है कि घायल डिलीवरी पार्टनर
+      महीनों तक प्लेटफ़ॉर्म बीमे के भुगतान का इंतज़ार करते हैं। चार महीने बाद
+      मिला पैसा, पैसा नहीं है।
+    fix: "Straightforward claims settle within a day, most of them within minutes, straight to your UPI."
+    fix_hi: "सीधे क्लेम एक दिन में, ज़्यादातर कुछ मिनटों में, सीधे आपके UPI में।"
+  - title: "It covers the accident, not the lost income"
+    title_hi: "एक्सीडेंट कवर है, गई हुई कमाई नहीं"
+    body: >
+      A hospital bill is the loss that is easiest to underwrite. The loss that
+      actually happens to a rider is the six weeks off the bike afterwards,
+      with nothing coming in.
+    body_hi: >
+      अस्पताल का बिल बीमा कंपनी के लिए सबसे आसान नुक़सान है। राइडर के साथ जो
+      असल में होता है वह उसके बाद के छह हफ़्ते हैं — गाड़ी बंद, कमाई शून्य।
+    fix: "The daily income benefit pays 75% of your observed daily earnings for up to 90 days a year."
+    fix_hi: "डेली इनकम बेनिफ़िट आपकी देखी गई रोज़ की कमाई का 75% देता है, साल में 90 दिन तक।"
+
+# -----------------------------------------------------------------------------
+# FAQs
+# -----------------------------------------------------------------------------
+faqs:
+  - q: "Do I have to ride for a particular app?"
+    q_hi: "क्या किसी ख़ास ऐप पर चलाना ज़रूरी है?"
+    a: >
+      No. The policy is issued to you, not to a platform. Ride for one app,
+      four apps, or none this week — the cover follows you, and you are charged
+      only for the hours you actually ride.
+    a_hi: >
+      नहीं। पॉलिसी आपके नाम पर है, किसी प्लेटफ़ॉर्म के नाम पर नहीं। एक ऐप,
+      चार ऐप, या इस हफ़्ते कोई नहीं — कवर आपके साथ चलता है, और पैसा सिर्फ़ उन
+      घंटों का लगता है जो आपने चलाया।
+  - q: "What happens on a day I do not ride?"
+    q_hi: "जिस दिन मैं नहीं चलाऊँ, उस दिन क्या?"
+    a: >
+      You pay nothing. Premium is charged per active hour, debited each evening
+      by UPI Autopay. A day off costs ₹0 and your policy does not lapse.
+    a_hi: >
+      कुछ नहीं देना। पैसा सिर्फ़ चलाए गए घंटों का लगता है, हर शाम UPI ऑटोपे से
+      कटता है। छुट्टी वाले दिन ₹0, और पॉलिसी बंद नहीं होती।
+  - q: "Do I have to let you track my location?"
+    q_hi: "क्या लोकेशन ट्रैक करने देना ज़रूरी है?"
+    a: >
+      No. Sharing riding data usually makes your price lower, because safe
+      riding earns a discount. If you withdraw consent, you move to a flat book
+      rate and your cover stays live. We never sell your individual score to a
+      platform.
+    a_hi: >
+      नहीं। राइडिंग डेटा शेयर करने से आमतौर पर आपका रेट कम होता है, क्योंकि
+      सुरक्षित चलाने पर छूट मिलती है। सहमति वापस लेने पर आप फ़्लैट रेट पर आ
+      जाते हैं और कवर चालू रहता है। आपका स्कोर हम किसी प्लेटफ़ॉर्म को कभी
+      नहीं बेचते।
+  - q: "I already have cover from the platform I ride for. Why do I need this?"
+    q_hi: "जिस प्लेटफ़ॉर्म पर चलाता हूँ उसका कवर पहले से है। फिर यह क्यों?"
+    a: >
+      Platform cover switches off when you log out, does not replace your
+      income, and stops entirely the day you stop riding for that platform. It
+      is worth having. It is not enough on its own.
+    a_hi: >
+      प्लेटफ़ॉर्म का कवर लॉग-आउट करते ही बंद हो जाता है, आपकी कमाई की भरपाई
+      नहीं करता, और उस ऐप को छोड़ते ही पूरी तरह ख़त्म। वह रखने लायक़ है।
+      अकेले काफ़ी नहीं है।
+  - q: "Is there a lock-in or a joining fee?"
+    q_hi: "क्या कोई लॉक-इन या जॉइनिंग फ़ीस है?"
+    a: >
+      Neither. No joining fee, no minimum term, cancel from the app in two
+      taps. If we are not worth ₹2.50 an hour to you, we would rather you left.
+    a_hi: >
+      कुछ नहीं। कोई जॉइनिंग फ़ीस नहीं, कोई मियाद नहीं, ऐप से दो टैप में बंद।
+      अगर हम आपके लिए ₹2.50 प्रति घंटे लायक़ नहीं हैं, तो आपका जाना ही ठीक है।
+  - q: "What if my claim is rejected?"
+    q_hi: "अगर मेरा क्लेम रिजेक्ट हो जाए तो?"
+    a: >
+      You get the reason in writing, in your language, with the evidence we
+      used. You can appeal free of charge, and escalate to the Insurance
+      Ombudsman, which is also free. We publish our rejection reasons monthly.
+    a_hi: >
+      कारण आपको लिखित में, आपकी भाषा में, उस सबूत के साथ मिलेगा जो हमने देखा।
+      अपील मुफ़्त है, और बीमा लोकपाल तक जाना भी मुफ़्त। हम हर महीने अपने
+      रिजेक्शन के कारण छापते हैं।

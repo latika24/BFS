@@ -243,23 +243,46 @@ def boot(title):
     st.markdown(CSS, unsafe_allow_html=True)
 
 
-def topbar(mode, right=""):
+def topbar(mode, right="", reset=True):
     """
-    The green bar at the top of every screen.
+    The green bar at the top of every app and console screen.
 
     ONE block element, inline children, floats instead of flex. Streamlit runs
     markup through a Markdown parser that restructures nested block elements —
     a child <div> got hoisted out of the bar and rendered above it. Floats with
     a clearfix require no height negotiation, so nothing can escape.
 
-    `right` must be a single short line. Anything longer belongs in the sidebar,
-    which already carries the rider's identity.
+    `right` must be a single short line.
+
+    Navigation now lives in the page header rather than a sidebar, so the demo
+    reset that used to sit in the sidebar rides along here instead. Its widget
+    key is derived from the calling module so every screen gets a unique one
+    without having to pass anything in.
     """
-    md(f"<div class='topbar'>"
-       f"<span class='logo'>🛵 {BRAND}</span>"
-       f"<span class='mode'>{mode}</span>"
-       f"<span class='tb-right'>{right}</span>"
-       f"</div>")
+    import inspect
+    import os
+
+    if not reset:
+        md(f"<div class='topbar'><span class='logo'>🛵 {BRAND}</span>"
+           f"<span class='mode'>{mode}</span>"
+           f"<span class='tb-right'>{right}</span></div>")
+        return
+
+    caller = os.path.basename(inspect.stack()[1].filename).replace(".py", "")
+    c = st.columns([6.4, 1], vertical_alignment="center")
+    with c[0]:
+        md(f"<div class='topbar' style='margin-bottom:.4rem'>"
+           f"<span class='logo'>🛵 {BRAND}</span>"
+           f"<span class='mode'>{mode}</span>"
+           f"<span class='tb-right'>{right}</span></div>")
+    with c[1]:
+        if st.button("Reset demo", key=f"reset_{caller}", width="stretch",
+                     help="Restores policies, claims and the ledger to their "
+                          "seeded state."):
+            from engine import store as _store
+            _store.reset()
+            st.rerun()
+    st.write("")
 
 
 def h(title, sub=""):

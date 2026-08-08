@@ -51,7 +51,7 @@ with g1:
                          {"range": [70, 90], "color": "#E4F0E9"},
                          {"range": [90, 100], "color": "#CDE8DA"}]}))
     gauge.update_layout(height=250, margin=dict(l=20, r=20, t=14, b=0))
-    st.plotly_chart(gauge, width="stretch")
+    st.plotly_chart(gauge, use_container_width=True)
     st.caption("Shown to you for three months before it affects your price, "
                "so you can see it is fair before it costs you anything.")
 
@@ -69,7 +69,7 @@ with g2:
     fig.update_layout(height=290, margin=dict(l=0, r=34, t=6, b=0),
                       xaxis_title="points lost",
                       yaxis=dict(autorange="reversed"))
-    st.plotly_chart(fig, width="stretch")
+    st.plotly_chart(fig, use_container_width=True)
 
 st.divider()
 
@@ -155,7 +155,7 @@ with e1:
         textposition="outside"))
     fig2.update_layout(height=280, margin=dict(l=0, r=0, t=26, b=0),
                        yaxis_title="hours ridden", xaxis_title=None)
-    st.plotly_chart(fig2, width="stretch")
+    st.plotly_chart(fig2, use_container_width=True)
     st.caption("Orange bands are priced above the standard rate. Shifting even "
                "a few hours earlier is the fastest way to cut your bill.")
 

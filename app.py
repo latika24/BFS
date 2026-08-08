@@ -1,52 +1,66 @@
 """
 GigSure — usage-based insurance for India's gig workers.
 
-Two products in one prototype:
-  · the Rider App, which a gig worker uses to hold cover and claim on it
-  · the Insurer Console, which the company uses to run the book
+Three products in one prototype, in the order a real business meets its
+customer:
 
-They share one live state (engine/store.py), so buying a policy or raising a
-claim on the rider side shows up immediately on the insurer side.
+  · GigSure.com     the commercial site — what we sell, what it costs, what
+                    happens when you claim, and how to sign up
+  · the Rider app   what a gig worker uses to hold cover and claim on it
+  · the Insurer     what the company uses to run the book: rating, claims,
+    console         accumulation, solvency and capital
+
+All three share one live state (engine/store.py) and one rating engine
+(engine/pricing.py). A price quoted on the website is produced by the same
+function that prices the in-force book, and buying a policy or raising a claim
+on the rider side shows up immediately on the insurer side.
+
+Navigation sits in the header, not a sidebar, because the first screen a
+visitor sees has to read as a website rather than a dashboard.
 
 Run with:  streamlit run app.py
 """
 from __future__ import annotations
 
+from pathlib import Path
+
 import streamlit as st
 
-st.set_page_config(page_title="GigSure", page_icon="🛵", layout="wide",
-                   initial_sidebar_state="expanded")
+st.set_page_config(page_title="GigSure — insurance that belongs to you",
+                   page_icon="🛡️", layout="wide",
+                   initial_sidebar_state="collapsed")
 
-from shared import CSS, PRIMARY, MUTED  # noqa: E402
-from engine import store  # noqa: E402
+ROOT = Path(__file__).resolve().parent
+st.logo(str(ROOT / "assets" / "logo.svg"),
+        icon_image=str(ROOT / "assets" / "icon.svg"), size="large")
+
+from shared import CSS  # noqa: E402
 
 st.markdown(CSS, unsafe_allow_html=True)
 
-# --------------------------------------------------------------- sidebar chrome
-with st.sidebar:
-    st.markdown(
-        f"<div style='font-size:1.25rem;font-weight:800;color:{PRIMARY};"
-        f"margin-bottom:.1rem'>🛵 GigSure</div>"
-        f"<div style='font-size:.78rem;color:{MUTED};margin-bottom:.9rem'>"
-        "Pay-as-you-work cover</div>", unsafe_allow_html=True)
-
-    r = store.rider()
-    pols = store.active_policies()
-    m = store.claim_metrics()
-
-    st.markdown(
-        f"<div style='background:#F2F7F6;border-radius:9px;padding:.6rem .75rem;"
-        f"font-size:.8rem;line-height:1.55;margin-bottom:.6rem'>"
-        f"<b>{r.name}</b><br>"
-        f"<span style='color:{MUTED}'>{r.rider_id} · "
-        f"{len(pols)} active {'policy' if len(pols)==1 else 'policies'}<br>"
-        f"{m['open']} open claim{'' if m['open']==1 else 's'}</span></div>",
-        unsafe_allow_html=True)
-
 pages = {
-    "Rider app": [
-        st.Page("views/rider_home.py", title="Home", icon=":material/home:",
+    "GigSure": [
+        st.Page("web/home.py", title="Home", icon=":material/home:",
                 default=True),
+        st.Page("web/rider_shield.py", title="Rider Shield",
+                icon=":material/health_and_safety:"),
+        st.Page("web/ride_shield.py", title="Ride Shield",
+                icon=":material/two_wheeler:"),
+        st.Page("web/pricing.py", title="Pricing",
+                icon=":material/schedule:"),
+        st.Page("web/claims.py", title="Claims",
+                icon=":material/bolt:"),
+        st.Page("web/why.py", title="Why GigSure",
+                icon=":material/compare_arrows:"),
+        st.Page("web/trust.py", title="Trust",
+                icon=":material/verified_user:"),
+        st.Page("web/referral.py", title="Refer a rider",
+                icon=":material/group_add:"),
+        st.Page("web/register.py", title="Get covered",
+                icon=":material/rocket_launch:"),
+    ],
+    "Rider app": [
+        st.Page("views/rider_home.py", title="Home", icon=":material/dashboard:"),
         st.Page("views/rider_policies.py", title="My cover",
                 icon=":material/shield:"),
         st.Page("views/rider_buy.py", title="Buy cover",
@@ -58,7 +72,7 @@ pages = {
     ],
     "Insurer console": [
         st.Page("views/ops_portfolio.py", title="Portfolio",
-                icon=":material/dashboard:"),
+                icon=":material/analytics:"),
         st.Page("views/ops_underwriting.py", title="Underwriting",
                 icon=":material/calculate:"),
         st.Page("views/ops_claims.py", title="Claims desk",
@@ -70,13 +84,4 @@ pages = {
     ],
 }
 
-nav = st.navigation(pages)
-
-with st.sidebar:
-    st.divider()
-    if st.button("Reset demo data", width="stretch"):
-        store.reset()
-        st.rerun()
-    st.caption("Resets policies, claims and the ledger to their seeded state.")
-
-nav.run()
+st.navigation(pages, position="top").run()

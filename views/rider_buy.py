@@ -153,7 +153,11 @@ with g1:
 
 with g2:
     st.markdown("**Compared with a normal annual policy**")
-    flat = CFG["portfolio"]["gwp_per_worker"]
+    # Same benchmark the website uses: a flat annual policy has to be priced
+    # for a full-time rider, because an annual insurer cannot see who is light.
+    _ref = CFG["reference_rider"]
+    flat = (CFG["tiers"][tier]["price_per_hour"]
+            * _ref["hours_per_shift"] * _ref["days_per_month"] * 12)
     mine = q["premium_year"]
     fig = go.Figure()
     fig.add_trace(go.Bar(x=["A normal annual policy", f"{tier}, your usage"],
@@ -162,7 +166,7 @@ with g2:
                          text=[inr(flat), inr(mine)], textposition="outside"))
     fig.update_layout(height=250, margin=dict(l=0, r=0, t=28, b=0),
                       yaxis_title="A year of cover (₹)", showlegend=False)
-    st.plotly_chart(fig, width="stretch")
+    st.plotly_chart(fig, use_container_width=True)
     diff = flat - mine
     if diff > 0:
         st.success(f"You save **{inr(diff)} a year** because you ride "

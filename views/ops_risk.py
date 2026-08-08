@@ -45,7 +45,7 @@ fig.add_trace(go.Bar(x=hours, y=on_road, marker_color=[
 fig.update_layout(height=250, margin=dict(l=0, r=0, t=10, b=0),
                   xaxis_title="Hour of day", yaxis_title="Riders with cover live",
                   xaxis=dict(dtick=2))
-st.plotly_chart(fig, width="stretch")
+st.plotly_chart(fig, use_container_width=True)
 
 note("<b>This chart is the accumulation risk.</b> At 8pm on a wet Friday, tens "
      "of thousands of riders are on the road simultaneously, all with cover "
@@ -71,7 +71,7 @@ with h1_:
                      labels=dict(x="Time band", y="Weather",
                                  color="Mean EEU per block"))
     figh.update_layout(height=330, margin=dict(l=0, r=0, t=14, b=0))
-    st.plotly_chart(figh, width="stretch")
+    st.plotly_chart(figh, use_container_width=True)
 
 with h2_:
     st.markdown("**Exposure concentration**")
@@ -126,7 +126,7 @@ with l1:
                                    side="right", showgrid=False),
                        legend=dict(orientation="h", y=1.18),
                        xaxis_title="Safety score band")
-    st.plotly_chart(figl, width="stretch")
+    st.plotly_chart(figl, use_container_width=True)
     st.caption("The safety score separates loss experience cleanly — which is "
                "what justifies it as a rating factor to a regulator, and what "
                "makes showing it to riders worth doing.")
@@ -180,4 +180,4 @@ figa = px.scatter(R2.sample(1800, random_state=5), x="hours_per_month",
 figa.add_hline(y=flat, line_dash="dash", line_color="#2d3436",
                annotation_text=f"flat premium ₹{flat:,}")
 figa.update_layout(height=380, margin=dict(l=0, r=0, t=16, b=0))
-st.plotly_chart(figa, width="stretch")
+st.plotly_chart(figa, use_container_width=True)
