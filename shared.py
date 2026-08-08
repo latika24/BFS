@@ -6,6 +6,36 @@ from pathlib import Path
 
 import streamlit as st
 
+# Streamlit compatibility shims.
+# Some Cloud runtimes lag the local dev version by a patch release or two.
+# The app relies on st.html for its layout, so provide a safe fallback when
+# that helper is not available.
+if not hasattr(st, "html"):
+    def _st_html(body, *args, **kwargs):
+        return st.markdown(body, unsafe_allow_html=True)
+    st.html = _st_html  # type: ignore[attr-defined]
+
+# Older builds may not have the newer segmented control widget. Use a
+# horizontal radio as a graceful fallback.
+if not hasattr(st, "segmented_control"):
+    def _segmented_control(label, options, format_func=None, default=None,
+                           key=None, label_visibility="visible"):
+        format_func = format_func or (lambda x: x)
+        if default in options:
+            index = options.index(default)
+        else:
+            index = 0
+        return st.radio(
+            label,
+            options=options,
+            index=index,
+            format_func=format_func,
+            horizontal=True,
+            key=key,
+            label_visibility=label_visibility,
+        )
+    st.segmented_control = _segmented_control  # type: ignore[attr-defined]
+
 ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
