@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from shared import (light, html, topbar, kpi, inr, rows, badge, MUTED, PRIMARY, ACCENT,
+from shared import (html, topbar, kpi, inr, rows, badge, MUTED, PRIMARY, ACCENT,
                     OK, CLAIM_BADGE, LINE)
 from engine import store
 from engine.config import CFG
@@ -135,8 +135,7 @@ with w1:
     fig.update_layout(height=225, margin=dict(l=0, r=44, t=6, b=0),
                       xaxis_title=None, yaxis=dict(autorange="reversed"),
                       xaxis=dict(showticklabels=False))
-    st.plotly_chart(light(fig), use_container_width=True,
-                    theme=None)
+    st.plotly_chart(fig, use_container_width=True)
 
     if q["was_capped"] and q["capped_total_multiplier"] >= q["band"]["cap_ceiling"]:
         st.info(f"Tonight's conditions are rough. Your price is capped at "
@@ -159,8 +158,7 @@ with w2:
                    {"range": [b["base_per_hour"], b["ceiling_per_hour"]],
                     "color": "#FBE7DC"}]}))
     g.update_layout(height=195, margin=dict(l=18, r=18, t=8, b=0))
-    st.plotly_chart(light(g), use_container_width=True,
-                    theme=None)
+    st.plotly_chart(g, use_container_width=True)
     st.caption(f"Best hour ₹{b['floor_per_hour']:.2f} · "
                f"worst hour ₹{b['ceiling_per_hour']:.2f}. "
                "Ride safer and in better conditions to move left.")
@@ -178,8 +176,7 @@ with a1:
                             hovertemplate="%{x}<br>₹%{y:.0f}<extra></extra>"))
     fig2.update_layout(height=210, margin=dict(l=0, r=0, t=6, b=0),
                        yaxis_title="₹ per day", xaxis_title=None)
-    st.plotly_chart(light(fig2), use_container_width=True,
-                    theme=None)
+    st.plotly_chart(fig2, use_container_width=True)
     st.caption(f"Average ₹{led['amount'].mean():.0f} a day — about "
                f"{led['amount'].mean() / r.daily_net_earnings:.1%} of a day's "
                "earnings. Debited by UPI Autopay each evening.")

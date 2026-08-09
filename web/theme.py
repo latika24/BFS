@@ -57,10 +57,6 @@ SITE_CSS = f"""
   --accent:{ACCENT}; --accent-deep:{ACCENT_DEEP}; --accent-soft:{ACCENT_SOFT};
   --mint:{MINT}; --signal:{SIGNAL};
   --cream:{CREAM}; --sand:{SAND}; --line:{LINE};
-  /* Panel colours. Everything that draws a surface reads these, so dark mode
-     is a variable swap rather than a second stylesheet. */
-  --surface:#FFFFFF; --surface-2:{CREAM}; --surface-3:{SAND};
-  --row-line:#EEF3F2; --shadow:rgba(10,31,28,.07);
 }}
 
 /* The site is a marketing page, so it gets more room and more air than the
@@ -169,15 +165,7 @@ SITE_CSS = f"""
   .gs-hero.split h1 {{ font-size:2.1rem; }}
 }}
 
-/* Platform lockups — app icon plus name, laid out like a phone home screen */
-.gs-brands {{ display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }}
-.gs-brand {{
-  display:inline-flex; align-items:center; gap:.5rem;
-  background:var(--surface); border:1px solid var(--line); border-radius:13px;
-  padding:.38rem .8rem .38rem .4rem; white-space:nowrap;
-}}
-.gs-brand .nm {{ font-size:.88rem; font-weight:800; color:var(--ink);
-                 letter-spacing:-.01em; }}
+/* Platform wordmark chips */
 .gs-chips {{ display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }}
 .gs-chip {{
   display:inline-flex; align-items:center; border:1.5px solid;
@@ -188,7 +176,7 @@ SITE_CSS = f"""
 /* Icon tile grid — the Acko-style "what we cover" board */
 .gs-tiles {{ display:grid; grid-template-columns:repeat(5,1fr); gap:.7rem; }}
 .gs-tile {{
-  background:var(--surface); border:1px solid var(--line); border-radius:16px;
+  background:#fff; border:1px solid var(--line); border-radius:16px;
   padding:1.05rem .9rem; text-align:center; transition:.15s;
 }}
 .gs-tile:hover {{ border-color:var(--brand); transform:translateY(-2px); }}
@@ -208,7 +196,7 @@ SITE_CSS = f"""
 
 /* Product card with an illustrated header */
 .gs-product {{
-  background:var(--surface); border:2px solid var(--line); border-radius:22px;
+  background:#fff; border:2px solid var(--line); border-radius:22px;
   overflow:hidden; height:100%; display:flex; flex-direction:column;
 }}
 .gs-product.a {{ border-color:{BRAND}; }}
@@ -231,7 +219,7 @@ SITE_CSS = f"""
 .gs-product .lines {{ margin-top:auto; }}
 .gs-product .line {{
   display:flex; align-items:center; gap:.7rem; padding:.62rem 0;
-  border-top:1px solid var(--row-line);
+  border-top:1px solid #EEF3F2;
 }}
 .gs-product .line .ico {{ flex:0 0 34px; width:34px; height:34px;
   border-radius:10px; background:var(--brand-soft); display:flex;
@@ -247,11 +235,11 @@ SITE_CSS = f"""
 
 /* Media band — illustration beside copy */
 .gs-media {{
-  background:var(--surface); border:1px solid var(--line); border-radius:22px;
+  background:#fff; border:1px solid var(--line); border-radius:22px;
   padding:1.6rem 1.8rem; height:100%;
 }}
-.gs-media.soft {{ background:var(--surface-2); }}
-.gs-media.mint {{ background:var(--brand-soft); border-color:transparent; }}
+.gs-media.soft {{ background:var(--cream); border-color:#F0E4D8; }}
+.gs-media.mint {{ background:var(--brand-soft); border-color:#D3E6E3; }}
 
 /* ------------------------------------------------------------------ sections */
 .gs-kicker {{
@@ -279,10 +267,10 @@ SITE_CSS = f"""
 }}
 
 .gs-card {{
-  background:var(--surface); border:1px solid var(--line); border-radius:18px;
+  background:#fff; border:1px solid var(--line); border-radius:18px;
   padding:1.35rem 1.4rem; height:100%; transition:border-color .15s, box-shadow .15s;
 }}
-.gs-card:hover {{ border-color:var(--brand); box-shadow:0 8px 26px var(--shadow); }}
+.gs-card:hover {{ border-color:#C8DAD7; box-shadow:0 8px 26px rgba(10,31,28,.07); }}
 .gs-card .ic {{
   width:42px; height:42px; border-radius:12px; background:var(--brand-soft);
   display:flex; align-items:center; justify-content:center; font-size:1.22rem;
@@ -302,14 +290,14 @@ SITE_CSS = f"""
 .gs-card.dark h3 {{ color:#fff; }}
 .gs-card.dark p {{ color:rgba(255,255,255,.82); }}
 .gs-card.dark .ic {{ background:rgba(255,255,255,.13); }}
-.gs-card.cream {{ background:var(--surface-2); }}
-.gs-card.sand {{ background:var(--surface-3); }}
+.gs-card.cream {{ background:var(--cream); }}
+.gs-card.sand {{ background:var(--sand); border-color:#E7E0D5; }}
 .gs-card.accent {{ border-color:var(--accent); border-width:2px; }}
 
 /* ---------------------------------------------------------------- stat strip */
 .gs-stats {{
   display:grid; grid-template-columns:repeat(4,1fr); gap:0;
-  background:var(--surface); border:1px solid var(--line); border-radius:18px;
+  background:#fff; border:1px solid var(--line); border-radius:18px;
   overflow:hidden;
 }}
 .gs-stats .s {{ padding:1.15rem 1.25rem; border-right:1px solid var(--line); }}
@@ -328,7 +316,7 @@ SITE_CSS = f"""
 /* --------------------------------------------------------------------- steps */
 .gs-steps {{ display:grid; grid-template-columns:repeat(4,1fr); gap:.9rem; }}
 .gs-step {{
-  background:var(--surface); border:1px solid var(--line); border-radius:18px;
+  background:#fff; border:1px solid var(--line); border-radius:18px;
   padding:1.25rem 1.3rem; position:relative; height:100%;
 }}
 .gs-step .n {{
@@ -362,7 +350,7 @@ SITE_CSS = f"""
 
 /* ------------------------------------------------------------------- quotes */
 .gs-quote {{
-  background:var(--surface-2); border:1px solid var(--line); border-radius:18px;
+  background:var(--cream); border:1px solid #F0E4D8; border-radius:18px;
   padding:1.35rem 1.4rem; height:100%;
 }}
 .gs-quote .q {{
@@ -381,7 +369,7 @@ SITE_CSS = f"""
 /* -------------------------------------------------------------- comparison */
 .gs-table {{ width:100%; border-collapse:separate; border-spacing:0;
              border:1px solid var(--line); border-radius:18px; overflow:hidden;
-             background:var(--surface); }}
+             background:#fff; }}
 .gs-table th {{
   background:var(--brand-deep); color:#fff; font-size:.83rem; font-weight:700;
   text-align:left; padding:.85rem 1.05rem; letter-spacing:.01em;
@@ -391,16 +379,16 @@ SITE_CSS = f"""
   padding:.85rem 1.05rem; font-size:.89rem; border-top:1px solid var(--line);
   color:var(--body); vertical-align:top; line-height:1.5;
 }}
-.gs-table td.lbl {{ font-weight:700; color:var(--ink); background:var(--surface-2); }}
+.gs-table td.lbl {{ font-weight:700; color:var(--ink); background:#FBFCFC; }}
 .gs-table td.us {{ background:var(--accent-soft); font-weight:600;
                    color:var(--ink); }}
 
 /* ---------------------------------------------------------------- list rows */
-.gs-rows {{ background:var(--surface); border:1px solid var(--line); border-radius:18px;
+.gs-rows {{ background:#fff; border:1px solid var(--line); border-radius:18px;
             overflow:hidden; }}
 .gs-row {{
   display:flex; align-items:flex-start; justify-content:space-between; gap:1rem;
-  padding:.9rem 1.2rem; border-bottom:1px solid var(--row-line);
+  padding:.9rem 1.2rem; border-bottom:1px solid #EEF3F2;
 }}
 .gs-row:last-child {{ border-bottom:none; }}
 .gs-row .l {{ font-size:.92rem; color:var(--ink); font-weight:600; }}
@@ -432,7 +420,7 @@ SITE_CSS = f"""
 .gs-callout.brand b {{ color:{BRAND_DEEP}; }}
 
 .gs-band {{
-  background:var(--surface-3); border-radius:22px; padding:1.9rem 2.1rem;
+  background:var(--sand); border-radius:22px; padding:1.9rem 2.1rem;
 }}
 .gs-band.deep {{ background:var(--brand-deep); color:#fff; }}
 .gs-band.deep .gs-h2 {{ color:#fff; }}

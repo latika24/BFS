@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from shared import (light, html, topbar, h, kpi, inr, lakh, rows, badge, MUTED, PRIMARY,
+from shared import (html, topbar, h, kpi, inr, lakh, rows, badge, MUTED, PRIMARY,
                     OK, LINE, empty)
 from engine import store
 from engine.config import CFG
@@ -175,8 +175,7 @@ with lc1:
                       yaxis2=dict(title="hours", overlaying="y", side="right",
                                   showgrid=False),
                       legend=dict(orientation="h", y=1.16))
-    st.plotly_chart(light(fig), use_container_width=True,
-                    theme=None)
+    st.plotly_chart(fig, use_container_width=True)
 
 with lc2:
     k = st.columns(2)

@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from shared import (light, html, topbar, h, kpi, inr, lakh, rows, badge, MUTED, PRIMARY,
+from shared import (html, topbar, h, kpi, inr, lakh, rows, badge, MUTED, PRIMARY,
                     ACCENT, OK, LINE, note)
 from engine import store, pricing, sum_insured as si_engine
 from engine.config import CFG
@@ -166,8 +166,7 @@ with g2:
                          text=[inr(flat), inr(mine)], textposition="outside"))
     fig.update_layout(height=250, margin=dict(l=0, r=0, t=28, b=0),
                       yaxis_title="A year of cover (₹)", showlegend=False)
-    st.plotly_chart(light(fig), use_container_width=True,
-                    theme=None)
+    st.plotly_chart(fig, use_container_width=True)
     diff = flat - mine
     if diff > 0:
         st.success(f"You save **{inr(diff)} a year** because you ride "

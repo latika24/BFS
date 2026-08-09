@@ -12,7 +12,7 @@ from __future__ import annotations
 import plotly.graph_objects as go
 import streamlit as st
 
-from shared import light, inr
+from shared import inr
 from web import theme as T, chrome as C
 from web.i18n import L
 from web.content import SITE, pick
@@ -150,8 +150,7 @@ with g1:
     fig.update_layout(height=310, margin=dict(l=0, r=120, t=6, b=0),
                       xaxis=dict(showticklabels=False), yaxis=dict(autorange="reversed"),
                       plot_bgcolor="rgba(0,0,0,0)")
-    st.plotly_chart(light(fig), use_container_width=True,
-                    theme=None)
+    st.plotly_chart(fig, use_container_width=True)
     st.caption(L(
         "The largest single line is income replacement, not hospital bills. "
         "That is the whole thesis of the product showing up in the loss data.",
@@ -169,8 +168,7 @@ with g2:
                        xaxis=dict(showticklabels=False, range=[0, 0.55]),
                        yaxis=dict(autorange="reversed"),
                        plot_bgcolor="rgba(0,0,0,0)")
-    st.plotly_chart(light(fig2), use_container_width=True,
-                    theme=None)
+    st.plotly_chart(fig2, use_container_width=True)
     st.caption(L(
         f"{cr['repudiation_rate']:.1%} of settled claims were declined. Nearly "
         "half of those were riders who had not turned cover on. That is a "

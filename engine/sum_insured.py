@@ -22,7 +22,7 @@ def accidental_death(annual_net_earnings: float, cfg: dict | None = None) -> dic
     raw = cfg["ad_earnings_multiple"] * annual_net_earnings
     si = clamp(raw, cfg["ad_floor"], cfg["ad_ceiling"])
     return {
-        "formula": "clamp( 8 x annualised observed net earnings, Rs 5,00,000, Rs 10,00,000 )",
+        "formula": "clamp( 8 x annualised observed net earnings, Rs 5,00,000, Rs 25,00,000 )",
         "uncapped": raw,
         "value": si,
         "binding": ("floor" if raw < cfg["ad_floor"]

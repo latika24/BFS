@@ -175,7 +175,7 @@ sum_insured:
   # Accidental death / PTD: human life value approach
   ad_earnings_multiple: 8
   ad_floor: 500000
-  ad_ceiling: 1000000
+  ad_ceiling: 2500000
 
   # Daily income benefit
   dib_earnings_factor: 0.75      # must never be more profitable to stay off the road

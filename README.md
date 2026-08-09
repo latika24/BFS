@@ -106,26 +106,6 @@ Demo state (the rider, their policies, claims and ledger) is seeded in
 `engine/store.py`. "Reset demo" sits in the top bar of every app and console
 screen.
 
-## A note on light and dark
-
-The whole platform is pinned to a light ground by `FORCE_LIGHT` in `shared.py`,
-injected from `app.py` on every rerun, and every Plotly figure goes through
-`shared.light()`.
-
-This is deliberate rather than lazy. Streamlit renders light by default, but a
-viewer can switch the app to dark from its own **Settings → Appearance** menu,
-and that choice is invisible from Python: `st.context.theme` reports what the
-*browser* asked for, and a `prefers-color-scheme` query reports what the
-*operating system* asked for. Either can disagree with what Streamlit actually
-painted — which is how the headings ended up dark-on-dark and invisible. Since
-the design is a light one, and every consumer insurance site is, pinning the
-surface is the only answer that cannot be wrong.
-
-`st.plotly_chart(theme=None)` is documented as handing styling back to Plotly,
-but Streamlit still writes its own `paper_bgcolor` into the figure layout, so
-`shared.light()` sets the background and font colour explicitly. Values already
-set are not overwritten, which is what makes it stick.
-
 ## Artwork
 
 Every illustration is hand-built SVG in `web/art.py` — the rider on a scooter,

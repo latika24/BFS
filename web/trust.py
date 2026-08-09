@@ -12,7 +12,7 @@ from __future__ import annotations
 import plotly.graph_objects as go
 import streamlit as st
 
-from shared import light, inr
+from shared import inr
 from engine.config import CFG
 from web import theme as T, chrome as C
 from web.i18n import L
@@ -151,8 +151,7 @@ for label, val, colour in [
                          hovertemplate="%{y}: %{text}<extra></extra>"))
 fig.update_layout(height=210, margin=dict(l=0, r=60, t=8, b=0), barmode="group",
                   xaxis=dict(showticklabels=False), plot_bgcolor="rgba(0,0,0,0)")
-st.plotly_chart(light(fig), use_container_width=True,
-                    theme=None)
+st.plotly_chart(fig, use_container_width=True)
 
 st.write("")
 T.stats([
@@ -180,11 +179,12 @@ st.write("")
 T.cards([
     {"icon": "people", "title": L("Built at IIM Ahmedabad",
                               "IIM अहमदाबाद में बना"),
-     "body": L("Banking and Financial Services, Term IV. The business plan "
-               "behind every number on this site is a course submission, "
-               "August 2026.",
-               "बैंकिंग एंड फ़ाइनेंशियल सर्विसेज़, टर्म IV। इस साइट के हर आँकड़े "
-               "के पीछे का बिज़नेस प्लान अगस्त 2026 का कोर्स सबमिशन है।")},
+     "body": L("Group 6, Banking and Financial Services, PGP-II Term IV, under "
+               "Prof. Balagopal Gopalakrishnan. The business plan behind every "
+               "number on this site is a course submission, August 2026.",
+               "ग्रुप 6, बैंकिंग एंड फ़ाइनेंशियल सर्विसेज़, PGP-II टर्म IV, "
+               "प्रो. बालगोपाल गोपालकृष्णन के अंतर्गत। इस साइट के हर आँकड़े के "
+               "पीछे का बिज़नेस प्लान अगस्त 2026 का कोर्स सबमिशन है।")},
     {"icon": "chart", "title": L("The numbers are auditable",
                               "आँकड़े जाँचे जा सकते हैं"),
      "body": L("Every rating factor, benefit formula and financial assumption "

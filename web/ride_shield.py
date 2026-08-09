@@ -32,12 +32,12 @@ st.html(T.split_hero(
       "डिलीवरी में इस्तेमाल हो रही प्राइवेट रजिस्टर्ड गाड़ी कमर्शियल इस्तेमाल "
       "में है — और भारत की हर प्राइवेट मोटर पॉलिसी उसे बाहर रखती है।"),
     [
-        L("On-duty damage to your two-wheeler, paid to a network garage",
-          "शिफ़्ट के दौरान गाड़ी का नुक़सान, पैसा नेटवर्क गैरेज को"),
-        L("Platform deductions refunded at the amount on your statement",
-          "प्लेटफ़ॉर्म की कटौती, स्टेटमेंट की रकम के हिसाब से वापस"),
-        L("Consignment loss on an order you were carrying",
-          "जो ऑर्डर आप ले जा रहे थे, उसके नुक़सान की भरपाई"),
+        L("Your bike, damaged on shift, paid to a network garage",
+          "शिफ़्ट में गाड़ी का नुक़सान, पैसा नेटवर्क गैरेज को"),
+        L("Orders the platform deducts from your pay, refunded",
+          "प्लेटफ़ॉर्म जो ऑर्डर आपकी पे से काटे, उसकी भरपाई"),
+        L("Phone screen and EV battery, repaired at our network",
+          "फ़ोन स्क्रीन और EV बैटरी, हमारे नेटवर्क पर मरम्मत"),
     ],
     A.product_banner("ride")))
 
@@ -76,11 +76,17 @@ T.comparison(
          L("Rarely covered", "बहुत कम कवर"),
          L("Reimbursed at the amount on your statement",
            "स्टेटमेंट में दिखी रकम की भरपाई")],
-        [L("An order is lost or spoiled in transit",
-           "ले जाते समय ऑर्डर खो जाए या ख़राब हो"),
-         L("Not a motor claim at all", "यह मोटर क्लेम है ही नहीं"),
+        [L("Your phone screen breaks on shift",
+           "शिफ़्ट में फ़ोन की स्क्रीन टूटे"),
+         L("No", "नहीं"), L("No", "नहीं"),
+         L("Repaired at our network", "हमारे नेटवर्क पर मरम्मत")],
+        [L("Your EV battery is damaged in the incident",
+           "घटना में EV बैटरी ख़राब हो"),
+         L("Usually excluded or heavily depreciated",
+           "आमतौर पर बाहर या भारी घिसाव कटौती"),
          L("No", "नहीं"),
-         L("Consignment loss, reimbursed", "सामान का नुक़सान, भरपाई")],
+         L("Paid direct to the OEM or swap network",
+           "सीधे OEM या स्वैप नेटवर्क को भुगतान")],
     ], us_col=3)
 
 st.write("")
@@ -108,30 +114,30 @@ T.heading(L("Your amounts", "आपकी रकम"),
 st.write("")
 
 T.rows([
-    (L("On-duty damage to your two-wheeler", "शिफ़्ट के दौरान गाड़ी का नुक़सान"),
+    (L("Your bike, damaged on a shift", "शिफ़्ट में गाड़ी का नुक़सान"),
      L(f"scheduled benefit, paid to a network garage · up to "
        f"{inr(ben['vehicle']['annual_aggregate'])} across a year",
        f"तय रकम, नेटवर्क गैरेज को भुगतान · साल भर में "
        f"{inr(ben['vehicle']['annual_aggregate'])} तक"),
      inr(ben["vehicle"]["per_event"]), L("per event", "प्रति घटना")),
-    (L("Consignment loss", "सामान का नुक़सान"),
-     L(f"spillage, damage, an order that never arrives · capped at "
+    (L("An order you get charged for", "जिस ऑर्डर का पैसा कटता है"),
+     L(f"spillage, damage, undelivered · capped at "
        f"{inr(si['consignment_per_event_cap'])} an event",
-       f"गिरना, टूटना, ऑर्डर न पहुँचना · प्रति घटना "
+       f"गिरना, टूटना, न पहुँचना · प्रति घटना "
        f"{inr(si['consignment_per_event_cap'])} तक"),
-     inr(ben["consignment"]["per_event"]), L("per event", "प्रति घटना")),
-    (L("Platform deductions", "प्लेटफ़ॉर्म की कटौती"),
-     L("the exact amount the platform took off your payout statement",
-       "प्लेटफ़ॉर्म ने आपके पेआउट से जो रकम काटी, ठीक उतनी"),
-     L("Refunded", "वापस"), L("in full", "पूरी")),
+     inr(ben["consignment"]["per_event"]), L("or the actual deduction", "या असल कटौती")),
+    (L("Phone screen and theft", "फ़ोन स्क्रीन और चोरी"),
+     L("repaired at our network; theft needs an FIR",
+       "हमारे नेटवर्क पर मरम्मत; चोरी पर FIR ज़रूरी"),
+     L("Covered", "कवर"), L("never cash", "नक़द कभी नहीं")),
+    (L("EV battery", "EV बैटरी"),
+     L("paid direct to the OEM or swap partner",
+       "सीधे OEM या स्वैप पार्टनर को भुगतान"),
+     L("Covered", "कवर"), L("add-on, +₹0.35/hr", "ऐड-ऑन, +₹0.35/घंटा")),
     (L("Goods in transit", "ले जाते समय सामान"),
      L("capped at the 95th percentile of your trailing order value",
        "आपके पिछले ऑर्डर मूल्य के 95वें प्रतिशत तक"),
      L("Covered", "कवर"), ""),
-    (L("Phone screen and EV battery", "फ़ोन स्क्रीन और EV बैटरी"),
-     L("optional add-ons, repaired at our network — never paid as cash",
-       "वैकल्पिक ऐड-ऑन, हमारे नेटवर्क पर मरम्मत — नक़द कभी नहीं"),
-     L("Add-on", "ऐड-ऑन"), L("+₹0.25–0.35/hr", "+₹0.25–0.35/घंटा")),
 ], )
 
 T.spacer()
