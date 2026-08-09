@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from shared import (topbar, h, kpi, inr, lakh, rows, badge, MUTED, PRIMARY,
+from shared import (light, topbar, h, kpi, inr, lakh, rows, badge, MUTED, PRIMARY,
                     ACCENT, OK, BAD, riders, note, formula)
 from engine import pricing, safety_score as ss
 from engine.config import CFG
@@ -79,7 +79,8 @@ with tab_quote:
         wf.update_layout(height=380, margin=dict(l=0, r=0, t=20, b=0),
                          yaxis_title="Premium for the shift (₹)",
                          xaxis_tickangle=-35)
-        st.plotly_chart(wf, use_container_width=True)
+        st.plotly_chart(light(wf), use_container_width=True,
+                    theme=None)
     with qc2:
         st.dataframe(pd.DataFrame(
             [{"Factor": "Time of day", "Level": band,
@@ -190,7 +191,8 @@ with tab_monitor:
         fig.update_layout(height=330, margin=dict(l=0, r=0, t=30, b=0),
                           xaxis_title="Rate actually charged (₹/hour)",
                           yaxis_title="Quotes")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(light(fig), use_container_width=True,
+                    theme=None)
         st.caption("Every quote in the book sits inside the filed band. The "
                    "spike at the ceiling is riders whose raw risk exceeds "
                    "×2.2 — we absorb the difference rather than price them out.")

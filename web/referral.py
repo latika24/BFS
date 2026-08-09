@@ -13,7 +13,7 @@ from __future__ import annotations
 import plotly.graph_objects as go
 import streamlit as st
 
-from shared import inr
+from shared import light, inr
 from web import theme as T, chrome as C
 from web.i18n import L
 from web.content import SITE, pick
@@ -165,7 +165,8 @@ with ch2:
                       xaxis=dict(showticklabels=False),
                       yaxis=dict(autorange="reversed"),
                       plot_bgcolor="rgba(0,0,0,0)")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(light(fig), use_container_width=True,
+                    theme=None)
     st.caption(L(
         f"Cost of acquiring one rider, by channel. Referral costs us "
         f"₹{r['reward_each_side'] * 2} against a lifetime value of about "

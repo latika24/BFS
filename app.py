@@ -34,9 +34,10 @@ ROOT = Path(__file__).resolve().parent
 st.logo(str(ROOT / "assets" / "logo.svg"),
         icon_image=str(ROOT / "assets" / "icon.svg"), size="large")
 
-from shared import CSS  # noqa: E402
+from shared import CSS, FORCE_LIGHT  # noqa: E402
 
 st.markdown(CSS, unsafe_allow_html=True)
+st.markdown(FORCE_LIGHT, unsafe_allow_html=True)
 
 pages = {
     "GigSure": [

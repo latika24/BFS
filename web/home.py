@@ -70,14 +70,14 @@ with w1:
           "लगभग 40% दिन ऐप बदलने में जाता है। आपकी GigSure पॉलिसी को यह जानने "
           "की ज़रूरत ही नहीं कि ऑर्डर किस ऐप का था। शिफ़्ट चालू, कवर चालू।"))
     st.write("")
-    st.html(A.platform_chips())
+    st.html(A.platform_lockups())
     st.write("")
-    st.caption(L("Recognised platform names are shown to indicate where riders "
-                 "work. GigSure has no commercial tie to any of them — that is "
-                 "the point.",
-                 "ये नाम सिर्फ़ यह बताने के लिए हैं कि राइडर कहाँ काम करते हैं। "
-                 "इनमें से किसी से GigSure का कोई कारोबारी रिश्ता नहीं — यही तो "
-                 "बात है।"))
+    st.caption(L("App names and marks are shown only to indicate where riders "
+                 "work. GigSure has no commercial relationship with any of them "
+                 "— that is precisely the point.",
+                 "ये नाम और चिह्न सिर्फ़ यह बताने के लिए हैं कि राइडर कहाँ काम "
+                 "करते हैं। इनमें से किसी से GigSure का कोई कारोबारी रिश्ता "
+                 "नहीं — और यही असली बात है।"))
 with w2:
     st.html(A.platform_web())
 
@@ -99,17 +99,20 @@ st.write("")
 T.tiles([
     {"icon": "wallet", "hot": True,
      "title": L("Income while you cannot ride", "न चला पाने पर कमाई"),
-     "value": inr(ben["daily_income_benefit"]["value"]),
-     "sub": L("a day, up to 90 days", "रोज़, 90 दिन तक")},
-    {"icon": "heart", "title": L("Your family, worst case", "परिवार, सबसे बुरी स्थिति में"),
-     "value": inr(ben["accidental_death"]["value"]),
-     "sub": L("8× your yearly earnings", "सालाना कमाई का 8 गुना")},
+     "value": L("Dynamic", "आपके हिसाब से"),
+     "sub": L("75% of what you earn, up to 90 days",
+              "आपकी कमाई का 75%, 90 दिन तक")},
+    {"icon": "heart", "hot": True,
+     "title": L("Death and permanent disability", "मृत्यु और स्थायी विकलांगता"),
+     "value": L("Dynamic", "आपके हिसाब से"),
+     "sub": L("set from your observed earnings", "आपकी देखी गई कमाई से तय")},
     {"icon": "hospital", "title": L("Hospital cash", "अस्पताल कैश"),
      "value": inr(ben["fixed"]["hospital_daily_cash"]),
      "sub": L("a day, up to 30 days", "रोज़, 30 दिन तक")},
-    {"icon": "bone", "title": L("Broken bone", "हड्डी टूटना"),
+    {"icon": "bone", "title": L("Fracture schedule", "फ्रैक्चर स्केड्यूल"),
      "value": f"{inr(ben['fixed']['fracture_range'][0])}+",
-     "sub": L("fixed, by bone", "हड्डी के हिसाब से तय")},
+     "sub": L("by bone, X-ray is the only paperwork",
+              "हड्डी के हिसाब से, सिर्फ़ एक्स-रे")},
     {"icon": "ambulance", "title": L("Ambulance", "एम्बुलेंस"),
      "value": L("Paid direct", "सीधा भुगतान"),
      "sub": L("never out of your pocket", "आपकी जेब से कभी नहीं")},
@@ -117,19 +120,14 @@ T.tiles([
      "title": L("Your bike, on shift", "शिफ़्ट में आपकी गाड़ी"),
      "value": inr(ben["vehicle"]["per_event"]),
      "sub": L("per event, paid to the garage", "प्रति घटना, गैरेज को")},
-    {"icon": "box", "title": L("Orders deducted from pay", "पे से कटे ऑर्डर"),
+    {"icon": "box", "title": L("Consignment loss", "सामान का नुक़सान"),
+     "value": L("Reimbursed", "भरपाई"),
+     "sub": L("spillage, damage, undelivered", "गिरना, टूटना, न पहुँचना")},
+    {"icon": "rupee", "title": L("Platform deductions", "प्लेटफ़ॉर्म की कटौती"),
      "value": L("Refunded", "वापस"),
-     "sub": L("spillage, damage, loss", "गिरना, टूटना, खोना")},
-    {"icon": "phone", "title": L("Phone screen", "फ़ोन स्क्रीन"),
-     "value": L("Repaired", "मरम्मत"),
-     "sub": L("at our network", "हमारे नेटवर्क पर")},
-    {"icon": "battery", "title": L("EV battery", "EV बैटरी"),
-     "value": L("Covered", "कवर"),
-     "sub": L("paid to the OEM", "सीधे OEM को")},
-    {"icon": "scales", "title": L("Legal help after an FIR", "FIR के बाद क़ानूनी मदद"),
-     "value": L("Included", "शामिल"),
-     "sub": L("we send the lawyer", "वकील हम भेजते हैं")},
-], cols=5)
+     "sub": L("the amount on your payout statement",
+              "आपके पेआउट स्टेटमेंट की रकम")},
+], cols=4)
 
 T.spacer(1.2)
 
@@ -147,19 +145,31 @@ with p1:
     st.html(T.product(
         "a", L("Cover on you", "आप पर कवर"),
         L("Rider Shield", "Rider Shield"),
-        L("The part nobody else covers — the weeks you cannot earn. Amounts "
-          "are set from what you actually take home, not a figure you declared.",
-          "वह हिस्सा जो और कोई कवर नहीं करता — वे हफ़्ते जब कमाई बंद हो जाती "
-          "है। रकम आपकी असली कमाई से तय होती है, किसी घोषित आँकड़े से नहीं।"),
+        L("Accidental death and disability, a daily income benefit while you "
+          "cannot work, hospital cash, a fracture schedule, ambulance and legal "
+          "assistance. The amounts are dynamic — they follow what you actually "
+          "earn.",
+          "दुर्घटना में मृत्यु और विकलांगता, काम न कर पाने पर रोज़ की आमदनी, "
+          "अस्पताल कैश, फ्रैक्चर स्केड्यूल, एम्बुलेंस और क़ानूनी मदद। रकम तय "
+          "नहीं — आपकी असली कमाई के साथ चलती है।"),
         [
-            ("wallet", L("Every day you cannot ride", "हर वह दिन जब न चला सकें"),
-             L("after a 3-day wait, up to 90 days", "3 दिन बाद, 90 दिन तक"),
-             inr(ben["daily_income_benefit"]["value"])),
-            ("heart", L("If the worst happens", "सबसे बुरा होने पर"),
-             L("paid to your family", "परिवार को"),
-             inr(ben["accidental_death"]["value"])),
-            ("hospital", L("Hospital, bones, ambulance", "अस्पताल, हड्डी, एम्बुलेंस"),
-             L("fixed amounts, no bill-chasing", "तय रकम, बिल का झंझट नहीं"),
+            ("wallet", L("Daily income while you cannot ride",
+                         "न चला पाने पर रोज़ की आमदनी"),
+             L(f"dynamic — yours works out at about "
+               f"{inr(ben['daily_income_benefit']['value'])} a day",
+               f"आपके हिसाब से — लगभग "
+               f"{inr(ben['daily_income_benefit']['value'])} रोज़"),
+             L("Dynamic", "आपके हिसाब से")),
+            ("heart", L("Accidental death and disability",
+                        "दुर्घटना में मृत्यु और विकलांगता"),
+             L(f"dynamic — yours works out at about "
+               f"{inr(ben['accidental_death']['value'])}",
+               f"आपके हिसाब से — लगभग {inr(ben['accidental_death']['value'])}"),
+             L("Dynamic", "आपके हिसाब से")),
+            ("hospital", L("Hospital cash, fractures, ambulance, legal help",
+                           "अस्पताल कैश, फ्रैक्चर, एम्बुलेंस, क़ानूनी मदद"),
+             L("scheduled amounts, no bills to chase",
+               "तय रकम, बिल के पीछे भागना नहीं"),
              inr(ben["fixed"]["hospital_daily_cash"])),
         ],
         A.product_banner("rider")))
@@ -172,21 +182,27 @@ with p2:
     st.html(T.product(
         "b", L("Cover on your bike", "आपकी गाड़ी पर कवर"),
         L("Ride Shield", "Ride Shield"),
-        L("Your private two-wheeler policy excludes commercial use — every one "
-          "of them does. This is the cover that pays when you crash on a "
-          "delivery.",
-          "आपकी प्राइवेट दोपहिया पॉलिसी कमर्शियल इस्तेमाल को बाहर रखती है — हर "
-          "एक रखती है। डिलीवरी के दौरान एक्सीडेंट पर पैसा यही कवर देता है।"),
+        L("On-duty damage to your two-wheeler, consignment loss and platform "
+          "deductions. Your private motor policy excludes commercial use — "
+          "every one of them does — so this is the cover that pays when you "
+          "crash on a delivery.",
+          "शिफ़्ट के दौरान गाड़ी का नुक़सान, सामान का नुक़सान और प्लेटफ़ॉर्म की "
+          "कटौती। आपकी प्राइवेट मोटर पॉलिसी कमर्शियल इस्तेमाल को बाहर रखती है — "
+          "हर एक रखती है — इसलिए डिलीवरी पर एक्सीडेंट होने पर पैसा यही देता है।"),
         [
-            ("scooter", L("Your bike, damaged on shift", "शिफ़्ट में गाड़ी का नुक़सान"),
-             L("paid straight to a network garage", "सीधे नेटवर्क गैरेज को"),
+            ("scooter", L("On-duty damage to your two-wheeler",
+                          "शिफ़्ट के दौरान गाड़ी का नुक़सान"),
+             L("scheduled, paid straight to a network garage",
+               "तय रकम, सीधे नेटवर्क गैरेज को"),
              inr(ben["vehicle"]["per_event"])),
-            ("box", L("An order deducted from your pay", "पे से कटा ऑर्डर"),
-             L("spillage, damage, undelivered", "गिरना, टूटना, न पहुँचना"),
+            ("box", L("Consignment loss", "सामान का नुक़सान"),
+             L("spillage, damage, undelivered order",
+               "गिरना, टूटना, ऑर्डर न पहुँचना"),
+             L("Reimbursed", "भरपाई")),
+            ("rupee", L("Platform deductions", "प्लेटफ़ॉर्म की कटौती"),
+             L("the exact amount shown on your payout statement",
+               "आपके पेआउट स्टेटमेंट में दिखी पूरी रकम"),
              L("Refunded", "वापस")),
-            ("phone", L("Phone screen and EV battery", "फ़ोन स्क्रीन और EV बैटरी"),
-             L("repaired at our network, never cash", "नेटवर्क पर मरम्मत, नक़द नहीं"),
-             L("Covered", "कवर")),
         ],
         A.product_banner("ride")))
     st.write("")
@@ -299,6 +315,28 @@ st.write("")
 if st.button(L("See every rating factor we use →",
                "हम जो भी फ़ैक्टर इस्तेमाल करते हैं, देखें →"), key="topricing"):
     st.switch_page(C.PRICING)
+
+T.spacer(1.3)
+
+# ------------------------------------------------------------ no-claim benefit
+ncb = SITE["no_claim_benefit"]
+nc1, nc2 = st.columns([1, 1.05], vertical_alignment="center")
+with nc1:
+    T.heading(
+        L("No-claim benefit", "नो-क्लेम लाभ"),
+        pick(ncb, "headline"),
+        pick(ncb, "detail"))
+with nc2:
+    T.tiles([
+        {"icon": "gauge", "hot": True,
+         "title": L("Ranked on measured risk", "मापे गए जोखिम पर आँकलन"),
+         "value": f"{ncb['top_share']:.0%}",
+         "sub": L("of the book, every year", "पूरी बुक में से, हर साल")},
+        {"icon": "rupee", "hot": True,
+         "title": L("Premium back to your UPI", "प्रीमियम वापस आपके UPI में"),
+         "value": f"{ncb['refund_of_premium']:.0%}",
+         "sub": L("cash, not a coupon", "नक़द, कोई कूपन नहीं")},
+    ], cols=2)
 
 T.spacer(1.3)
 

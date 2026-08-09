@@ -6,42 +6,38 @@ from pathlib import Path
 
 import streamlit as st
 
-# Streamlit compatibility shims.
-# Some Cloud runtimes lag the local dev version by a patch release or two.
-# The app relies on st.html for its layout, so provide a safe fallback when
-# that helper is not available.
-if not hasattr(st, "html"):
-    def _st_html(body, *args, **kwargs):
-        return st.markdown(body, unsafe_allow_html=True)
-    st.html = _st_html  # type: ignore[attr-defined]
-
-# Older builds may not have the newer segmented control widget. Use a
-# horizontal radio as a graceful fallback.
-if not hasattr(st, "segmented_control"):
-    def _segmented_control(label, options, format_func=None, default=None,
-                           key=None, label_visibility="visible"):
-        format_func = format_func or (lambda x: x)
-        if default in options:
-            index = options.index(default)
-        else:
-            index = 0
-        return st.radio(
-            label,
-            options=options,
-            index=index,
-            format_func=format_func,
-            horizontal=True,
-            key=key,
-            label_visibility=label_visibility,
-        )
-    st.segmented_control = _segmented_control  # type: ignore[attr-defined]
-
 ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+import plotly.io as pio  # noqa: E402
+
 from engine.config import CFG  # noqa: E402
 from engine import data_gen  # noqa: E402
+
+# Charts are handed to Plotly with theme=None so Streamlit does not restyle
+# them, and each figure carries template="plotly_white" explicitly. Setting the
+# default here is not enough on its own — Plotly resolves the default in the
+# browser, where Streamlit's dark theme wins — but it keeps anything built
+# outside a chart call consistent.
+pio.templates.default = "plotly_white"
+
+def light(fig):
+    """
+    Force a Plotly figure onto the light ground and return it.
+
+    `st.plotly_chart(..., theme=None)` is documented as handing styling back to
+    Plotly, but Streamlit still writes its own `paper_bgcolor` into the figure
+    layout — under a dark session that is #0e1117, which lands a black chart
+    panel in the middle of the white page. Values set explicitly here are not
+    overwritten, so this is what actually settles it.
+    """
+    fig.update_layout(template="plotly_white",
+                      paper_bgcolor="#FFFFFF",
+                      plot_bgcolor="rgba(0,0,0,0)",
+                      font_color=INK)
+    return fig
+
 
 BRAND = CFG["meta"]["product_name"]
 TAGLINE = CFG["meta"]["tagline"]
@@ -61,6 +57,75 @@ WARN = "#B8791F"
 WARN_SOFT = "#FDF3E2"
 BAD = "#B23F30"
 BAD_SOFT = "#FAEBE8"
+
+# -----------------------------------------------------------------------------
+# One light surface, whatever Streamlit thinks.
+#
+# Streamlit renders light by default, but a viewer can switch the whole app to
+# dark from its own Settings > Appearance menu. Neither `st.context.theme` nor a
+# `prefers-color-scheme` query can see that choice — the first reports what the
+# browser asked for and the second what the operating system asked for, and
+# either can disagree with what Streamlit actually painted. Detecting it is
+# therefore not possible from here.
+#
+# Both this app and the website are designed on a light ground, in line with
+# every consumer insurance site, so rather than guess we pin the surface. A
+# rider should never load the page and find the headlines invisible.
+#
+# `app.py` injects this on every rerun, so it covers the site, the rider app and
+# the insurer console alike.
+FORCE_LIGHT = """
+<style>
+  .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"],
+  [data-testid="stHeader"], [data-testid="stSidebar"],
+  [data-testid="stBottomBlockContainer"], [data-testid="stToolbar"] {
+    background-color:#FFFFFF !important;
+  }
+  [data-testid="stMain"], [data-testid="stMain"] p, [data-testid="stMain"] li,
+  [data-testid="stMain"] h1, [data-testid="stMain"] h2, [data-testid="stMain"] h3,
+  [data-testid="stMain"] h4, [data-testid="stMain"] h5, [data-testid="stMain"] h6,
+  [data-testid="stMain"] label, [data-testid="stMain"] strong,
+  [data-testid="stHeader"] span, [data-testid="stHeader"] a,
+  [data-testid="stMarkdownContainer"], [data-testid="stMarkdownContainer"] * {
+    color:#0A1F1C;
+  }
+  [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] * {
+    color:#6E807D !important;
+  }
+  /* Widget surfaces, which carry their own dark backgrounds. */
+  [data-baseweb="select"] > div, [data-baseweb="input"] > div,
+  [data-baseweb="popover"] li, [data-testid="stExpander"] details,
+  [data-testid="stNumberInputContainer"], [data-testid="stTextInputRootElement"],
+  [data-testid="stDataFrame"], [data-testid="stTable"] {
+    background-color:#FFFFFF !important; color:#0A1F1C !important;
+  }
+  [data-baseweb="select"] div, [data-baseweb="popover"] li { color:#0A1F1C !important; }
+  /* Header chrome: the nav labels take the rule above, but the dropdown
+     chevrons and the overflow menu are SVGs and stay white without this. */
+  [data-testid="stHeader"] svg, [data-testid="stToolbar"] svg {
+    color:#0A1F1C !important; fill:currentColor !important;
+  }
+  [data-testid="stSliderTickBarMin"], [data-testid="stSliderTickBarMax"] {
+    color:#6E807D !important;
+  }
+  /* Buttons and the language switch draw their own fill from the theme, so a
+     secondary button becomes a black pill with black text under dark. */
+  .stButton > button, [data-testid="stBaseButton-secondary"],
+  [data-testid="stButtonGroup"] button {
+    background-color:#FFFFFF !important; color:#0A1F1C !important;
+    border-color:#E3EAE8 !important;
+  }
+  .stButton > button[kind="primary"], [data-testid="stBaseButton-primary"],
+  [data-testid="stButtonGroup"] button[aria-checked="true"] {
+    background-color:#FF6A35 !important; color:#FFFFFF !important;
+    border-color:#FF6A35 !important;
+  }
+  .stButton > button:hover { border-color:#0F5C57 !important; }
+  .stButton > button[kind="primary"]:hover {
+    background-color:#D94E1F !important; border-color:#D94E1F !important;
+  }
+</style>
+"""
 
 CSS = f"""
 <style>

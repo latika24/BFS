@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import streamlit as st
 
-from shared import (topbar, h, kpi, inr, crore, MUTED, PRIMARY, ACCENT, OK,
+from shared import (light, topbar, h, kpi, inr, crore, MUTED, PRIMARY, ACCENT, OK,
                     BAD, WARN, note)
 from engine import portfolio
 from engine.config import CFG
@@ -88,7 +88,8 @@ fig.update_yaxes(title_text="Ratio (%)", secondary_y=False)
 fig.update_yaxes(title_text="GWP (₹ crore)", secondary_y=True, showgrid=False)
 fig.update_layout(height=380, margin=dict(l=0, r=0, t=24, b=0),
                   xaxis_title="Year", legend=dict(orientation="h", y=1.14))
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(light(fig), use_container_width=True,
+                    theme=None)
 
 st.info(f"The loss ratio reaches **{df.iloc[3]['Loss ratio']:.0%}** by year four "
         f"and improves slowly after. What moves the combined ratio from "
@@ -145,7 +146,8 @@ with sv1:
                    annotation_text="target 200%")
     fig2.update_layout(height=330, margin=dict(l=0, r=0, t=24, b=0),
                        xaxis_title="Year", yaxis_title="Solvency ratio (%)")
-    st.plotly_chart(fig2, use_container_width=True)
+    st.plotly_chart(light(fig2), use_container_width=True,
+                    theme=None)
 
 with sv2:
     breach = sol[~sol["Above statutory 150%"]]
@@ -204,7 +206,8 @@ with u2:
         textinfo="label+percent"))
     figp.update_layout(height=320, margin=dict(l=0, r=0, t=10, b=0),
                        showlegend=False)
-    st.plotly_chart(figp, use_container_width=True)
+    st.plotly_chart(light(figp), use_container_width=True,
+                    theme=None)
     back = fin["loss_ratio"] + p["no_claim_wallet_pct_gwp"]
     st.caption(f"**{back:.0%} of every rupee goes back to the rider** as claims "
                "or wallet credits. Published monthly — it is the number we lead "

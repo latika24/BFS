@@ -93,35 +93,49 @@ def icon(name: str, colour: str = BRAND, size: int = 22, stroke: float = 1.7) ->
     return _img(svg, f"width:{size}px;height:{size}px;display:block")
 
 
-# ----------------------------------------------------------- platform chips
-# Stylised wordmarks in each platform's own colour. Drawn as type rather than
-# copied logo files: recognisable, and it does not put someone else's
-# trademarked artwork into an academic prototype.
+# ------------------------------------------------------- platform lockups
+# App-icon lockups: a rounded tile in the platform's own colour carrying a
+# simple original glyph, then the platform name.
+#
+# The glyphs are drawn here rather than copied from each company's brand
+# assets. Their real logos are registered trademarks and this is an academic
+# prototype with no commercial relationship to any of them — using simple
+# original marks in their colours reads the same at this size and keeps
+# somebody else's artwork out of the repository.
 PLATFORMS = [
-    ("Swiggy", "#FC8019", "#FFF4EA"),
-    ("Zomato", "#E23744", "#FDECEE"),
-    ("Zepto", "#7B2FF7", "#F1E9FE"),
-    ("Blinkit", "#F8CB46", "#FEF8E4"),
-    ("Flipkart", "#2874F0", "#E8F0FE"),
-    ("Amazon", "#FF9900", "#FFF5E6"),
-    ("Rapido", "#F5C518", "#FEF9E3"),
-    ("BigBasket", "#84C225", "#F1F9E6"),
-    ("Uber", "#111111", "#EFEFEF"),
-    ("Dunzo", "#00D290", "#E3FAF2"),
+    ("Swiggy",    "#FC8019", "M8 22 Q17 6 25 14 Q17 24 24 30"),
+    ("Zomato",    "#E23744", "M10 10h18l-18 20h18"),
+    ("Zepto",     "#7B2FF7", "M11 9h16l-9 11h8L13 31l3-11h-7z"),
+    ("Blinkit",   "#E0B321", "M19 8l-8 13h6l-2 11 10-14h-6z"),
+    ("Flipkart",  "#2874F0", "M11 14h18v16H11zM15 14a4 4 0 0 1 8 0"),
+    ("Amazon",    "#FF9900", "M9 24q10 7 21 0M27 22l3 4-5 1"),
+    ("Rapido",    "#D8A400", "M12 26a4 4 0 1 0 0-8 4 4 0 0 0 0 8m14 0a4 4 0 1 0 0-8 4 4 0 0 0 0 8M15 22h9M22 12h4l3 8"),
+    ("BigBasket", "#6FA31C", "M9 16h22l-3 14H12zM15 16l3-6M25 16l-3-6"),
+    ("Uber",      "#101010", "M12 12v9a7 7 0 0 0 14 0v-9"),
+    ("Dunzo",     "#00A874", "M9 20l22-9-8 20-4-8z"),
 ]
 
 
-def platform_chips(items=None, dark: bool = False) -> str:
-    items = items or PLATFORMS
+def brand_mark(name: str, colour: str, glyph: str, size: int = 30) -> str:
+    svg = (f"<svg xmlns='http://www.w3.org/2000/svg' width='{size}' "
+           f"height='{size}' viewBox='0 0 40 40'>"
+           f"<rect width='40' height='40' rx='10' fill='{colour}'/>"
+           f"<path d='{glyph}' fill='none' stroke='#ffffff' stroke-width='3.4' "
+           f"stroke-linecap='round' stroke-linejoin='round'/></svg>")
+    return _img(svg, f"width:{size}px;height:{size}px;display:block", name)
+
+
+def platform_lockups(items=None) -> str:
+    """The row of apps a rider earns from — icon plus name, like a phone home screen."""
     out = ""
-    for name, fg, bg in items:
-        if dark:
-            out += (f"<span class='gs-chip' style='background:rgba(255,255,255,.1);"
-                    f"border-color:rgba(255,255,255,.2);color:#fff'>{name}</span>")
-        else:
-            out += (f"<span class='gs-chip' style='background:{bg};"
-                    f"border-color:{fg}22;color:{fg}'>{name}</span>")
-    return f"<div class='gs gs-chips'>{out}</div>"
+    for name, colour, glyph in (items or PLATFORMS):
+        out += (f"<span class='gs-brand'>{brand_mark(name, colour, glyph)}"
+                f"<span class='nm'>{name}</span></span>")
+    return f"<div class='gs gs-brands'>{out}</div>"
+
+
+# Kept so any page still calling the old name keeps working.
+platform_chips = platform_lockups
 
 
 # ------------------------------------------------------------------- hero art

@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 import streamlit as st
 
-from shared import (topbar, h, kpi, inr, crore, lakh, badge, rows, MUTED,
+from shared import (light, topbar, h, kpi, inr, crore, lakh, badge, rows, MUTED,
                     PRIMARY, ACCENT, OK, LINE, riders, note)
 from engine import store, portfolio
 from engine.config import CFG
@@ -60,7 +60,8 @@ with g1:
                                   side="right", showgrid=False),
                       legend=dict(orientation="h", y=1.16),
                       xaxis_title="Year")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(light(fig), use_container_width=True,
+                    theme=None)
 
 with g2:
     st.markdown("**Book mix**")
@@ -70,21 +71,24 @@ with g2:
         f = go.Figure(go.Pie(labels=d.index, values=d.values, hole=.58,
                              marker_colors=[PRIMARY, "#3E8F87", "#9BB5B2"]))
         f.update_layout(height=250, margin=dict(l=0, r=0, t=6, b=0))
-        st.plotly_chart(f, use_container_width=True)
+        st.plotly_chart(light(f), use_container_width=True,
+                    theme=None)
     with tab2:
         d = R["city"].value_counts()
         f = go.Figure(go.Pie(labels=[i.split(" (")[0] for i in d.index],
                              values=d.values, hole=.58,
                              marker_colors=[PRIMARY, "#3E8F87", "#9BB5B2"]))
         f.update_layout(height=250, margin=dict(l=0, r=0, t=6, b=0))
-        st.plotly_chart(f, use_container_width=True)
+        st.plotly_chart(light(f), use_container_width=True,
+                    theme=None)
     with tab3:
         d = R["platform"].value_counts()
         f = go.Figure(go.Pie(labels=d.index, values=d.values, hole=.58,
                              marker_colors=[PRIMARY, "#3E8F87", "#9BB5B2",
                                             "#C4D3D1"]))
         f.update_layout(height=250, margin=dict(l=0, r=0, t=6, b=0))
-        st.plotly_chart(f, use_container_width=True)
+        st.plotly_chart(light(f), use_container_width=True,
+                    theme=None)
 
 st.divider()
 
@@ -114,7 +118,8 @@ with x1:
     fig2.update_layout(height=300, margin=dict(l=0, r=0, t=26, b=0),
                        legend=dict(orientation="h", y=1.16),
                        yaxis_title="Policies")
-    st.plotly_chart(fig2, use_container_width=True)
+    st.plotly_chart(light(fig2), use_container_width=True,
+                    theme=None)
 with x2:
     seg = R.groupby("segment").agg(
         Policies=("rider_id", "count"),

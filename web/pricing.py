@@ -13,7 +13,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from shared import inr
+from shared import light, inr
 from engine import pricing
 from engine.config import CFG
 from web import theme as T, chrome as C, quote as Q
@@ -166,7 +166,8 @@ with fc1:
         xaxis_title=L("Hours ridden a month", "महीने में चलाए गए घंटे"),
         plot_bgcolor="rgba(0,0,0,0)",
         legend=dict(orientation="h", y=1.16, x=0))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(light(fig), use_container_width=True,
+                    theme=None)
     st.caption(L(
         f"A flat annual policy has to be priced for a full-time rider — about "
         f"{Q.FLAT_HOURS_PM} hours a month — because the insurer cannot tell who "
@@ -196,7 +197,8 @@ with fc2:
                    {"range": [band["base_per_hour"], band["ceiling_per_hour"]],
                     "color": "#FFEDE4"}]}))
     g.update_layout(height=245, margin=dict(l=20, r=20, t=10, b=0))
-    st.plotly_chart(g, use_container_width=True)
+    st.plotly_chart(light(g), use_container_width=True,
+                    theme=None)
     st.caption(L(
         f"Whatever the conditions, GigSure Plus never charges more than "
         f"₹{band['ceiling_per_hour']:.2f} an hour. On the worst night of the "

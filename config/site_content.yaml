@@ -90,6 +90,32 @@ settlement_promise:
     में जमा होंगे। समय-सीमा हमारी है, इसलिए चूक की क़ीमत भी हमारी।
 
 # -----------------------------------------------------------------------------
+# NO-CLAIM BENEFIT
+# Not a discount on renewal — a cash refund of premium paid, to the riders whose
+# measured risk profile was exceptional over the year. Paid to UPI, so it is
+# money rather than a wallet balance.
+# -----------------------------------------------------------------------------
+no_claim_benefit:
+  top_share: 0.01
+  refund_of_premium: 1.00
+  paid_to: "UPI"
+  paid_to_hi: "UPI"
+  when: "At the end of each policy year"
+  when_hi: "हर पॉलिसी वर्ष के अंत में"
+  headline: "Top 1% of riders get their year's premium back"
+  headline_hi: "सबसे बेहतर 1% राइडर को साल का पूरा प्रीमियम वापस"
+  detail: >
+    At the end of each year we rank the book quantitatively on measured risk
+    profile — riding score, exposure discipline and claims experience. The top
+    1% have the premium they paid that year credited straight to their UPI. It
+    is not a coupon, not a renewal discount and not a wallet balance.
+  detail_hi: >
+    हर साल के अंत में हम पूरी बुक को मापे गए जोखिम — राइडिंग स्कोर, एक्सपोज़र
+    अनुशासन और क्लेम अनुभव — पर आँकते हैं। सबसे बेहतर 1% राइडर को उस साल का
+    चुकाया गया प्रीमियम सीधे उनके UPI में वापस मिलता है। न कूपन, न रिन्यूअल
+    छूट, न वॉलेट बैलेंस।
+
+# -----------------------------------------------------------------------------
 # RIDER TESTIMONIALS
 # Composite riders drawn from the segments in §3.1, not real individuals.
 # -----------------------------------------------------------------------------

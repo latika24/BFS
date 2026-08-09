@@ -15,6 +15,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from engine.config import CFG
+from shared import light
 from web import theme as T, chrome as C
 from web.i18n import L
 from web.content import SITE, pick
@@ -119,7 +120,8 @@ fig.update_layout(
                ticktext=[L("Owned by the platform", "प्लेटफ़ॉर्म का"),
                          L("Owned by you", "आपका अपना")],
                tickfont=dict(size=12.5, color="#3B4B48")))
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(light(fig), use_container_width=True,
+                    theme=None)
 
 T.callout(L(
     "The empty quadrant is structural, not an oversight. A platform that "
